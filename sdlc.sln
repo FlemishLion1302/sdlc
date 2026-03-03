@@ -1,0 +1,71 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37012.4 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sdlc", "sdlc", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		docs\sdlc\readme.md = docs\sdlc\readme.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "architecture", "architecture", "{48B80AC0-2FA6-44CC-9DD4-BF0142008B37}"
+	ProjectSection(SolutionItems) = preProject
+		docs\sdlc\architecture\architecture_layering.md = docs\sdlc\architecture\architecture_layering.md
+		docs\sdlc\architecture\core_admission_and_elevation_policy.md = docs\sdlc\architecture\core_admission_and_elevation_policy.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "governance", "governance", "{E91342B0-39CD-4705-9B80-A3CDF3660375}"
+	ProjectSection(SolutionItems) = preProject
+		docs\sdlc\governance\engineering_governance.md = docs\sdlc\governance\engineering_governance.md
+		docs\sdlc\governance\servicing_and_maintenance_strategy.md = docs\sdlc\governance\servicing_and_maintenance_strategy.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "guidelines", "guidelines", "{FF647C09-D174-4B3F-9095-D77C5236747C}"
+	ProjectSection(SolutionItems) = preProject
+		docs\sdlc\guidelines\cpp_engineering_guidelines.md = docs\sdlc\guidelines\cpp_engineering_guidelines.md
+		docs\sdlc\guidelines\cpp_engineering_guidelines_baseline.md = docs\sdlc\guidelines\cpp_engineering_guidelines_baseline.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "standards", "standards", "{7753DF62-DC4A-4C3D-8BD4-BBD5E751A615}"
+	ProjectSection(SolutionItems) = preProject
+		docs\sdlc\standards\cpp_coding_standard.md = docs\sdlc\standards\cpp_coding_standard.md
+		docs\sdlc\standards\cpp_coding_standard_baseline.md = docs\sdlc\standards\cpp_coding_standard_baseline.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "taxonomy", "taxonomy", "{36B98F85-5094-4321-A045-508D5DA8D325}"
+	ProjectSection(SolutionItems) = preProject
+		docs\sdlc\architecture\taxonomy\taxonomy_core_foundation.md = docs\sdlc\architecture\taxonomy\taxonomy_core_foundation.md
+		docs\sdlc\architecture\taxonomy\taxonomy_glossary.md = docs\sdlc\architecture\taxonomy\taxonomy_glossary.md
+		docs\sdlc\architecture\taxonomy\taxonomy_runtime_platform.md = docs\sdlc\architecture\taxonomy\taxonomy_runtime_platform.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deltas", "deltas", "{93CBF2AC-A6EE-4013-8810-1FD0C82946FC}"
+	ProjectSection(SolutionItems) = preProject
+		docs\sdlc\guidelines\deltas\template.md = docs\sdlc\guidelines\deltas\template.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deltas", "deltas", "{5246575C-C79A-4779-8477-C2E1D35E503A}"
+	ProjectSection(SolutionItems) = preProject
+		docs\sdlc\standards\deltas\template.md = docs\sdlc\standards\deltas\template.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
+		{48B80AC0-2FA6-44CC-9DD4-BF0142008B37} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{E91342B0-39CD-4705-9B80-A3CDF3660375} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{FF647C09-D174-4B3F-9095-D77C5236747C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{7753DF62-DC4A-4C3D-8BD4-BBD5E751A615} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{36B98F85-5094-4321-A045-508D5DA8D325} = {48B80AC0-2FA6-44CC-9DD4-BF0142008B37}
+		{93CBF2AC-A6EE-4013-8810-1FD0C82946FC} = {FF647C09-D174-4B3F-9095-D77C5236747C}
+		{5246575C-C79A-4779-8477-C2E1D35E503A} = {7753DF62-DC4A-4C3D-8BD4-BBD5E751A615}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0D459A60-C9CA-4A3A-A92E-EF225E0F400B}
+	EndGlobalSection
+EndGlobal
