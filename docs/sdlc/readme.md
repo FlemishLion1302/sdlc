@@ -2,59 +2,131 @@
 
 This repository is the authoritative source of engineering governance artifacts.
 
-All engineering standards, guidelines, and architectural policies are defined here.
+All engineering standards, guidelines, architectural policies, documentation governance,
+and tooling governance are defined here.
 
 Projects MUST reference a tagged version of this repository when adopting governance.
 
-------
+Governance artifacts are immutable and versioned.
 
-## Current Governance Model
 
-Engineering governance is structured as follows:
+---
 
-1. **C++ Coding Standard** — CI-enforced, structurally authoritative
-2. **C++ Engineering Guidelines** — review-enforced guidance
-3. **Taxonomy and Dependency Rules** — review-enforced architectural policy
+# Governance Domains
 
-Hierarchy and immutability rules are defined in:
+Engineering governance is structured into the following domains:
 
+## 1. Language Standards
+
+Defines mandatory coding standards and review-enforced guidance.
+
+- C++ Coding Standard (CI-enforced)
+- C++ Engineering Guidelines (review-enforced)
+
+Located under:
+```
+docs/engineering/standards/
+docs/engineering/guidelines/
+```
+These define structural correctness and language-level expectations.
+
+
+---
+
+## 2. Architecture and Taxonomy
+
+Defines system structuring rules and dependency direction.
+
+- Taxonomy definitions
+- Layering rules
+- Dependency policies
+
+Located under:
+```
+docs/engineering/taxonomy/
+docs/engineering/layering/
+```
+These define architectural integrity.
+
+
+---
+
+## 3. Documentation Governance
+
+Defines documentation and compatibility policy requirements.
+
+Includes:
+
+- Project documentation requirements
+- Source code documentation standards
+- API reference generation policy
+- ABI stability policy
+- Deprecation policy
+- Versioning policy
+
+Located under:
+```
+documentation/
+```
+These define how projects describe, publish, and evolve their contracts.
+
+
+---
+
+## 4. Tooling Governance
+
+Defines automation structure and reproducibility expectations.
+
+Includes:
+
+- Tooling and automation rules
+- Repository layout conventions
+
+Located under:
+```
+tooling/
+```
+These define how projects structure and execute automation.
+
+
+---
+
+# Governance Hierarchy
+
+Governance hierarchy and immutability rules are defined in:
 ```
 docs/engineering/governance/engineering_governance.md
 ```
-
 Change mechanics (delta lifecycle, version precedence, rebase policy) are defined in:
-
 ```
 docs/engineering/governance/servicing_and_maintenance_strategy.md
 ```
+Governance artifacts are immutable once tagged.
 
-------
 
-## Repository Structure
+---
 
+# Repository Structure
 ```
 docs/engineering/
-    README.md
-    governance/
-        engineering_governance.md
-        servicing_and_maintenance_strategy.md
-    standards/
-        coding/
-            cpp_coding_standard.md
-            cpp_coding_standard_baseline.md
-            deltas/
-    guidelines/
-        cpp/
-            cpp_engineering_guidelines.md
-            cpp_engineering_guidelines_baseline.md
-            deltas/
-    taxonomy/
-    layering/
+governance/
+standards/
+guidelines/
+taxonomy/
+layering/
+
+documentation/
+(documentation governance standards)
+
+tooling/
+(tooling and repository structure governance)
+
+templates/
+(project scaffolding templates)
 ```
+---
 
-------
-
-## Adoption by Projects
+# Adoption by Projects
 
 Projects MUST:
 
@@ -63,39 +135,33 @@ Projects MUST:
 3. Treat governance artifacts as immutable.
 
 Recommended raw reference pattern:
-
 ```
-https://raw.githubusercontent.com/<owner>/engineering/<tag>/<path>
+https://raw.githubusercontent.com//engineering//
 ```
-
 Example:
-
 ```
-https://raw.githubusercontent.com/FlemishLion1302/engineering/v1.0.1/docs/engineering/governance/engineering_governance.md
+https://raw.githubusercontent.com/FlemishLion1302/engineering/v1.0.1/documentation/project_documentation.md
 ```
+---
 
-------
-
-## Versioning
+# Versioning Model
 
 - Tags represent governance release points.
 - Governance evolves via versioned deltas.
 - Rebase events consolidate baselines.
 - Tags SHOULD be created after significant governance changes.
+- Projects must not reference floating branches.
 
-------
 
-## Immutability
+---
 
-Governance documents are immutable.
+# Immutability
+
+Governance documents are immutable once released.
 
 Changes MUST occur through:
 
 - A versioned delta, or
 - A formal rebase event.
 
-Informal edits are prohibited.
-
-------
-
-# End of Document
+Informal edits to released artifacts are prohibited.
