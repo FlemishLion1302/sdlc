@@ -49,6 +49,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deltas", "deltas", "{93CBF2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deltas", "deltas", "{5246575C-C79A-4779-8477-C2E1D35E503A}"
 	ProjectSection(SolutionItems) = preProject
+		docs\sdlc\standards\deltas\2026-03-03-v1.0.1_header_source_separation.md = docs\sdlc\standards\deltas\2026-03-03-v1.0.1_header_source_separation.md
 		docs\sdlc\standards\deltas\template.md = docs\sdlc\standards\deltas\template.md
 	EndProjectSection
 EndProject
