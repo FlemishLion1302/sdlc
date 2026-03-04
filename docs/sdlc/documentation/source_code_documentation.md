@@ -13,10 +13,9 @@ Source documentation serves three primary purposes:
 
 Documentation is part of the codebase and must evolve with it.
 
+------
 
----
-
-## 2. Scope
+# 2. Scope
 
 This standard applies to:
 
@@ -28,7 +27,7 @@ This standard applies to:
 - Public macros (if exposed)
 - Exported C interfaces
 
-This standard does NOT require extensive documentation of:
+This standard does **NOT** require extensive documentation of:
 
 - Private implementation details
 - Internal helper functions
@@ -37,21 +36,19 @@ This standard does NOT require extensive documentation of:
 
 Over-documentation of private code is discouraged.
 
+------
 
----
+# 3. Public API Documentation Requirements
 
-## 3. Public API Documentation Requirements
+Every publicly exposed type or function MUST include documentation.
 
-Every publicly exposed type or function MUST include:
-
-### 3.1 Summary
+## 3.1 Summary
 
 A one-sentence description explaining what the entity does.
 
-The summary must describe behavior, not implementation.
+The summary must describe **behavior**, not implementation.
 
-
-### 3.2 Contract Requirements
+## 3.2 Contract Requirements
 
 Where applicable, documentation MUST define:
 
@@ -63,10 +60,9 @@ Where applicable, documentation MUST define:
 
 If a rule is implicit but critical, it must be made explicit.
 
+------
 
----
-
-## 4. Function Documentation Requirements
+# 4. Function Documentation Requirements
 
 Public functions MUST document:
 
@@ -79,12 +75,11 @@ Public functions MUST document:
 
 Do not restate obvious type information.
 
-Document semantics, not syntax.
+Document **semantics**, not syntax.
 
+------
 
----
-
-## 5. Class Documentation Requirements
+# 5. Class Documentation Requirements
 
 Public classes MUST document:
 
@@ -96,10 +91,9 @@ Public classes MUST document:
 
 If misuse is possible, document correct usage patterns.
 
+------
 
----
-
-## 6. Enum Documentation
+# 6. Enum Documentation
 
 Public enums MUST document:
 
@@ -109,10 +103,9 @@ Public enums MUST document:
 
 Enums that are part of ABI contracts must clearly indicate stability guarantees.
 
+------
 
----
-
-## 7. Templates and Generic Code
+# 7. Templates and Generic Code
 
 Templates must document:
 
@@ -122,10 +115,9 @@ Templates must document:
 
 Do not rely solely on static assertions to communicate intent.
 
+------
 
----
-
-## 8. Error Model Documentation
+# 8. Error Model Documentation
 
 Projects MUST clearly document one of the following error models:
 
@@ -138,10 +130,9 @@ Each public API must align with the documented error model.
 
 Error behavior must be consistent and predictable.
 
+------
 
----
-
-## 9. Thread-Safety Documentation
+# 9. Thread-Safety Documentation
 
 If a component:
 
@@ -151,31 +142,32 @@ If a component:
 
 This must be explicitly documented.
 
-Absence of documentation implies NOT thread-safe.
+Absence of documentation implies **NOT thread-safe**.
 
+------
 
----
-
-## 10. Documentation Format
+# 10. Documentation Format
 
 Projects SHOULD use a structured documentation style compatible with
 automated tooling (e.g., Doxygen-style comments for C++).
 
 Example style:
 
-- Brief summary line
-- Parameter descriptions
-- Return description
-- Contract notes
+```cpp
+/**
+ * Summary sentence describing the API.
+ *
+ * Additional context if necessary.
+ */
+```
 
 Formatting details are left to the project toolchain.
 
 The SDLC does not mandate a specific documentation generator.
 
+------
 
----
-
-## 11. Prohibited Practices
+# 11. Prohibited Practices
 
 The following are prohibited:
 
@@ -185,10 +177,9 @@ The following are prohibited:
 - Allowing stale documentation after behavior changes
 - Using documentation as a substitute for clear API design
 
+------
 
----
-
-## 12. CI and Review Expectations
+# 12. CI and Review Expectations
 
 Projects SHOULD:
 
@@ -198,10 +189,9 @@ Projects SHOULD:
 
 Code review must consider documentation correctness as part of acceptance.
 
+------
 
----
-
-## 13. Minimal Compliance Checklist
+# 13. Minimal Compliance Checklist
 
 A repository is compliant if:
 
@@ -213,16 +203,9 @@ A repository is compliant if:
 
 Failure to document public APIs constitutes SDLC non-compliance.
 
-Good idea. Right now your **source code documentation standard** says “use Doxygen-style comments” but doesn’t **standardize the tag set**. That leads to drift (`@brief` vs summary sentences, `@return` vs `@returns`, etc.).
+------
 
-You want a **controlled tag vocabulary**.
-
-This should be added as a **new section in `source_code_documentation.md`**, something like **“Documentation Tag Standardization”**.
-
-Below is a pragmatic amendment that fits your governance style.
-
----
-## 14. API Usage Examples
+# 14. API Usage Examples
 
 Public APIs SHOULD include a concise usage example to illustrate correct
 and idiomatic use.
@@ -230,7 +213,7 @@ and idiomatic use.
 Examples improve discoverability, reduce misuse, and provide immediate
 context for API consumers.
 
-### 14.1 Requirement
+## 14.1 Requirement
 
 Each public API SHOULD provide a short usage example when the API is:
 
@@ -241,29 +224,30 @@ Each public API SHOULD provide a short usage example when the API is:
 
 Simple or self-evident APIs may omit examples.
 
-### 14.2 Example Format
+## 14.2 Example Length
 
-Examples must be concise and focused.
+Examples must be concise.
 
 Guidelines:
 
 - Maximum length: **15 lines**
-- Demonstrate **typical usage**, not exhaustive behavior
-- Prefer **complete minimal snippets** over fragments
+- Demonstrate typical usage
+- Prefer complete minimal snippets
 - Avoid unnecessary scaffolding
 
-Examples must compile logically even if not intended as full programs.
+## 14.3 Documentation Syntax
 
-### 14.3 Documentation Syntax
+Examples should use the following pattern:
 
-Examples should use the following documentation pattern:
 ```
 @par Example
 @code
 // minimal usage example
 @endcode
 ```
+
 Example:
+
 ```
 @par Example
 @code
@@ -271,44 +255,34 @@ daedalus::Status status = do_operation();
 
 if (!status.ok())
 {
-std::cerr << status.message() << std::endl;
+    handle_error(status);
 }
 @endcode
 ```
-### 14.4 Placement
 
-Usage examples should appear directly after the API description and
-before parameter documentation when possible.
+## 14.4 Placement
 
-Recommended ordering:
+Examples must be associated with the API they document.
 
-1. Summary
-2. Example
-3. Parameters
-4. Return value
-5. Notes / constraints
+Examples should appear in the documentation block for:
 
-### 14.5 Quality Expectations
+- a function
+- a class
+- a struct
+- an enum
+- a template
 
-Examples must:
+Examples should **not** be placed at file-level when they describe a specific API.
 
-- Demonstrate correct usage
-- Reflect the current API
-- Avoid deprecated interfaces
-- Follow project coding standards
+File-level examples may be used only for:
 
-Outdated examples must be updated alongside API changes.
+- multi-API workflows
+- tutorials
+- high-level system documentation.
 
-### 14.6 CI and Review Expectations
+------
 
-Projects SHOULD treat missing or misleading examples as documentation
-review findings.
-
-Code reviewers should verify that examples remain accurate when API
-behavior changes.
-
----
-## 15. Standardized Documentation Tags
+# 15. Standardized Documentation Tags
 
 Projects using automated documentation generators (e.g., Doxygen)
 must use a consistent set of documentation tags.
@@ -318,116 +292,96 @@ Standardizing tag usage ensures:
 - consistent API reference output
 - predictable formatting
 - easier documentation review
-- compatibility with automated tooling
+- compatibility with automated tooling.
 
-Projects should avoid inventing custom documentation patterns
-when a standard tag exists.
-
----
+------
 
 ## 15.1 Preferred Comment Style
 
-Documentation comments should use the block style:
-```
-/**
-- Summary sentence describing the API.
-- 
-- Additional context if necessary.
-  */
-```
-Single-line forms (`///`) may be used for short descriptions,
-but block comments are preferred for public APIs.
+Documentation comments should use block-style comments:
 
----
+```cpp
+/**
+ * Summary sentence describing the API.
+ *
+ * Additional context if necessary.
+ */
+```
+
+Single-line (`///`) comments may be used for short descriptions.
+
+------
 
 ## 15.2 Approved Tag Set
 
-The following tags are the standard set for SDLC-governed projects.
-
 ### Core Description
 
-| Tag | Purpose |
-|----|----|
-| `@brief` | Short summary of the API |
+| Tag        | Purpose                          |
+| ---------- | -------------------------------- |
+| `@brief`   | Short summary of the API         |
 | `@details` | Extended description when needed |
 
 Projects may omit `@brief` if the first sentence clearly serves as the summary.
 
----
+------
 
 ### Parameters and Returns
 
-| Tag | Purpose |
-|----|----|
-| `@param` | Function parameter description |
+| Tag       | Purpose                        |
+| --------- | ------------------------------ |
+| `@param`  | Function parameter description |
 | `@tparam` | Template parameter description |
-| `@return` | Return value description |
+| `@return` | Return value description       |
 
-Parameter descriptions should describe **semantic meaning**, not types.
+Parameter descriptions should explain **semantic meaning**, not types.
 
----
+------
 
 ### Examples
 
-| Tag | Purpose |
-|----|----|
+| Tag            | Purpose                       |
+| -------------- | ----------------------------- |
 | `@par Example` | Introduces an example section |
-| `@code` | Start code block |
-| `@endcode` | End code block |
+| `@code`        | Start code block              |
+| `@endcode`     | End code block                |
 
-Example:
-```
-@par Example
-@code
-daedalus::Status status = do_operation();
-if (!status.ok())
-{
-handle_error(status);
-}
-@endcode
-```
----
+------
 
 ### Notes and Behavior
 
-| Tag | Purpose |
-|----|----|
-| `@note` | Additional information |
-| `@warning` | Important caveat or constraint |
-| `@attention` | Critical usage requirement |
+| Tag          | Purpose                   |
+| ------------ | ------------------------- |
+| `@note`      | Additional information    |
+| `@warning`   | Important caveat          |
+| `@attention` | Critical usage constraint |
 
-These tags should be used sparingly and only when behavior may surprise users.
-
-
----
+------
 
 ### Cross References
 
-| Tag | Purpose |
-|----|----|
-| `@see` | Related APIs |
-| `@ref` | Explicit cross reference |
+| Tag    | Purpose                  |
+| ------ | ------------------------ |
+| `@see` | Related APIs             |
+| `@ref` | Explicit cross-reference |
 
-Cross references help improve navigation in generated documentation.
-
----
+------
 
 ## 15.3 Prohibited or Discouraged Tags
 
-Projects should avoid inconsistent or redundant tags such as:
+Projects should avoid inconsistent tags such as:
 
 - `@returns` (use `@return`)
 - `@arg` (use `@param`)
 - custom tags unless formally defined
-- free-form headings inside comments
+- free-form headings in comments
 
 Consistency takes precedence over stylistic preference.
 
----
+------
 
 ## 15.4 Ordering of Documentation Sections
 
-Documentation sections should follow this order when applicable:
+Documentation sections should follow this order:
 
 1. Summary (`@brief`)
 2. Extended description (`@details`)
@@ -438,17 +392,59 @@ Documentation sections should follow this order when applicable:
 7. Notes (`@note`, `@warning`)
 8. Cross references (`@see`)
 
-This ordering ensures consistent reference documentation.
-
----
+------
 
 ## 15.5 Review Expectations
 
 Code review must ensure:
 
 - approved tags are used
-- examples follow the <15 line rule
+- examples follow the ≤15 line rule
 - tags are consistently ordered
 - documentation matches actual API behavior
 
 Documentation quality is part of API correctness.
+
+------
+
+# 16. Canonical API Documentation Template
+
+Projects SHOULD use the following template when documenting public APIs.
+
+```cpp
+/**
+ * @brief One-sentence description of the API.
+ *
+ * Optional extended description explaining behavior or constraints.
+ *
+ * @par Example
+ * @code
+ * daedalus::Result<int> result = compute();
+ *
+ * if (!result)
+ * {
+ *     handle_error(result.status());
+ *     return;
+ * }
+ *
+ * std::cout << result.value() << std::endl;
+ * @endcode
+ *
+ * @param input Description of the parameter's meaning.
+ * @param flags Optional flags controlling behavior.
+ *
+ * @return Description of the returned value.
+ *
+ * @note Additional usage notes if necessary.
+ *
+ * @see related_api
+ */
+```
+
+This template ensures:
+
+- consistent formatting
+- predictable documentation output
+- concise usage examples
+- alignment with SDLC documentation standards.
+
