@@ -212,3 +212,243 @@ A repository is compliant if:
 - Documentation is kept in sync with behavior
 
 Failure to document public APIs constitutes SDLC non-compliance.
+
+Good idea. Right now your **source code documentation standard** says “use Doxygen-style comments” but doesn’t **standardize the tag set**. That leads to drift (`@brief` vs summary sentences, `@return` vs `@returns`, etc.).
+
+You want a **controlled tag vocabulary**.
+
+This should be added as a **new section in `source_code_documentation.md`**, something like **“Documentation Tag Standardization”**.
+
+Below is a pragmatic amendment that fits your governance style.
+
+---
+## 14. API Usage Examples
+
+Public APIs SHOULD include a concise usage example to illustrate correct
+and idiomatic use.
+
+Examples improve discoverability, reduce misuse, and provide immediate
+context for API consumers.
+
+### 14.1 Requirement
+
+Each public API SHOULD provide a short usage example when the API is:
+
+- Non-trivial
+- Likely to be misused
+- Part of a commonly used interface
+- Introduced as a new feature
+
+Simple or self-evident APIs may omit examples.
+
+### 14.2 Example Format
+
+Examples must be concise and focused.
+
+Guidelines:
+
+- Maximum length: **15 lines**
+- Demonstrate **typical usage**, not exhaustive behavior
+- Prefer **complete minimal snippets** over fragments
+- Avoid unnecessary scaffolding
+
+Examples must compile logically even if not intended as full programs.
+
+### 14.3 Documentation Syntax
+
+Examples should use the following documentation pattern:
+```
+@par Example
+@code
+// minimal usage example
+@endcode
+```
+Example:
+```
+@par Example
+@code
+daedalus::Status status = do_operation();
+
+if (!status.ok())
+{
+std::cerr << status.message() << std::endl;
+}
+@endcode
+```
+### 14.4 Placement
+
+Usage examples should appear directly after the API description and
+before parameter documentation when possible.
+
+Recommended ordering:
+
+1. Summary
+2. Example
+3. Parameters
+4. Return value
+5. Notes / constraints
+
+### 14.5 Quality Expectations
+
+Examples must:
+
+- Demonstrate correct usage
+- Reflect the current API
+- Avoid deprecated interfaces
+- Follow project coding standards
+
+Outdated examples must be updated alongside API changes.
+
+### 14.6 CI and Review Expectations
+
+Projects SHOULD treat missing or misleading examples as documentation
+review findings.
+
+Code reviewers should verify that examples remain accurate when API
+behavior changes.
+
+---
+## 15. Standardized Documentation Tags
+
+Projects using automated documentation generators (e.g., Doxygen)
+must use a consistent set of documentation tags.
+
+Standardizing tag usage ensures:
+
+- consistent API reference output
+- predictable formatting
+- easier documentation review
+- compatibility with automated tooling
+
+Projects should avoid inventing custom documentation patterns
+when a standard tag exists.
+
+---
+
+## 15.1 Preferred Comment Style
+
+Documentation comments should use the block style:
+```
+/**
+- Summary sentence describing the API.
+- 
+- Additional context if necessary.
+  */
+```
+Single-line forms (`///`) may be used for short descriptions,
+but block comments are preferred for public APIs.
+
+---
+
+## 15.2 Approved Tag Set
+
+The following tags are the standard set for SDLC-governed projects.
+
+### Core Description
+
+| Tag | Purpose |
+|----|----|
+| `@brief` | Short summary of the API |
+| `@details` | Extended description when needed |
+
+Projects may omit `@brief` if the first sentence clearly serves as the summary.
+
+---
+
+### Parameters and Returns
+
+| Tag | Purpose |
+|----|----|
+| `@param` | Function parameter description |
+| `@tparam` | Template parameter description |
+| `@return` | Return value description |
+
+Parameter descriptions should describe **semantic meaning**, not types.
+
+---
+
+### Examples
+
+| Tag | Purpose |
+|----|----|
+| `@par Example` | Introduces an example section |
+| `@code` | Start code block |
+| `@endcode` | End code block |
+
+Example:
+```
+@par Example
+@code
+daedalus::Status status = do_operation();
+if (!status.ok())
+{
+handle_error(status);
+}
+@endcode
+```
+---
+
+### Notes and Behavior
+
+| Tag | Purpose |
+|----|----|
+| `@note` | Additional information |
+| `@warning` | Important caveat or constraint |
+| `@attention` | Critical usage requirement |
+
+These tags should be used sparingly and only when behavior may surprise users.
+
+
+---
+
+### Cross References
+
+| Tag | Purpose |
+|----|----|
+| `@see` | Related APIs |
+| `@ref` | Explicit cross reference |
+
+Cross references help improve navigation in generated documentation.
+
+---
+
+## 15.3 Prohibited or Discouraged Tags
+
+Projects should avoid inconsistent or redundant tags such as:
+
+- `@returns` (use `@return`)
+- `@arg` (use `@param`)
+- custom tags unless formally defined
+- free-form headings inside comments
+
+Consistency takes precedence over stylistic preference.
+
+---
+
+## 15.4 Ordering of Documentation Sections
+
+Documentation sections should follow this order when applicable:
+
+1. Summary (`@brief`)
+2. Extended description (`@details`)
+3. Example (`@par Example`)
+4. Parameters (`@param`)
+5. Template parameters (`@tparam`)
+6. Return value (`@return`)
+7. Notes (`@note`, `@warning`)
+8. Cross references (`@see`)
+
+This ordering ensures consistent reference documentation.
+
+---
+
+## 15.5 Review Expectations
+
+Code review must ensure:
+
+- approved tags are used
+- examples follow the <15 line rule
+- tags are consistently ordered
+- documentation matches actual API behavior
+
+Documentation quality is part of API correctness.
