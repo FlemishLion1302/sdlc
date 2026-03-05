@@ -67,6 +67,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{4C67C919-B
 		docs\sdlc\templates\docs\docs_index_template.md = docs\sdlc\templates\docs\docs_index_template.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "style", "style", "{1CEDE72C-D907-4659-9297-C5CD3333028B}"
+	ProjectSection(SolutionItems) = preProject
+		style\nsnj_cpp_code_style.DotSettings = style\nsnj_cpp_code_style.DotSettings
+		style\nsnj_cpp_user_dictionary.DotSettings = style\nsnj_cpp_user_dictionary.DotSettings
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{11FFF6C8-4DF9-4E22-BDBC-2216F1C19CCB} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{C1B1EBA7-891F-4492-97BC-86CB01389130} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{4C67C919-B826-467E-8E1F-869344BB61F9} = {C1B1EBA7-891F-4492-97BC-86CB01389130}
+		{1CEDE72C-D907-4659-9297-C5CD3333028B} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0D459A60-C9CA-4A3A-A92E-EF225E0F400B}
