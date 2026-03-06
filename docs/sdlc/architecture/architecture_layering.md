@@ -1,29 +1,57 @@
-# Architecture Layering and Dependency Rules
+# architecture_layering
 
-## 1. Scope and Intent
-
-This document defines:
-
-- The canonical namespace hierarchy
-- Layer responsibilities
-- Compile-time dependency direction rules
-- OS boundary rules
-- Source-tree mapping
-- Enforcement expectations
-
-This is the **authoritative source of truth** for architectural layering.
-
-The C++ Coding Standard and Engineering Guidelines must reference this document rather than duplicating its rules.
-
-Core placement rules are additionally governed by:
-
-- **Core Admission & Elevation Policy** (companion authority for `daedalus::core`)
+Status: Normative Architecture Specification
+Domain: architecture
+Scope: System layering, namespace hierarchy, and compile-time dependency rules
 
 ------
 
-# 2. Namespace Model
+# 1. Purpose
 
-## 2.1 Organizational Root
+This document defines the architectural layering model for systems developed under the SDLC framework.
+
+It specifies:
+
+- the canonical namespace hierarchy
+- layer responsibilities
+- compile-time dependency direction rules
+- operating system boundary rules
+- source-tree mapping expectations
+- enforcement expectations
+
+This document is the authoritative architectural specification for system layering.
+
+The C++ Coding Standard and Engineering Guidelines must reference this document rather than duplicating its architectural rules.
+
+Core placement rules are additionally governed by:
+
+- Core Admission & Elevation Policy
+
+------
+
+# 2. SDLC Framework Context
+
+This document belongs to the **architecture domain** of the SDLC framework.
+
+Architecture documents define structural constraints on software systems and take precedence over standards and guidelines when conflicts arise.
+
+The authority relationships between SDLC domains are defined in:
+
+```
+sdlc_structure
+```
+
+Terminology used by this document is defined in:
+
+```
+sdlc_glossary
+```
+
+------
+
+# 3. Namespace Model
+
+## 3.1 Organizational Root
 
 ```cpp
 namespace nisanijo
@@ -37,7 +65,7 @@ namespace nisanijo
 
 ------
 
-## 2.2 System Root
+## 3.2 System Root
 
 ```cpp
 namespace nisanijo::mythos
@@ -50,7 +78,7 @@ namespace nisanijo::mythos
 
 ------
 
-## 2.3 Layer Namespaces
+## 3.3 Layer Namespaces
 
 ```cpp
 namespace nisanijo::mythos
@@ -69,11 +97,11 @@ These five namespaces define the architectural layers.
 
 ------
 
-# 3. Layer Responsibilities
+# 4. Layer Responsibilities
 
 ------
 
-## 3.1 Layer 0 – Daedalus (Infrastructure)
+## 4.1 Layer 0 – Daedalus (Infrastructure)
 
 Namespace:
 
@@ -88,7 +116,9 @@ Purpose:
 
 Daedalus contains internal sublayers.
 
-### 3.1.1 Internal Structure
+------
+
+### 4.1.1 Internal Structure
 
 ```cpp
 namespace nisanijo::mythos::daedalus
@@ -104,7 +134,7 @@ namespace runtime          { } // optional
 
 ------
 
-### 3.1.2 `core`
+### 4.1.2 core
 
 Purpose:
 
@@ -113,51 +143,57 @@ Purpose:
 - No OS assumptions
 - No policy-heavy systems
 
-**Authority:** All admission, elevation, and disqualification criteria for `core`
+Authority: All admission, elevation, and disqualification criteria for `core`
 are defined by the **Core Admission & Elevation Policy**.
 
-**Core is not demand-driven.**
- A component may belong in `core` even if no current `platform` contract uses it, provided it satisfies the definition of a portable semantic substrate and passes the Core Admission & Elevation Policy. Core placement is justified by semantic stability and universality, not by current call graphs.
+Core is not demand-driven.
 
-**OS-agnostic is necessary but not sufficient for core.**
- OS-agnostic components that express policy, coordination, configuration, formatting strategies, routing/filtering, or other infrastructure behavior belong in `foundation` (or higher), even if they never touch OS APIs.
+A component may belong in `core` even if no current `platform` contract uses it, provided it satisfies the definition of a portable semantic substrate and passes the Core Admission & Elevation Policy.
 
-**Decision test (core vs platform vs foundation):**
+Core placement is justified by semantic stability and universality, not by current call graphs.
 
-1) Is it OS-agnostic?
-   - If **no** → it belongs in `platform` (contract) and `platform_*` (implementation).
-2) If **yes**, is it a portable semantic substrate primitive that passes the Core Admission & Elevation Policy
-   (effect-free, policy-free, domain-free, invariant-bearing value type or tightly coupled helper)?
-   - If **yes** → `core`
-   - If **no** → `foundation` (or higher)
+OS-agnostic is necessary but not sufficient for core.
 
-This section provides orientation and examples only.
+OS-agnostic components that express policy, coordination, configuration, formatting strategies, routing/filtering, or other infrastructure behavior belong in `foundation` (or higher), even if they never touch OS APIs.
 
-Contains (examples):
+Decision test:
 
-- `Status`, `StatusCode`, `Result<T>`
-- Low-level primitives and invariant-bearing value types
-- Deterministic helpers tightly coupled to those primitives
-- Memory/byte primitives (policy-free)
-- String utilities (policy-free)
-- Hash utilities (policy-free)
+1. Is it OS-agnostic?
 
-- Must not contain:
+If no → it belongs in `platform` (contract) and `platform_*` (implementation).
 
-  - Any system effects
-  - Any policy-heavy infrastructure
-  - Any domain types
+1. If yes, is it a portable semantic substrate primitive that passes the Core Admission & Elevation Policy?
 
-  Specific disqualifiers and red-flag markers are defined in the Core Admission & Elevation Policy.
+If yes → `core`
+
+If no → `foundation` (or higher)
+
+Examples include:
+
+- `Status`
+- `StatusCode`
+- `Result<T>`
+- invariant-bearing value types
+- deterministic helpers tightly coupled to primitives
+- memory/byte primitives
+- policy-free string utilities
+- policy-free hashing helpers
+
+Must not contain:
+
+- system effects
+- policy-heavy infrastructure
+- domain types
+
+Specific disqualifiers are defined in the Core Admission & Elevation Policy.
 
 ------
 
-### 3.1.3 `platform`
+### 4.1.3 platform
 
 Purpose:
 
-- OS abstraction ports
-- Portable semantic contracts
+OS abstraction ports defining portable semantic contracts.
 
 Characteristics:
 
@@ -167,102 +203,101 @@ Characteristics:
 
 Examples:
 
-- Monotonic clock
-- Filesystem port
-- Environment access
-- Process information
-- Threading port
-- System information
+- monotonic clock
+- filesystem port
+- environment access
+- process information
+- threading port
+- system information
 
 Must not depend on:
 
-- `foundation`
-- Any upper layer
+- foundation
+- any upper layer
 
 ------
 
-### 3.1.4 `platform_windows` / `platform_posix`
+### 4.1.4 platform_windows / platform_posix
 
 Purpose:
 
-- Concrete OS-specific implementations of `platform`
+Concrete OS-specific implementations of platform contracts.
 
 Allowed:
 
 - OS headers
 - OS APIs
 - OS handles
-- Platform-specific behavior
+- platform-specific behavior
 
 Must:
 
-- Translate OS semantics to `platform` contracts
+- translate OS semantics into platform contracts
 
 Must not:
 
-- Depend on `foundation`
-- Depend on upper layers
+- depend on foundation
+- depend on upper layers
 
 OS headers must appear only here.
 
 ------
 
-### 3.1.5 `foundation`
+### 4.1.5 foundation
 
 Purpose:
 
-- Reusable infrastructure
-- Policy layer
+Reusable infrastructure and policy layer.
 
 Built on:
 
-- `core`
-- `platform`
+- core
+- platform
 
 Contains:
 
-- Logging
-- Diagnostics/tracing
-- Configuration merging/validation
+- logging
+- diagnostics/tracing
+- configuration merging/validation
 - CLI parsing
-- Settings systems
-- Serialization helpers (mechanism support only)
+- settings systems
+- serialization helpers
 
 Policy lives here:
 
-- Formatting
-- Routing
-- Filtering
-- Precedence rules
-- Retry/drop strategies
+- formatting
+- routing
+- filtering
+- precedence rules
+- retry/drop strategies
 
 Must not:
 
-- Depend on runtime
-- Depend on upper layers
+- depend on runtime
+- depend on upper layers
 
 ------
 
-### 3.1.6 `runtime` (Optional)
+### 4.1.6 runtime (Optional)
 
 Purpose:
 
-- Generic hosting and lifecycle scaffolding
+Generic hosting and lifecycle scaffolding.
 
 Contains:
 
-- Service lifecycle (`start/stop`)
-- Cancellation tokens
-- Coordinated shutdown
-- Executor/scheduler abstractions
-- Generic host container
+- service lifecycle
+- cancellation tokens
+- coordinated shutdown
+- executor/scheduler abstractions
+- generic host container
 
 Must:
 
-- Remain domain-agnostic
-- Not include OS headers
-- Not contain interchange logic (Hermes)
-- Not contain domain semantics
+- remain domain-agnostic
+- not include OS headers
+- not contain interchange logic
+- not contain domain semantics
 
 Dependency direction:
 
@@ -274,7 +309,7 @@ Foundation must not depend on runtime.
 
 ------
 
-## 3.2 Layer 1 – Prometheus (Pure Domain)
+## 4.2 Layer 1 – Prometheus (Pure Domain)
 
 Namespace:
 
@@ -284,32 +319,34 @@ nisanijo::mythos::prometheus
 
 Purpose:
 
-- Product/problem domain logic
+Product or problem domain logic.
 
 Contains:
 
-- Math
-- Physics
-- Scientific models
-- Domain types
-- Algorithms
+- domain types
+- algorithms
+- mathematical models
+- scientific computation
+- domain-specific logic
 
 Must not:
 
-- Include OS headers
-- Depend on `platform`
-- Depend on Hermes
-- Depend on Hephaestus
+- include OS headers
+- depend on platform
+- depend on Hermes
+- depend on Hephaestus
 
 May depend on:
 
-- `daedalus::foundation`
+```
+daedalus::foundation
+```
 
-Domain must remain serialization-agnostic and transport-agnostic.
+Domain logic must remain transport-agnostic and serialization-agnostic.
 
 ------
 
-## 3.3 Layer 2 – Hephaestus (Applied Domain Composition)
+## 4.3 Layer 2 – Hephaestus (Applied Domain Composition)
 
 Namespace:
 
@@ -319,32 +356,32 @@ nisanijo::mythos::hephaestus
 
 Purpose:
 
-- Application-level domain workflows
-- Use-case orchestration
-- Domain composition
+Application-level domain workflows and orchestration.
 
 Contains:
 
-- Scenario runners
-- Domain workflows
-- Application services (DDD sense)
+- scenario runners
+- domain workflows
+- application services
 
 Must not:
 
-- Contain generic system frameworks
-- Include OS headers
-- Rewrap platform
+- contain generic infrastructure frameworks
+- include OS headers
+- wrap platform
 
 May depend on:
 
-- `prometheus`
-- `daedalus::foundation`
-- `daedalus::runtime`
-- `hermes`
+```
+prometheus
+daedalus::foundation
+daedalus::runtime
+hermes
+```
 
 ------
 
-## 3.4 Layer 3 – Hermes (Interchange / Boundaries)
+## 4.4 Layer 3 – Hermes (Interchange / Boundaries)
 
 Namespace:
 
@@ -354,32 +391,34 @@ nisanijo::mythos::hermes
 
 Purpose:
 
-- Interchange and boundary mechanisms
+Interchange and system boundary mechanisms.
 
 Contains:
 
-- Serialization mechanism
+- serialization
 - RPC infrastructure
-- Messaging
-- Transports
-- Persistence boundary logic
+- messaging
+- transports
+- persistence boundary logic
 
 Must not:
 
-- Contain domain logic
-- Depend on Prometheus
-- Depend on Hephaestus
+- contain domain logic
+- depend on Prometheus
+- depend on Hephaestus
 
 May depend on:
 
-- `daedalus::foundation`
-- `daedalus::platform`
+```
+daedalus::foundation
+daedalus::platform
+```
 
 Hermes defines how information moves, not what it means.
 
 ------
 
-## 3.5 Layer 4 – Atlas (Executables)
+## 4.5 Layer 4 – Atlas (Executables)
 
 Namespace:
 
@@ -389,18 +428,16 @@ nisanijo::mythos::atlas
 
 Purpose:
 
-- Composition root
-- Entry points
-- Tools and applications
+Composition root and executable entry points.
 
 Responsibilities:
 
-- Select `platform_windows` or `platform_posix`
-- Construct platform implementations
-- Construct foundation services
-- Construct runtime host (if used)
-- Wire Hermes and Hephaestus
-- Own startup/shutdown
+- selecting platform implementations
+- constructing platform services
+- constructing foundation services
+- constructing runtime host
+- wiring Hermes and Hephaestus
+- managing startup and shutdown
 
 Atlas may depend on all layers.
 
@@ -408,9 +445,9 @@ Reusable logic must not accumulate here.
 
 ------
 
-# 4. Dependency Rules (Compile-Time)
+# 5. Dependency Rules (Compile-Time)
 
-## 4.1 Internal Daedalus Direction
+## 5.1 Internal Daedalus Direction
 
 Allowed:
 
@@ -430,7 +467,7 @@ any cycles
 
 ------
 
-## 4.2 Inter-Layer Direction
+## 5.2 Inter-Layer Direction
 
 Allowed:
 
@@ -453,7 +490,7 @@ hermes      → daedalus::platform
 
 ------
 
-## 4.3 Hard Disallows
+## 5.3 Hard Disallows
 
 - `daedalus::* → (prometheus|hephaestus|hermes|atlas)`
 - `prometheus → daedalus::platform`
@@ -461,13 +498,13 @@ hermes      → daedalus::platform
 - `hermes → (prometheus|hephaestus)`
 - `platform → foundation`
 - `platform_* → foundation`
-- Any dependency that introduces cycles
+- any dependency that introduces cycles
 
 ------
 
-# 5. OS Boundary Rules
+# 6. OS Boundary Rules
 
-OS headers/APIs may appear only under:
+OS headers and APIs may appear only under:
 
 ```
 nisanijo::mythos::daedalus::platform_windows
@@ -479,14 +516,14 @@ Forbidden above this boundary:
 - `windows.h`
 - `unistd.h`
 - `pthread.h`
-- Raw OS handles
+- raw OS handles
 - OS-specific types
 
 Portable semantics must be defined in `platform`.
 
 ------
 
-# 6. Source Tree Mapping
+# 7. Source Tree Mapping
 
 Directory mapping mirrors namespaces.
 
@@ -518,208 +555,67 @@ src/nisanijo/mythos/
 
 Rules:
 
-- Each `.cpp` includes its own header first.
-- No transitive include reliance.
-- Namespace mirrors directory structure.
-- No `using namespace` in headers.
+- each `.cpp` includes its own header first
+- no transitive include reliance
+- namespace mirrors directory structure
+- no `using namespace` in headers
 
 ------
 
-# 7. Enforcement
+# 8. Enforcement Expectations
 
-**Core checks:** enforce Core Admission & Elevation Policy.
+Core checks enforce the Core Admission & Elevation Policy.
 
-**Foundation checks:** reject system effects; require platform contracts for system interactions.
+Foundation checks reject system effects and require platform contracts for system interactions.
 
-**Platform checks:** contracts only; no OS headers/types; no foundation dependency.
+Platform checks ensure contracts only and prohibit OS headers.
 
-**platform_\* checks:** OS headers only here; translate OS semantics.
+Platform implementations enforce OS header confinement.
 
-## 7.1 Review-Enforced
+### Review-Enforced
 
-Reviewers must reject:
+Code reviews must reject:
 
-- Upward dependencies
-- OS leakage above platform_*
-- Cross-layer coupling violations
-- Cycles
-- Core violations as defined by the Core Admission & Elevation Policy
+- upward dependencies
+- OS leakage above platform layers
+- cross-layer coupling violations
+- cycles
+- core placement violations
 
-## 7.2 CI (Optional Future Enforcement)
+### CI (Optional Future Enforcement)
 
-May enforce via:
+CI may enforce architecture via:
 
-- Include graph validation
-- Path-based include bans
+- include graph validation
+- path-based include bans
 - OS header checks
-- Layer cycle detection
+- layer cycle detection
 
 ------
 
-# 8. Canonical Summary
+# 9. Canonical Summary
 
-- `nisanijo` is the organizational namespace.
-- `mythos` is the system root.
-- Layers are:
+- `nisanijo` is the organizational namespace
+- `mythos` is the system root
+- layers are:
   - Daedalus (infrastructure)
   - Prometheus (pure domain)
-  - Hephaestus (applied domain)
+  - Hephaestus (application composition)
   - Hermes (interchange)
   - Atlas (executables)
-- Dependencies flow strictly downward.
-- OS code lives only in `platform_*`.
-- Domain remains platform-agnostic and transport-agnostic.
-- Atlas wires everything.
-- Core placement is governed by the Core Admission & Elevation Policy.
+- dependencies flow strictly downward
+- OS code lives only in `platform_*`
+- domain remains platform-agnostic and transport-agnostic
+- Atlas wires the system
+- Core placement is governed by the Core Admission & Elevation Policy
 
 ------
 
-# Appendix A – Dependency Arrow Semantics
-
-This appendix defines the precise meaning of the dependency arrows used
-throughout this document.
-
-------
-
-## A.1 Definition
-
-In this document, an arrow of the form:
+# 10. References
 
 ```
-A → B
+sdlc_structure
+sdlc_glossary
+core_admission_and_elevation_policy
 ```
-
-means:
-
-> A is permitted to have a **compile-time dependency** on B.
-
-This is a build-time rule.
-
-It governs include relationships, symbol visibility, and type usage.
-
-------
-
-## A.2 What “Compile-Time Dependency” Means
-
-A compile-time dependency includes:
-
-- Including headers from B
-- Referencing types defined in B
-- Inheriting from interfaces defined in B
-- Instantiating templates defined in B
-- Calling inline functions defined in B
-- Depending on constants, enums, or traits defined in B
-
-In practical terms:
-
-If code in A requires `#include <nisanijo/mythos/B/...>`,
-then A depends on B.
-
-------
-
-## A.3 What the Arrow Does *Not* Mean
-
-The arrow does not imply:
-
-- Required usage
-- Required construction
-- Required linking
-- Required runtime calls
-
-It does not describe runtime control flow.
-
-It does not describe ownership.
-
-It does not describe object lifetime relationships.
-
-It only describes allowed build-time dependency direction.
-
-------
-
-## A.4 Runtime Control Flow Is Irrelevant to Layering
-
-Runtime calls may flow in any direction as long as
-compile-time dependencies remain valid.
-
-For example:
-
-- Atlas constructs Hephaestus
-- Hephaestus calls Foundation
-- Foundation calls Platform
-- Platform calls OS APIs
-- OS callbacks may invoke code higher in the stack
-
-This does not violate layering if compile-time edges remain downward.
-
-Architecture is enforced at build-time, not at runtime.
-
-------
-
-## A.5 Dependency Inversion Clarification
-
-Dependency inversion does not change the direction of compile-time dependency.
-
-If an interface is defined in layer B,
-and implemented in layer A,
-then A depends on B.
-
-If an interface is defined in layer A,
-and implemented in layer B,
-then B depends on A.
-
-Interface placement therefore determines dependency direction.
-
-To preserve layering:
-
-- Interfaces for lower-level services must be defined in lower layers.
-- Upper layers must not define interfaces implemented by lower layers.
-
-------
-
-## A.6 Prohibited Upward Dependency
-
-If the architecture states:
-
-```
-prometheus → daedalus::foundation
-```
-
-then the following are forbidden:
-
-- `daedalus::foundation` including headers from `prometheus`
-- `daedalus::foundation` referencing types defined in `prometheus`
-- Any transitive include that introduces such a dependency
-
-No layer may depend on a layer above it.
-
-------
-
-## A.7 Why Compile-Time Direction Is the Enforced Semantic
-
-Compile-time dependency direction:
-
-- Is statically verifiable
-- Is CI-enforceable
-- Prevents cyclic coupling
-- Preserves architectural stability
-- Ensures refactor safety
-
-Runtime call graphs are not used to define architecture boundaries.
-
-------
-
-## A.8 Summary
-
-Throughout this document:
-
-```
-A → B
-```
-
-means:
-
-> A may include and reference B at compile-time.
-> B must not include or reference A.
-
-All arrows define allowed build-time dependency direction only.
 

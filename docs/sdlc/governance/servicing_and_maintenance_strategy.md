@@ -1,192 +1,180 @@
-﻿# Servicing and Maintenance Strategy
+﻿# servicing_and_maintenance_strategy
 
 **Status:** Authoritative Governance Procedure
 **Scope:** Change management for engineering governance documents
 
 ------
 
-## 1. Purpose
+# 1. Purpose
 
-This document defines how engineering governance artifacts are amended, versioned, consolidated, and archived.
+This document defines how engineering governance artifacts are revised, amended, consolidated, and archived.
 
-It governs:
+It governs lifecycle management for engineering governance documents, including:
 
-- The C++ Coding Standard
-- The C++ Engineering Guidelines
-- Taxonomy documents
-- Dependency rules
-- Any future engineering governance artifacts
+- the C++ Coding Standard
+- the C++ Engineering Guidelines
+- architecture taxonomy documents
+- dependency rules
+- any future engineering governance artifacts
 
-It defines change mechanics.
-Authority hierarchy is defined in the Engineering Governance Framework.
+This document defines the operational mechanics for maintaining those documents.
 
-------
-
-## 2. Effective Document Definition
-
-For any governed document:
-
-The effective content consists of:
-
-1. The current baseline document
-2. All non-deprecated delta documents associated with it
-
-Deltas:
-
-- Are versioned
-- Declare operation type
-- Declare target sections
-- Supersede baseline content where applicable
-
-If multiple deltas target the same section, the delta with the highest version prevails.
+Authority relationships between domains are defined in the SDLC framework.
 
 ------
 
-## 3. Delta Requirements
+# 2. Effective Document Definition
 
-Each delta MUST include:
+For any governed document, the effective specification consists of:
 
-- ID (date + semantic version)
-- Operation type (`ADD`, `AMEND`, `REPLACE`, `DELETE`)
-- Target section(s)
-- Status (`Proposed`, `Accepted`, `Deprecated`)
-- Rationale
-- Enforcement posture (if changed)
+1. the current **baseline document**
+2. any **applicable amendment documents**
 
-Delta documents MUST reside in the governed document’s `deltas/` directory.
+Amendments revise specific rules without requiring routine modification of the baseline document.
 
-Delta filenames MUST match their internal version ID.
+If multiple amendments affect the same rule, they are interpreted in chronological order.
 
-------
+The most recent applicable amendment takes precedence.
 
-## 4. Delta Lifecycle
-
-### 4.1 Proposed
-
-- Not yet effective.
-- Under review.
-
-### 4.2 Accepted
-
-- Effective immediately.
-- Part of the authoritative standard.
-
-### 4.3 Deprecated
-
-- No longer effective.
-- Retained for audit history.
-
-Only `Accepted` deltas affect the effective document state.
+Earlier amendments remain part of the historical record but are superseded by later amendments.
 
 ------
 
-## 5. Version Precedence
+# 3. Amendment Requirements
 
-Deltas are applied in ascending semantic version order.
+Each amendment document MUST:
 
-If two deltas modify the same section:
+- identify the baseline document it modifies
+- identify the rule being revised
+- provide the amended rule wording
+- provide a rationale for the revision
 
-- The delta with the higher version number prevails.
-- No partial merging is implied.
+Amendment filenames MUST follow the SDLC document standard naming convention:
 
-Semantic versioning guidelines:
+```
+<base_document>_<rule_identifier>_<yyyy_mm_dd>.md
+```
 
-- Major: Structural or architectural change
-- Minor: Additive rule or clarification
-- Patch: Wording correction or non-normative clarification
+Example:
 
-------
+```
+cpp_coding_standard_cpp_header_source_separation_2026_03_03.md
+```
 
-## 6. Rebase Policy
-
-A rebase consolidates:
-
-- The current baseline
-- All accepted, non-deprecated deltas
-
-into a new baseline document.
-
-After rebase:
-
-- The prior baseline and deltas are archived.
-- The `deltas/` directory is reset (except template).
-- The new baseline becomes authoritative.
+Amendments reside alongside the baseline document they modify.
 
 ------
 
-## 7. Rebase Threshold
+# 4. Amendment Lifecycle
 
-A rebase SHOULD occur when:
+Amendments progress through the following lifecycle states.
 
-- Active deltas reach 5 or more, or
-- Interpretation becomes ambiguous, or
-- Multiple deltas target the same section repeatedly.
+### Proposed
 
-The threshold is a governance hygiene rule, not a hard technical constraint.
+The amendment is under review and is not yet effective.
 
-------
+### Accepted
 
-## 8. Archive Requirements
+The amendment has been approved and becomes immediately effective.
 
-Archived materials MUST:
+### Deprecated
 
-- Preserve prior baselines and deltas intact.
-- Remain immutable.
-- Be clearly versioned.
+The amendment is no longer effective but is retained for historical and audit purposes.
 
-Archives MAY reside:
-
-- Within the engineering repository, or
-- In a dedicated documentation repository.
-
-If externalized, a deterministic pointer MUST be maintained.
+Only **Accepted** amendments affect the effective rule set.
 
 ------
 
-## 9. Immutability
+# 5. Amendment Precedence
 
-Baselines and accepted deltas are immutable artifacts.
+When multiple amendments affect the same rule:
+
+- amendments are interpreted in chronological order
+- the most recent applicable amendment takes precedence
+
+No partial merging of rule text is implied.
+
+Each amendment defines the authoritative wording of the rule at that point in time.
+
+------
+
+# 6. Consolidation Policy
+
+Over time, amendments may accumulate for a baseline document.
+
+Consolidation incorporates the current authoritative wording of amended rules into an updated baseline document.
+
+During consolidation:
+
+- amendments are integrated into the baseline
+- superseded amendments become historical artifacts
+- rule identifiers remain stable
+
+Consolidation restores readability while preserving the historical evolution of the rule set.
+
+------
+
+# 7. Consolidation Threshold
+
+Consolidation SHOULD occur when:
+
+- amendments affecting a document become numerous
+- interpretation becomes difficult due to accumulated amendments
+- multiple amendments target the same rule repeatedly
+
+The threshold is a governance hygiene guideline rather than a strict requirement.
+
+------
+
+# 8. Archive Requirements
+
+Historical artifacts MUST be preserved.
+
+Archived materials include:
+
+- previous baseline documents
+- superseded amendment documents
+
+Archived artifacts MUST:
+
+- remain immutable
+- retain their original content
+- remain accessible for audit and historical reference
+
+Archives MAY reside within the repository or within a dedicated documentation archive.
+
+If externalized, a deterministic reference to the archive location MUST be maintained.
+
+------
+
+# 9. Immutability
+
+Baseline documents and accepted amendments are immutable artifacts.
 
 They SHALL NOT be modified directly.
 
 All changes MUST occur through:
 
-- A new delta, or
-- A formal rebase event.
+- a new amendment document, or
+- a consolidation event producing a new baseline document.
 
 ------
 
-## 10. Tagging and Versioning
+# 10. Tagging and Release Points
 
-After a rebase or significant governance change:
+After consolidation or significant governance changes:
 
-- A repository tag SHOULD be created (e.g., `v1.0.0`, `v2.0.0`).
-- Projects MUST reference tagged versions, not moving branches.
+- a repository tag SHOULD be created
+- projects SHOULD reference tagged revisions rather than moving branches
 
-Tags represent governance release points.
+Tags represent governance release points for engineering standards.
 
 ------
 
-## 11. Standard Authority Model (Baseline + Deltas)
+# 11. Stability Principle
 
-For any governed document that uses the baseline + deltas model, the effective content consists of:
+Engineering governance documents evolve deliberately.
 
-1. The current baseline document.
-2. All **Accepted** and **non-deprecated** deltas in the associated `deltas/` directory.
+Changes SHOULD be introduced through amendments rather than routine direct modification of baseline documents.
 
-Deltas:
-
-- Declare an operation type (`ADD`, `AMEND`, `REPLACE`, `DELETE`).
-- Declare target section(s).
-- Are applied in ascending version order.
-- If multiple deltas target the same section, the higher version prevails.
-
-`Proposed` deltas are not effective. `Deprecated` deltas are not effective.
-
----
-
-## 12. Stability Principle
-
-Governance documents evolve deliberately.
-
-Convenience edits that bypass the delta system are prohibited.
+This approach preserves document stability while allowing controlled evolution of the standards.

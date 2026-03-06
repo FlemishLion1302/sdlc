@@ -1,326 +1,436 @@
-# Core Admission & Elevation Policy
+# core_admission_and_elevation_policy
 
-**Status:** Authoritative (Review-Enforced)
-**Applies To:** Architectural Layering Model
-**Companion To:** architecture_layering.md
+Status: Normative Architecture Policy
+Domain: architecture
+Scope: Admission criteria and disqualification rules for `daedalus::core`
+
+Companion document:
+
+```
+architecture_layering
+```
 
 ------
 
 # 1. Purpose
 
-This document formalizes:
+This document defines the admission and elevation rules for components placed in:
 
-- What qualifies for placement in **core**
-- What disqualifies a component from **core**
-- When components should instead reside in **platform**, **platform_\***, or **foundation**
+```
+nisanijo::mythos::daedalus::core
+```
 
-The goal is to:
+It specifies:
 
-- Prevent core creep
-- Preserve a small, stable substrate
-- Make placement decisions deterministic
-- Enable review-enforced consistency
+- what qualifies for placement in `core`
+- what disqualifies a component from `core`
+- when components should instead reside in `platform`, `platform_*`, or `foundation`
 
-Core is not a convenience bucket.
+The goals of this policy are to:
+
+- prevent uncontrolled growth of `core`
+- preserve a small, stable semantic substrate
+- make placement decisions deterministic
+- enable consistent architectural review
+
+Core is not a convenience location for reusable code.
+
 Core is the **portable semantic substrate** of the system.
 
 ------
 
-# 2. Definition of Core
+# 2. SDLC Framework Context
+
+This document belongs to the **architecture domain** of the SDLC framework.
+
+Architecture documents define structural constraints on software systems and take precedence over standards and guidelines when conflicts arise.
+
+The authority relationships between SDLC domains are defined in:
+
+```
+sdlc_structure
+```
+
+Terminology used by this document is defined in:
+
+```
+sdlc_glossary
+```
+
+------
+
+# 3. Definition of Core
 
 Core contains:
 
-> Fundamental value semantics and minimal invariant-preserving behavior
-> that are universally safe for all layers to depend on.
+> Fundamental value semantics and minimal invariant-preserving behavior that are universally safe for all layers to depend on.
 
-Core is:
+Core components are:
 
-- Platform-agnostic
-- Policy-free
-- Effect-free
-- Low-churn
-- Semantically stable
+- platform-agnostic
+- policy-free
+- effect-free
+- low churn
+- semantically stable
 
 Core is not:
 
-- Infrastructure
-- Configuration
-- Orchestration
-- Strategy
-- System-effect abstraction
-- Utility aggregation
+- infrastructure
+- configuration systems
+- orchestration
+- strategy logic
+- system-effect abstraction
+- a general-purpose utility collection
 
 ------
 
-# 3. Core Promotion Test (All Criteria Required)
+# 4. Core Promotion Test (All Criteria Required)
 
-A component MAY be placed in `core` only if **all** conditions below are satisfied.
-
-## 3.1 Cross-Layer Necessity
-
-The component is required by multiple layers
-(e.g., platform contracts and foundation both depend on it).
-
-If it is used only by foundation, it likely belongs in foundation.
+A component may be placed in `core` only if **all criteria below are satisfied**.
 
 ------
 
-## 3.2 Vocabulary, Not Policy
+## 4.1 Cross-Layer Necessity
+
+The component is required by multiple architectural layers.
+
+Typical examples include:
+
+- types shared between platform contracts and foundation
+- value semantics used throughout the system
+
+If a component is used only by foundation, it likely belongs in `foundation`.
+
+------
+
+## 4.2 Vocabulary, Not Policy
 
 The component represents:
 
-- A value model
-- A primitive concept
-- A stable invariant
+- a value model
+- a primitive concept
+- a stable invariant
 
-It does NOT represent:
+It must not represent:
 
-- Defaults
-- Configuration
-- Strategies
-- Precedence rules
-- Product decisions
-- Behavioral policies
+- configuration
+- defaults
+- strategy selection
+- precedence rules
+- product decisions
+- behavioral policies
+
+Core defines **vocabulary**, not behavior policy.
 
 ------
 
-## 3.3 Deterministic Behavior
+## 4.3 Deterministic Behavior
 
 All behavior must be:
 
-- Purely deterministic
-- Dependent only on input parameters
-- Free of hidden state
-- Free of global access
+- deterministic
+- dependent only on explicit input parameters
+- free of hidden state
+- free of global access
 
-Permitted behavior:
+Permitted behavior includes:
 
-- Invariant enforcement
-- Local value transformations
-- Comparison
-- Hashing
-- Canonical formatting/parsing (if purely textual)
+- invariant enforcement
+- local value transformations
+- comparison
+- hashing
+- canonical textual formatting or parsing
 
 ------
 
-## 3.4 Effect-Free
+## 4.4 Effect-Free
 
 If a component must consult the machine to function,
-it is not core.
+it does not belong in core.
 
-Disallowed in core:
+Disallowed operations include:
 
-- Clocks (`now()`)
-- Sleeping
-- Filesystem access
-- Environment variables
-- Process APIs
-- Threading primitives
+- clocks (`now()`)
+- sleeping
+- filesystem access
+- environment variables
+- process inspection
+- threading primitives
 - OS handles
-- Syscalls
+- syscalls
 - OS error translation
 
-System effects belong to:
+System effects belong in:
 
-- `platform` (contracts)
-- `platform_*` (implementations)
-
-------
-
-## 3.5 Stability Commitment
-
-If placed in core, the component:
-
-- Is treated as low-churn
-- Has strong backward-compatibility expectations
-- Is suitable as a long-term dependency surface
-
-If high churn is expected, it does not belong in core.
+```
+platform       (contracts)
+platform_*     (implementations)
+```
 
 ------
 
-# 4. Core Disqualifiers (Any One Is Sufficient)
+## 4.5 Stability Commitment
 
-A component MUST NOT be placed in core if it exhibits any of the following.
+Components placed in core are treated as **low-churn infrastructure**.
 
-## 4.1 System-Effect Marker
+They must:
 
-Contains:
+- maintain strong backward compatibility
+- remain suitable as long-term dependency surfaces
+- avoid frequent semantic change
 
-- `now`, `sleep`, `timer`
-- Filesystem operations
-- Process or environment inspection
-- Virtual memory reservation/mapping
+If high churn is expected, the component does not belong in core.
+
+------
+
+# 5. Core Disqualifiers
+
+A component must **not** be placed in core if any of the following apply.
+
+------
+
+## 5.1 System-Effect Marker
+
+If the component includes:
+
+- clocks or timers
+- filesystem operations
+- environment access
+- process inspection
+- virtual memory mapping
 - OS-specific headers or types
 
-→ Move to `platform` or `platform_*`.
+It belongs in:
+
+```
+platform
+platform_*
+```
 
 ------
 
-## 4.2 Policy Marker
+## 5.2 Policy Marker
 
-Contains:
+If the component introduces:
 
-- Configuration management
-- Default value selection
-- Strategy objects
-- Logging frameworks
-- Rule engines
-- Validation pipelines
-- Feature flags
+- configuration management
+- default value selection
+- strategy objects
+- logging frameworks
+- rule engines
+- validation pipelines
+- feature flags
 
-→ Move to `foundation`.
+It belongs in:
 
-------
-
-## 4.3 Orchestration Marker
-
-Coordinates multiple subsystems or workflows:
-
-- State machines (execution-level)
-- Pipelines
-- Schedulers
-- Managers that coordinate services
-
-→ Move to `runtime` or `foundation/patterns`.
+```
+foundation
+```
 
 ------
 
-## 4.4 Dependency Gravity
+## 5.3 Orchestration Marker
+
+If the component coordinates subsystems or workflows, such as:
+
+- execution state machines
+- pipelines
+- schedulers
+- service managers
+
+It belongs in:
+
+```
+runtime
+foundation
+```
+
+------
+
+## 5.4 Dependency Gravity
 
 If inclusion of the component:
 
-- Pulls in heavy dependencies
-- Introduces layering violations
-- Requires linking against infrastructure
+- introduces heavy dependencies
+- creates layering violations
+- requires linking against infrastructure
 
-It does not belong in core.
-
-------
-
-# 5. Time Domain Split (Canonical Example)
-
-## Core
-
-- `Duration`
-- `Timestamp`
-- `TimeSpan`
-- Arithmetic on time values
-- Pure formatting/parsing
-
-## Platform
-
-- `clock_service`
-- `timer_service`
-- `sleep_for`
-- Portable clock interfaces
-
-## platform_*
-
-- OS time APIs
-- System clock calls
-- Timer handles
-- OS error translation
-
-## Foundation
-
-- Scheduling policies
-- Retry/backoff logic
-- Logging timestamp formatting policies
+then it must not reside in core.
 
 ------
 
-# 6. Memory Domain Split (Canonical Example)
+# 6. Time Domain Split (Canonical Example)
 
-## Core
+This example illustrates how time-related functionality is distributed across layers.
 
-- `Byte`
-- `ByteSpan`
-- `BufferView`
-- Bit operations
-- Alignment helpers
-- Deterministic layout helpers
+### Core
 
-## Platform
+```
+Duration
+Timestamp
+TimeSpan
+```
 
-- `virtual_memory_service`
-- `shared_memory_service`
-- Memory mapping interfaces
-- Page protection enums
+Includes:
 
-## platform_*
+- arithmetic on time values
+- deterministic formatting and parsing
+
+------
+
+### Platform
+
+```
+clock_service
+timer_service
+sleep_for
+```
+
+Defines portable clock interfaces.
+
+------
+
+### platform_*
+
+Contains OS-specific implementations such as:
+
+- system clock calls
+- OS timer handles
+- platform time APIs
+
+------
+
+### Foundation
+
+Contains policy logic built on time primitives, such as:
+
+- scheduling policies
+- retry and backoff logic
+- logging timestamp formatting policies
+
+------
+
+# 7. Memory Domain Split (Canonical Example)
+
+### Core
+
+```
+Byte
+ByteSpan
+BufferView
+```
+
+Includes:
+
+- bit operations
+- alignment helpers
+- deterministic layout helpers
+
+------
+
+### Platform
+
+Defines memory abstraction contracts such as:
+
+```
+virtual_memory_service
+shared_memory_service
+```
+
+------
+
+### platform_*
+
+Contains OS-specific implementations such as:
 
 - `VirtualAlloc`
 - `mmap`
-- OS mapping handles
-- Page size queries
-
-## Foundation
-
-- Memory pools
-- Allocation policies
-- Caching strategies
-- Allocation diagnostics
+- page mapping handles
+- page size queries
 
 ------
 
-# 7. Algorithm Placement Rule
+### Foundation
 
-Algorithms belong in core ONLY if:
+Contains memory policy mechanisms including:
 
-- They operate on core value types
-- They are deterministic and policy-free
-- They express intrinsic semantics of the type
-
-Examples:
-
-- Equality
-- Ordering
-- Hash computation
-- Canonical transformation
-
-Algorithms DO NOT belong in core if they are:
-
-- Parsing frameworks
-- Regex engines
-- Generic container algorithms
-- State machine engines
-- Scheduling logic
-
-Those belong in foundation or runtime.
+- memory pools
+- allocation policies
+- caching strategies
+- allocation diagnostics
 
 ------
 
-# 8. Asymmetric Decision Principle
+# 8. Algorithm Placement Rule
 
-Promotion to core requires **positive proof** (all promotion criteria satisfied).
+Algorithms belong in core **only if** they:
 
-Rejection from core requires only **one red flag**.
+- operate on core value types
+- are deterministic
+- are policy-free
+- express intrinsic semantics of the type
 
-When uncertain → default to foundation.
+Examples include:
+
+- equality
+- ordering
+- hashing
+- canonical transformations
+
+Algorithms do **not** belong in core if they are:
+
+- parsing frameworks
+- regex engines
+- generic container algorithms
+- state machine engines
+- scheduling logic
+
+These belong in `foundation` or `runtime`.
 
 ------
 
-# 9. Summary
+# 9. Asymmetric Decision Principle
 
-Core is:
+Promotion to core requires **positive proof**.
 
-- The semantic substrate
-- The vocabulary of the system
-- Stable, effect-free, policy-free
-- Minimal but powerful
+All promotion criteria must be satisfied.
+
+Rejection requires only **one disqualifying signal**.
+
+When uncertainty exists, the default placement is:
+
+```
+foundation
+```
+
+------
+
+# 10. Summary
+
+Core represents:
+
+- the semantic substrate of the system
+- the vocabulary shared across architectural layers
+- stable, deterministic value semantics
 
 Platform models system effects.
 
-Foundation builds policy and infrastructure on top of core and platform.
+Foundation builds infrastructure and policy on top of core and platform.
 
 This separation preserves:
 
-- Layer clarity
-- Portability
-- Review enforceability
-- Long-term architectural stability
+- architectural clarity
+- portability
+- deterministic review enforcement
+- long-term system stability
 
 ------
 
-# End of Document
+# 11. References
+
+```
+architecture_layering
+sdlc_structure
+sdlc_glossary
+```
+

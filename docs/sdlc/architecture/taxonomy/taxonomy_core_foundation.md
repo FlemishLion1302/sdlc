@@ -1,134 +1,166 @@
-# Core / Foundation Taxonomy
+# taxonomy_core_foundation
 
-**Status:** Authoritative Architectural Classification (Review-Enforced)
-**Scope:** Foundation-layer capability structure
+Status: Normative Architecture Taxonomy
+Domain: architecture
+Scope: Capability segmentation within the `daedalus::foundation` layer
 
-This document operates within the Engineering Governance Framework:
+------
 
-```
-<workspace>/docs/engineering/engineering_governance.md
-```
+# 1. Purpose
 
-It defines structural capability segmentation for the foundation layer.
+This document defines the capability taxonomy for the foundation layer.
+
+The foundation layer provides platform-agnostic infrastructure that builds on the core and platform layers.
+
+It contains reusable building blocks including:
+
+- diagnostics
+- configuration systems
+- data structures
+- text processing
+- serialization mechanisms
+- cryptographic primitives
+- compile-time utilities
+- optional design pattern implementations
+
+This taxonomy defines **how these capabilities are segmented** within the foundation layer.
 
 It does not define coding style or repository layout rules.
-Those are governed by the C++ Coding Standard.
+
+Coding conventions are governed by the C++ Coding Standard.
+
+Source-tree mapping is defined in:
+
+```
+architecture_layering
+```
 
 ------
 
-# 1. Path Context
+# 2. SDLC Framework Context
 
-All repository paths are relative to `<workspace>` unless explicitly stated otherwise.
+This document belongs to the **architecture domain** of the SDLC framework.
 
-Projects reside under:
+Architecture documents define structural constraints on software systems.
 
-```
-<workspace>/projects/<project_name>/
-```
-
-Taxonomy paths shown such as:
+Authority relationships between SDLC domains are defined in:
 
 ```
-src/foundation/core/
+sdlc_structure
 ```
 
-are shorthand for:
+Terminology used in this document is defined in:
 
 ```
-<workspace>/projects/<project_name>/src/<project_name>/foundation/core/
+sdlc_glossary
 ```
-
-Public headers reside under:
-
-```
-<workspace>/projects/<project_name>/include/<project_name>/
-```
-
-Taxonomy segmentation applies within a project’s:
-
-```
-src/<project_name>/
-```
-
-subtree.
 
 ------
 
-# 2. Purpose
+# 3. Foundation Layer Context
 
-The foundation layer provides platform-agnostic, reusable building blocks.
+The foundation layer resides within:
 
-It contains:
+```
+nisanijo::mythos::daedalus::foundation
+```
 
-- Core primitives
-- Data structures
-- Text processing
-- Diagnostics
-- Configuration
-- Cryptography
-- I/O abstractions (non-OS)
-- Metaprogramming utilities
-- Optional design patterns
+It is positioned above:
 
-Foundation MUST NOT depend on runtime.
+```
+daedalus::core
+daedalus::platform
+```
 
-Layering rules are defined formally in `dependency_rules.md`.
+Foundation provides reusable infrastructure and policy mechanisms.
 
-------
+Foundation must not depend on:
 
-# 3. Architectural Rules
+```
+daedalus::runtime
+```
 
-## 3.1 Layering
-
-- `foundation/**` MUST NOT depend on `runtime/**`.
-- `patterns/**` MAY depend on `core/**`.
-- `core/**` MUST NOT depend on `patterns/**`.
-
-These constraints apply within the foundation project and any equivalent foundation-scoped module.
+Higher layers may depend on foundation.
 
 ------
 
-## 3.2 Responsibility Boundaries
+# 4. Architectural Rules
+
+## 4.1 Layering
+
+Within the infrastructure layer hierarchy:
+
+```
+runtime → foundation → platform → core
+```
+
+Foundation must not introduce dependencies on runtime.
+
+------
+
+## 4.2 Responsibility Boundaries
 
 ### Diagnostics vs Logging
 
-- `diagnostics/` owns the API surface.
-- `io/sinks/logger/` owns backend implementations used by diagnostics.
+Diagnostics defines the diagnostic API surface.
 
-`diagnostics/` MAY depend on logger sinks.
-Logger sinks MUST NOT depend on `diagnostics/`.
+Logger sinks implement output mechanisms.
+
+Allowed relationship:
+
+```
+diagnostics → io::sinks::logger
+```
+
+Logger implementations must not depend on diagnostics.
 
 ------
 
 ### Console vs UI
 
-- `io/console/` = low-level stream I/O and formatting only
-- `ui/` = user interaction, controls, prompts, flows
+Low-level device interaction belongs to:
 
-If it models a device → `io/`.
-If it models user experience → `ui/`.
+```
+io::console
+```
+
+User interaction models belong to:
+
+```
+ui
+```
+
+If the component models a device interface it belongs in `io`.
+
+If it models user interaction or workflows it belongs in `ui`.
 
 ------
 
-### Meta vs Runtime
+### Compile-Time vs Runtime
 
-- `meta/` contains compile-time helpers only.
-- No runtime behavior belongs in `meta/`.
+Compile-time utilities reside in:
+
+```
+meta
+```
+
+The `meta` namespace must contain only compile-time constructs and must not introduce runtime behavior.
 
 ------
 
-# 4. Canonical Foundation Layout
+# 5. Canonical Foundation Capability Structure
 
-Within a foundation project’s:
+Within the foundation namespace:
 
 ```
-src/<project_name>/foundation/
+nisanijo::mythos::daedalus::foundation
 ```
 
-tree, the following capability structure is canonical:
+the following capability segmentation is canonical.
 
 ```
 archive/
+
 config/
     cli/
         cmd_args/
@@ -138,6 +170,7 @@ config/
         core/
         app_specific/
     validation/
+
 core/
     byte/
     err/
@@ -153,11 +186,13 @@ core/
         duration/
         timezone/
         archive/
+
 crypto/
     hash/
     digest/
         sha256/
             spec/
+
 data/
     canonical/
     color/
@@ -167,6 +202,7 @@ data/
     sparse_table/
     tree/
         red_black_tree/
+
 diagnostics/
     core/
         assert/
@@ -174,6 +210,7 @@ diagnostics/
         error/
         exception/
         source_location/
+
 io/
     console/
     file/
@@ -182,17 +219,21 @@ io/
     sinks/
         logger/
         terminal/
+
 math/
     stats/
+
 meta/
     canonical/
     interfaces/
     type_traits/
+
 patterns/
     facades/
     mvc/
     observer/
     producer_consumer/
+
 text/
     char/
     encoding/
@@ -201,6 +242,7 @@ text/
     regex/
     string/
     template_engine/
+
 ui/
     color/
     controls/
@@ -209,40 +251,82 @@ ui/
     ux_utils/
 ```
 
-Public API surfaces SHOULD mirror this segmentation under:
+Not all capabilities are required in every system.
+
+This taxonomy defines segmentation when those capabilities exist.
+
+------
+
+# 6. Public Interface Mapping
+
+Public headers may expose foundation capabilities under:
 
 ```
-include/<project_name>/
+include/nisanijo/mythos/daedalus/foundation/
 ```
 
-However, not all capabilities must be public.
+The public API surface should mirror the capability segmentation where appropriate.
+
+However, not all internal capabilities must be exposed publicly.
+
+Internal implementation details may remain private to the source tree.
 
 ------
 
-# 5. Design Principles
+# 7. Design Principles
 
-- Foundation is reusable and platform-agnostic.
-- No system effects occur here.
-- Runtime builds on foundation.
-- Clear separation between:
-  - API vs backend
-  - UX vs device
-  - Compile-time vs runtime
+Foundation components must satisfy the following principles.
 
-Architectural clarity takes precedence over convenience refactoring.
+### Platform Independence
+
+Foundation must remain platform-agnostic.
+
+System effects must be mediated through platform contracts.
 
 ------
 
-# 6. Enforcement
+### Reusability
 
-Enforcement: Review.
-
-Capability misplacement and foundation/runtime boundary violations are review-blocking issues.
-
-CI checks MAY be introduced for deterministic validation.
-
-The C++ Coding Standard remains authoritative where structural rules overlap.
+Foundation components must be reusable across multiple layers and subsystems.
 
 ------
 
-# End of Document
+### Separation of Concerns
+
+Clear separation must be maintained between:
+
+- API surfaces and backend implementations
+- user interaction and device interaction
+- compile-time and runtime constructs
+
+------
+
+### Architectural Stability
+
+Capability placement should favor long-term architectural clarity over short-term convenience refactoring.
+
+------
+
+# 8. Enforcement
+
+Foundation taxonomy rules are enforced through architectural review.
+
+Violations include:
+
+- capability misplacement
+- foundation/runtime dependency violations
+- boundary violations between capability groups
+
+CI validation may be introduced in the future to detect deterministic violations.
+
+------
+
+# 9. References
+
+```
+architecture_layering
+core_admission_and_elevation_policy
+sdlc_structure
+sdlc_glossary
+```
+

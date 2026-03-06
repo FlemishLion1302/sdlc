@@ -1,169 +1,168 @@
-# Engineering Governance Framework
+# engineering_governance
 
 **Status:** Authoritative Governance Policy
-**Scope:** All engineering governance artifacts
+**Scope:** Engineering governance artifacts maintained within the SDLC framework
 
 ------
 
-## 1. Purpose
+# 1. Purpose
 
-This document defines the governance model for engineering standards, guidelines, and architectural policy documents within this repository.
+This document defines the governance model for engineering standards, guidelines, and architectural policy documents maintained within this repository.
 
-It governs:
+It governs the lifecycle and authority of engineering governance artifacts, including:
 
-- The C++ Coding Standard
-- The C++ Engineering Guidelines
-- Taxonomy documents
-- Dependency rules
-- Any future engineering governance artifacts
+- the C++ Coding Standard
+- the C++ Engineering Guidelines
+- architecture taxonomy documents
+- dependency rules
+- any future engineering governance artifacts
 
 This document does not define coding rules or architecture.
-It defines how such rules are controlled, versioned, and interpreted.
+
+It defines how such rules are governed, interpreted, and maintained.
 
 ------
 
-## 2. Definitions and Conventions
+# 2. Definitions and Conventions
 
-### 2.1 `<workspace>`
+Terminology used by this document is defined in the SDLC glossary.
 
-`<workspace>` refers to the root directory of a repository that adopts these engineering documents.
-
-It represents:
-
-- The Git repository root
-- The directory containing the primary solution file (if applicable)
-- The location of repository-wide configuration files
-
-All repository paths in governance documents are relative to `<workspace>` unless explicitly stated otherwise.
-
-The specific solution or product name is not normative and may change without affecting governance structure.
+The terms **workspace**, **project**, **repository**, **baseline document**, and **amendment** are used according to the definitions established by the SDLC framework.
 
 ------
 
-### 2.2 Project
+# 3. Repository Context
 
-A **project** is a buildable target located under:
+Engineering governance artifacts reside within the SDLC framework documentation structure.
 
-```
-<workspace>/projects/<project_name>/
-```
+The framework defines domains including:
 
-Each project must conform to the canonical layout defined by the C++ Coding Standard.
+- governance
+- architecture
+- standards
+- guidelines
+- documentation
+- tooling
+- templates
 
-`<project_name>` identifies the build boundary and namespace root.
+Engineering governance artifacts are primarily located within the **standards**, **guidelines**, and **architecture** domains.
 
-------
-
-### 2.3 Path Semantics
-
-Unless otherwise specified:
-
-- Paths beginning with `projects/` are relative to `<workspace>`.
-- Paths such as `src/<project_name>/...` are relative to a project root.
-- Taxonomy examples are shown relative to a project’s `src/<project_name>/` subtree.
-
-This prevents ambiguity between repository-level and project-level structure.
+The authority relationships between these domains are defined in `sdlc_structure`.
 
 ------
 
-## 3. Authority Hierarchy
+# 4. Authority Hierarchy
 
-Engineering governance follows this precedence order:
+Within the engineering governance domain, the following precedence order applies.
 
 1. **C++ Coding Standard** — CI-enforced, structurally authoritative
 2. **C++ Engineering Guidelines** — review-enforced guidance
-3. **Taxonomy and Dependency Documents** — review-enforced architectural policy
+3. **Architecture taxonomy and dependency documents** — review-enforced architectural policy
 
-In case of conflict:
+If conflicts arise:
 
-- The higher document in the hierarchy prevails.
-- Lower documents must not contradict higher ones.
+- the higher document in this hierarchy prevails
+- lower documents must not contradict higher-authority documents
 
-This framework clarifies cross-document authority.
-It does not override or redefine subordinate authority models.
+This hierarchy defines relative authority among engineering governance artifacts.
+
+It does not redefine the SDLC framework domain hierarchy.
 
 ------
 
-## 4. Enforcement Model
+# 5. Enforcement Model
 
-### 4.1 Coding Standard
+## 5.1 Coding Standard
+
+The C++ Coding Standard defines mandatory engineering rules.
 
 - CI is the final enforcement authority.
-- Structural and formatting violations result in build rejection.
+- Structural or formatting violations may result in build rejection.
 
-### 4.2 Engineering Guidelines
+------
+
+## 5.2 Engineering Guidelines
+
+Engineering Guidelines define recommended engineering practices.
 
 - Enforcement is review-driven.
 - Deviations require documented justification.
 - CI does not reject builds for guideline variance unless explicitly escalated.
 
-### 4.3 Taxonomy and Dependency Rules
+------
 
-- Enforcement is review-driven.
-- Deterministic validation may be introduced via CI where appropriate.
+## 5.3 Architecture Taxonomy and Dependency Rules
+
+Architecture taxonomy and dependency documents define architectural structure and layering policies.
+
+- Enforcement is primarily review-driven.
+- Deterministic validation may be introduced through CI where appropriate.
 - Architectural layering and platform boundaries must be preserved.
 
 ------
 
-## 5. Document Immutability
+# 6. Document Integrity
 
-Baseline documents and accepted deltas are immutable artifacts.
+Baseline governance documents and accepted amendments are immutable artifacts.
 
-They SHALL NOT be modified directly.
+They shall not be modified directly.
 
-All changes to governance documents MUST occur through:
+All changes to governance documents must occur through:
 
-- A versioned delta document, or
-- A formal rebase event defined by the Servicing and Maintenance Strategy.
+- amendment documents defined by the SDLC framework, or
+- a consolidation event producing an updated baseline document.
 
 Inline edits, silent rewrites, or informal modifications are prohibited.
 
-Automation, agents, and contributors MUST NOT alter governance documents without explicit instruction to create a formal amendment.
+Automation, agents, and contributors must not alter governance documents without following the amendment process.
 
 ------
 
-## 6. Servicing and Maintenance
+# 7. Servicing and Maintenance
 
-The procedures for:
-
-- Delta structure
-- Version precedence
-- Deprecation
-- Rebase events
-- Thresholds for consolidation
-
-are defined in:
+The operational procedures governing the lifecycle of governance documents are defined in:
 
 ```
-docs/engineering/governance/servicing_and_maintenance_strategy.md
+servicing_and_maintenance_strategy
 ```
 
-This document defines governance structure; the servicing strategy defines change mechanics.
+That document defines:
+
+- amendment structure
+- amendment precedence
+- consolidation procedures
+- archival requirements
+
+This document defines governance authority; the servicing strategy defines change mechanics.
 
 ------
 
-## 7. Stability Principles
+# 8. Stability Principles
 
 Engineering governance exists to preserve:
 
-- Deterministic structure
-- Architectural clarity
-- Auditability of change
-- Long-term maintainability
+- deterministic system structure
+- architectural clarity
+- auditability of change
+- long-term maintainability
+
+Changes to governance artifacts should be deliberate, traceable, and compatible with the SDLC framework.
 
 Convenience edits that weaken structural determinism are prohibited.
 
 ------
 
-## 8. Non-Goals
+# 9. Non-Goals
 
 This document does not:
 
-- Define coding style
-- Define naming conventions
-- Define project layout rules
-- Define taxonomy segmentation
-- Define dependency direction
-- Introduce new technical requirements
+- define coding style
+- define naming conventions
+- define project layout rules
+- define taxonomy segmentation
+- define dependency direction
+- introduce new technical requirements
 
-It governs governance only.
+Those concerns are defined by the appropriate documents within the SDLC framework.
+
+This document governs governance only.

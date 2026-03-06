@@ -1,156 +1,196 @@
-# Runtime / Platform Taxonomy
+# taxonomy_runtime_platform
 
-**Status:** Authoritative Architectural Classification (Review-Enforced)
-**Scope:** Runtime-layer and platform capability structure
-
-This document operates within the Engineering Governance Framework:
-
-```
-<workspace>/docs/engineering/engineering_governance.md
-```
-
-It defines structural capability segmentation for the runtime and platform layers.
-
-It does not define coding style or repository layout rules.
-Those are governed by the C++ Coding Standard.
-
-Formal dependency direction rules are defined in:
-
-```
-<workspace>/docs/engineering/dependency_rules.md
-```
+Status: Normative Architecture Taxonomy
+Domain: architecture
+Scope: Runtime-layer and platform capability segmentation
 
 ------
 
-# 1. Path Context
+# 1. Purpose
 
-All repository paths are relative to `<workspace>` unless explicitly stated otherwise.
+This document defines the capability taxonomy for the runtime and platform portions of the infrastructure layer.
 
-Projects reside under:
-
-```
-<workspace>/projects/<project_name>/
-```
-
-Taxonomy paths shown such as:
-
-```
-src/runtime/platform/
-```
-
-are shorthand for:
-
-```
-<workspace>/projects/<project_name>/src/<project_name>/runtime/platform/
-```
-
-Public headers reside under:
-
-```
-<workspace>/projects/<project_name>/include/<project_name>/
-```
-
-Taxonomy segmentation applies within a project’s:
-
-```
-src/<project_name>/
-```
-
-subtree.
-
-------
-
-# 2. Purpose
-
-The runtime layer defines how the program runs.
-
-The platform sublayer defines system effects and their implementations.
+It describes how execution infrastructure and system-effect abstractions are segmented within the system.
 
 Conceptually:
 
-- `runtime/` = lifecycle, execution model, orchestration
-- `runtime/platform/` = portable abstractions of system effects
-- `runtime/platform_<os>/` = concrete OS implementations
+```
+runtime          = execution model and orchestration
+platform         = portable contracts for system effects
+platform_*       = OS-specific implementations
+```
 
-Runtime builds on foundation.
-Platform implementations must not leak OS-specific details into portable contracts.
+This taxonomy exists to:
 
-------
+- maintain deterministic placement of runtime capabilities
+- preserve clear separation between orchestration and system effects
+- enforce strict OS boundary containment
 
-# 3. Architectural Rules
+This document does not define coding style or repository layout rules.
 
-## 3.1 Layering
+Coding conventions are governed by the C++ Coding Standard.
 
-Within a project’s runtime subtree:
+Source-tree mapping and layer structure are defined in:
 
-- `runtime/**` MAY depend on `foundation/**`
-- `runtime/platform/**` MAY depend on `foundation/**`
-- `runtime/platform/**` MUST NOT depend on `runtime/**`
-- `runtime/platform/**` MUST NOT depend on `runtime/platform_<os>/**`
-- `runtime/platform_<os>/**` MAY depend on:
-  - `runtime/platform/**`
-  - `foundation/**`
-
-Foundation MUST NOT depend on runtime (defined in dependency rules).
+```
+architecture_layering
+```
 
 ------
 
-## 3.2 Platform Contract Rules
+# 2. SDLC Framework Context
 
-### runtime/platform/
+This document belongs to the **architecture domain** of the SDLC framework.
 
-This layer contains portable contracts only.
+Architecture documents define structural constraints on software systems.
 
-Includes:
+Authority relationships between SDLC domains are defined in:
 
-- Interfaces (`*_service`, `*_provider`, `*_api`)
-- Small value types
-- Option/config structs
-- Enums
-- Portable error categories
+```
+sdlc_structure
+```
 
-Must NOT:
+Terminology used in this document is defined in:
 
-- Include OS headers
-- Perform syscalls
-- Leak OS-specific types
-- Perform OS error translation
+```
+sdlc_glossary
+```
 
 ------
 
-### runtime/platform_/
+# 3. Infrastructure Layer Context
 
-Concrete OS implementations (e.g., `platform_windows`, `platform_posix`).
+Runtime and platform capabilities reside within:
 
-Includes:
+```
+nisanijo::mythos::daedalus
+```
+
+Conceptually:
+
+```
+runtime      → foundation → platform → core
+platform_*   → platform
+```
+
+Runtime orchestrates execution.
+
+Foundation provides reusable infrastructure primitives.
+
+Platform defines portable system-effect contracts.
+
+Platform implementations translate OS semantics into portable contracts.
+
+Foundation must not depend on runtime.
+
+------
+
+# 4. Architectural Rules
+
+## 4.1 Layering
+
+The following dependency relationships apply.
+
+Allowed:
+
+```
+runtime            → foundation
+runtime            → platform
+runtime            → core
+
+platform           → core
+
+platform_*         → platform
+platform_*         → core
+```
+
+Not allowed:
+
+```
+foundation         → runtime
+platform           → runtime
+platform           → platform_*
+core               → any upper layer
+```
+
+These rules preserve strict downward dependency flow.
+
+------
+
+## 4.2 Platform Contract Rules
+
+### platform
+
+This namespace defines portable system-effect contracts.
+
+Examples include:
+
+- clock services
+- console services
+- environment services
+- filesystem services
+- process services
+- threading services
+- terminal services
+- system information
+
+Platform contracts may include:
+
+- interfaces (`*_service`, `*_provider`)
+- small value types
+- option or configuration structures
+- enumerations
+- portable error categories
+
+Platform contracts must not:
+
+- include OS headers
+- perform syscalls
+- expose OS-specific types
+- perform OS error translation
+
+------
+
+### platform_*
+
+Platform implementation namespaces provide OS-specific behavior.
+
+Examples include:
+
+```
+platform_windows
+platform_posix
+```
+
+These modules contain:
 
 - OS API calls
-- Syscalls
-- Handle or descriptor management
-- Error translation
-- OS-only helpers
+- system calls
+- handle or descriptor management
+- OS error translation
+- OS-specific helper logic
 
-Must not expose OS-specific types through portable interfaces.
+Platform implementations must not leak OS-specific types into portable contracts.
 
 ------
 
-# 4. Canonical Runtime Layout
+# 5. Canonical Runtime Capability Structure
 
-Within a runtime project’s:
+Within:
 
 ```
-src/<project_name>/runtime/
+nisanijo::mythos::daedalus::runtime
 ```
 
-tree, the following capability structure is canonical:
+the following capability segmentation is typical.
 
 ```
 app/
-    include/
 framework/
 pipeline/
 resource_manager/
 state_machine/
+
 platform/
     clock/
     console/
@@ -162,6 +202,7 @@ platform/
     terminal/
     threading/
     user/
+
 platform_windows/
     clock/
     console/
@@ -174,6 +215,7 @@ platform_windows/
     threading/
     user/
     debug/
+
 platform_posix/
     clock/
     console/
@@ -187,47 +229,94 @@ platform_posix/
     debug/
 ```
 
-Public API surfaces SHOULD mirror this segmentation under:
+Not all systems must implement every capability.
+
+This taxonomy defines segmentation when such capabilities exist.
+
+------
+
+# 6. Public Interface Mapping
+
+Public headers may expose runtime capabilities under:
 
 ```
-include/<project_name>/
+include/nisanijo/mythos/daedalus/runtime/
 ```
 
-Not all runtime capabilities must be public.
-However, any public surface MUST respect:
+Public interfaces must respect:
 
-- Layering constraints
-- Namespace-directory alignment
-- Platform boundary rules
+- layering constraints
+- namespace-directory alignment
+- platform boundary rules
 
-------
-
-# 5. Design Principles
-
-- Contracts are defined once in `runtime/platform/`.
-- OS-specific logic lives only in `runtime/platform_<os>/`.
-- No system effects exist in foundation.
-- Runtime orchestrates; foundation provides reusable primitives.
-- Portable interfaces must remain stable and platform-neutral.
-
-Architectural clarity and portability take precedence over convenience shortcuts.
+Internal implementation details may remain private to the source tree.
 
 ------
 
-# 6. Enforcement
+# 7. Design Principles
 
-Enforcement: Review.
+Runtime and platform components must follow these principles.
 
-Platform boundary violations and improper layering are review-blocking issues.
+### Separation of Concerns
 
-CI checks MAY be introduced for deterministic validation, including:
+Runtime orchestrates execution.
 
-- Detecting OS header inclusion within `runtime/platform/`
-- Detecting forbidden dependency edges
-- Include-graph validation
+Foundation provides reusable infrastructure primitives.
 
-The C++ Coding Standard remains authoritative where structural rules overlap.
+Platform defines system-effect contracts.
+
+Platform implementations translate OS semantics.
 
 ------
 
-# End of Document
+### Portable Contracts
+
+Portable contracts must remain stable and platform-neutral.
+
+Platform interfaces must not expose OS-specific constructs.
+
+------
+
+### OS Boundary Containment
+
+Operating system APIs must appear only within platform implementation namespaces.
+
+Portable layers must remain free of OS headers.
+
+------
+
+### Architectural Stability
+
+Capability placement should prioritize long-term architectural clarity over convenience refactoring.
+
+------
+
+# 8. Enforcement
+
+Runtime and platform taxonomy rules are enforced through architectural review.
+
+Violations include:
+
+- platform boundary violations
+- incorrect layer placement
+- leakage of OS-specific types into portable contracts
+- introduction of upward dependency edges
+
+CI validation may be introduced to detect deterministic violations such as:
+
+- OS header inclusion within platform contracts
+- forbidden dependency edges
+- include-graph violations
+
+------
+
+# 9. References
+
+```
+architecture_layering
+core_admission_and_elevation_policy
+taxonomy_core_foundation
+sdlc_structure
+sdlc_glossary
+```
+

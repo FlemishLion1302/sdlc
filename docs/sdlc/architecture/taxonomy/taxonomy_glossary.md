@@ -1,372 +1,387 @@
-# Taxonomy Glossary
+# taxonomy_glossary
 
-**Status:** Authoritative Architectural Classification (Review-Enforced)
-**Scope:** Capability boundaries and placement discipline
-
-This document operates within the Engineering Governance Framework:
-
-```
-<workspace>/docs/engineering/engineering_governance.md
-```
-
-It defines capability boundaries used for module classification and architectural placement.
-
-It exists to:
-
-- Prevent structural drift
-- Eliminate ambiguous placement decisions
-- Avoid creation of generic folders (e.g., `utils/`, `common/`, `misc/`)
-- Preserve architectural layering discipline
+Status: Normative Architecture Taxonomy
+Domain: architecture
+Scope: Capability boundaries and placement discipline
 
 ------
 
-# 1. Path Context
+# 1. Purpose
 
-All repository paths are relative to `<workspace>` unless explicitly stated otherwise.
+This document defines capability boundaries used for module classification and architectural placement within the system.
 
-Projects reside under:
+The taxonomy exists to:
 
-```
-<workspace>/projects/<project_name>/
-```
+- prevent structural drift
+- eliminate ambiguous placement decisions
+- avoid creation of generic folders (for example `utils/`, `common/`, `misc/`)
+- preserve architectural layering discipline
 
-Taxonomy paths shown such as:
+This document defines **capability segmentation within architectural layers**.
 
-```
-src/foundation/**
-```
+It does not define:
 
-are shorthand for:
+- coding style
+- repository layout conventions
+- namespace rules
 
-```
-<workspace>/projects/<project_name>/src/<project_name>/foundation/**
-```
-
-Public headers reside under:
+Those are defined in:
 
 ```
-<workspace>/projects/<project_name>/include/<project_name>/
+architecture_layering
 ```
-
-Taxonomy segmentation applies within a project’s `src/<project_name>/` subtree.
 
 ------
 
-# 2. Foundation Capabilities
+# 2. SDLC Framework Context
+
+This document belongs to the **architecture domain** of the SDLC framework.
+
+Architecture documents define structural constraints on software systems.
+
+Authority relationships between SDLC domains are defined in:
+
+```
+sdlc_structure
+```
+
+Terminology used by this document is defined in:
+
+```
+sdlc_glossary
+```
+
+------
+
+# 3. Foundation Capabilities
 
 These capabilities typically reside under:
 
 ```
-src/<project_name>/foundation/
+nisanijo::mythos::daedalus::foundation
 ```
 
-## core/
+The following capability groupings describe typical module placement.
 
-Fundamental primitives used everywhere.
-
-Includes:
-
-- Error model types
-- Memory primitives
-- Byte utilities
-- Time primitives
-- Low-level value abstractions
-
-Does NOT include:
-
-- OS interactions
-- File system calls
-- UI logic
-- Architectural patterns
-
-If a module is foundational and extremely low-level, it belongs here.
+Not all systems must implement every capability.
 
 ------
 
-## data/
+## core
+
+Fundamental primitives used across the entire system.
+
+Examples include:
+
+- error model types
+- memory primitives
+- byte utilities
+- time primitives
+- low-level value abstractions
+
+Core must not contain:
+
+- OS interactions
+- filesystem access
+- UI logic
+- architectural pattern frameworks
+
+Core placement rules are defined in:
+
+```
+core_admission_and_elevation_policy
+```
+
+------
+
+## data
 
 Reusable data structures and domain-neutral value containers.
 
-Includes:
+Examples include:
 
-- Trees
-- Dictionaries
-- Key-value stores
-- Structural counters (not statistical algorithms)
-- Canonical value representations
+- trees
+- dictionaries
+- key-value stores
+- structural counters
+- canonical value representations
 
-Does NOT include:
-
-- Algorithms operating on data
-- Serialization logic
+Data modules contain **structures**, not algorithms operating on them.
 
 ------
 
-## text/
+## text
 
-Text processing and transformation.
+Text processing and transformation utilities.
 
-Includes:
+Examples include:
 
-- Encoding/decoding
-- String manipulation
-- Lexing
-- Parsing
-- Regex
-- Template engines
+- encoding and decoding
+- string manipulation
+- lexing
+- parsing
+- regular expression processing
+- template engines
 
-If it produces, consumes, or transforms text → it belongs here.
-
-------
-
-## io/
-
-Platform-agnostic input/output utilities.
-
-Includes:
-
-- Stream abstractions
-- Console stream formatting
-- Serialization formats
-- Logger sink backends
-
-Does NOT include:
-
-- OS file system access
-- Syscalls
-
-If it models a stream/device abstraction → `io/`.
+If a module consumes, produces, or transforms text, it belongs here.
 
 ------
 
-## diagnostics/
+## io
 
-Developer-facing observability surface.
+Platform-agnostic input and output utilities.
 
-Includes:
+Examples include:
 
-- Assertions
-- Error reporting
-- Exception policies
-- Source location helpers
+- stream abstractions
+- console stream formatting
+- serialization mechanisms
+- logger sink backends
 
-Diagnostics owns the API surface.
+IO modules must not perform:
 
-Logger sink implementations reside under:
+- OS filesystem access
+- direct syscalls
+
+If the module models a device or stream abstraction, it belongs in `io`.
+
+------
+
+## diagnostics
+
+Developer-facing observability APIs.
+
+Examples include:
+
+- assertions
+- diagnostic reporting
+- exception helpers
+- source location helpers
+
+Diagnostics owns the **diagnostic API surface**.
+
+Logger implementations reside under:
 
 ```
-foundation/io/sinks/logger/
+foundation/io/sinks/logger
 ```
 
-Diagnostics MAY depend on logger sinks.
-Logger sinks MUST NOT depend on diagnostics.
+Diagnostics may depend on logger sinks.
+
+Logger sinks must not depend on diagnostics.
 
 ------
 
-## config/
+## config
 
-Configuration modeling and parsing.
+Configuration modeling and validation utilities.
 
-Includes:
+Examples include:
 
-- CLI parsing models
-- Environment variable models (non-OS)
-- Settings schemas
-- Validation rules
+- CLI argument models
+- environment variable schemas
+- settings schemas
+- validation rules
 
-Does NOT include:
-
-- Runtime environment access (belongs in runtime/platform).
+Configuration modules must not perform runtime environment inspection.
 
 ------
 
-## crypto/
+## crypto
 
-Platform-agnostic cryptographic algorithms.
+Platform-agnostic cryptographic primitives.
 
-Includes:
+Examples include:
 
-- Hash algorithms
-- Digest implementations
+- hashing algorithms
+- digest implementations
 
-Does NOT include:
+Crypto modules must not depend on:
 
-- OS certificate store access
-- Platform security APIs
-
-------
-
-## math/
-
-Mathematical primitives and statistical helpers.
-
-Includes:
-
-- Statistical calculations
-- Numeric helpers
-
-Structural counters remain in `data/`.
+- OS certificate stores
+- platform security APIs
 
 ------
 
-## meta/
+## math
 
-Compile-time and type-system utilities only.
+Mathematical helpers and statistical calculations.
 
-Includes:
+Examples include:
 
-- Type traits
-- Detection idioms
-- Interface scaffolding
+- statistical helpers
+- numeric algorithms
 
-Must not contain runtime behavior.
+Structural counters belong in `data`, not `math`.
 
 ------
 
-## patterns/
+## meta
 
-Optional architectural patterns.
+Compile-time utilities.
 
-Includes:
+Examples include:
+
+- type traits
+- detection idioms
+- compile-time interface scaffolding
+
+Meta modules must not introduce runtime behavior.
+
+------
+
+## patterns
+
+Optional architectural pattern implementations.
+
+Examples include:
 
 - MVC
-- Observer
-- Producer-consumer
-- Facades
+- observer
+- producer-consumer
+- facade
 
-Patterns MAY depend on `core/`.
-`core/` MUST NOT depend on `patterns/`.
+Patterns may depend on core.
+
+Core must not depend on patterns.
 
 ------
 
-## ui/
+## ui
 
 User interaction constructs.
 
-Includes:
+Examples include:
 
-- Controls
-- Prompts
-- Forms
+- controls
+- prompts
+- forms
 - UI frameworks
 - UX utilities
 
-If it models user experience → `ui/`.
-If it models a stream/device → `io/`.
+If the module models **user experience**, it belongs in `ui`.
+
+If it models **device or stream behavior**, it belongs in `io`.
 
 ------
 
-# 3. Runtime & Platform Capabilities
+# 4. Runtime and Platform Capabilities
 
-These capabilities typically reside under:
-
-```
-src/<project_name>/runtime/
-```
-
-## runtime/
-
-Execution and orchestration layer.
-
-Includes:
-
-- Application lifecycle
-- Pipelines
-- State machines
-- Resource management
-
-May depend on foundation.
+These capabilities belong to the infrastructure runtime portion of the system.
 
 ------
 
-## runtime/platform/
+## runtime
+
+Execution and orchestration infrastructure.
+
+Examples include:
+
+- application lifecycle management
+- pipelines
+- state machines
+- resource orchestration
+
+Runtime may depend on foundation.
+
+Foundation must not depend on runtime.
+
+------
+
+## platform
 
 Portable system-effect contracts.
 
-Includes:
+Examples include:
 
-- Filesystem abstractions
-- Process abstractions
-- Console abstractions
-- Environment abstractions
-- Threading abstractions
+- filesystem abstractions
+- process abstractions
+- console abstractions
+- environment abstractions
+- threading abstractions
 
-Must NOT:
+Platform contracts must not:
 
-- Include OS headers
-- Perform syscalls
+- include OS headers
+- perform syscalls
 
 ------
 
-## runtime/platform_/
+## platform_*
 
-Concrete OS implementations (e.g., `platform_windows`, `platform_posix`).
+Platform-specific implementations.
 
-Includes:
+Examples include:
 
-- Syscalls
+- `platform_windows`
+- `platform_posix`
+
+These modules contain:
+
+- syscalls
 - OS APIs
-- Handle management
-- Error translation
+- handle management
+- error translation
 
-Must not leak OS-specific types into portable interfaces.
+Platform implementations must not leak OS-specific types into portable interfaces.
 
 ------
 
-# 4. Prohibited Generic Folders
+# 5. Prohibited Generic Folders
 
 The following generic folders are prohibited in first-party source trees:
 
-- `utils/`
-- `common/`
-- `misc/`
-- `shared/`
-- `helpers/`
-- `temp/`
-- `scratch/`
+- `utils`
+- `common`
+- `misc`
+- `shared`
+- `helpers`
+- `temp`
+- `scratch`
 
-This prohibition applies only to first-party source code under:
+Generic catch-all folders obscure architectural intent and make module placement ambiguous.
 
-```
-<workspace>/projects/
-```
-
-It does not apply to:
-
-- `build/` output
-- Tooling or script directories (e.g., `tools/`, `scripts/`)
-- Generated artifacts
-- Third-party or vendor code
-
-Do not create generic catch-all folders for first-party modules.
+Capability-specific folders must be used instead.
 
 ------
 
-# 5. Tie-Breaker Rules
+# 6. Tie-Breaker Rules
 
-If unsure between:
+If placement is unclear:
 
-- `core` vs `data` → choose `core` only if primitive and universal.
+- `core` vs `data` → choose `core` only if the type is primitive and universal.
 - `data` vs `math` → `data` for structure; `math` for computation.
-- `io` vs `ui` → `io` for device; `ui` for experience.
-- `foundation` vs `runtime` → `foundation` if no system effects exist.
+- `io` vs `ui` → `io` for device abstraction; `ui` for user interaction.
+- `foundation` vs `runtime` → choose `foundation` if no system effects are involved.
 
 When in doubt:
 
-Preserve layering and portability.
+Prefer **preserving architectural layering and portability**.
 
 ------
 
-# 6. Enforcement
+# 7. Enforcement
 
-Enforcement: Review.
+Taxonomy rules are enforced through architectural review.
 
-Capability misplacement and taxonomy drift are review-blocking issues.
+Violations include:
 
-CI checks MAY be introduced for deterministic validation.
+- capability misplacement
+- taxonomy drift
+- introduction of prohibited generic folders
+- violations of layer boundaries
 
-The C++ Coding Standard remains authoritative where structural rules overlap.
+CI validation may be introduced to detect deterministic violations.
 
 ------
 
-# End of Document
+# 8. References
+
+```
+architecture_layering
+core_admission_and_elevation_policy
+taxonomy_core_foundation
+sdlc_structure
+sdlc_glossary
+```
+
