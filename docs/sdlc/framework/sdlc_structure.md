@@ -2,10 +2,9 @@
 
 ## 1. Purpose
 
-This document defines the structural organization of the Software Development Lifecycle (SDLC) framework and the relationships between its constituent domains.
+This document defines the structural organization of the Software Development Lifecycle (SDLC) framework and the relationships between its document domains.
 
-The SDLC framework is composed of multiple document domains addressing different aspects of software engineering governance.
-This document clarifies the purpose and authority of each domain.
+The SDLC framework organizes its documents into domains representing distinct areas of engineering governance. This document describes those domains and establishes the authority relationships between them.
 
 ------
 
@@ -15,7 +14,7 @@ This document applies to all documents that form part of the SDLC framework.
 
 It defines:
 
-- the structural domains of the framework
+- the domains used to organize SDLC documents
 - the purpose of each domain
 - the authority relationships between domains
 
@@ -25,11 +24,13 @@ This document does not define the specific rules contained within each domain.
 
 ## 3. SDLC Domain Model
 
-The SDLC framework is organized into a set of domains representing distinct areas of engineering governance.
+The SDLC framework organizes its documents into domains.
+
+Each domain groups documents addressing a specific area of engineering governance.
 
 The principal SDLC domains are:
 
-```id="cfe45c"
+```
 governance
 architecture
 standards
@@ -39,7 +40,7 @@ tooling
 templates
 ```
 
-Each domain defines rules or guidance relevant to a specific aspect of software development.
+Each domain contains documents relevant to its subject area.
 
 ------
 
@@ -47,15 +48,9 @@ Each domain defines rules or guidance relevant to a specific aspect of software 
 
 ### governance
 
-The governance domain defines the policies and processes that control engineering practices and the evolution of the SDLC framework itself.
+The governance domain defines the policies and processes governing engineering practices and the evolution of the SDLC framework itself.
 
-Governance documents establish how engineering rules are authored, revised, and maintained.
-
-Examples include:
-
-- engineering governance
-- servicing and maintenance strategy
-- sdlc document standard
+Examples include engineering governance and servicing and maintenance strategy.
 
 ------
 
@@ -63,13 +58,9 @@ Examples include:
 
 The architecture domain defines structural principles governing the organization of software systems.
 
-Architecture documents define rules regarding system structure, component organization, and architectural layering.
+Architecture documents describe system layering, component structure, and architectural policies.
 
-Examples include:
-
-- architecture layering
-- taxonomy definitions
-- architectural policies
+Architecture rules constrain the structure of software systems and inform the standards and practices applied by projects.
 
 ------
 
@@ -77,12 +68,9 @@ Examples include:
 
 The standards domain defines mandatory engineering and programming rules.
 
-Standards are normative and MUST be followed by projects governed by the SDLC.
+Standards are normative documents that establish requirements projects must follow.
 
-Examples include:
-
-- C++ coding standard
-- repository layout conventions
+Examples include programming language standards and repository conventions.
 
 ------
 
@@ -90,43 +78,31 @@ Examples include:
 
 The guidelines domain provides recommended engineering practices.
 
-Guidelines are advisory and SHOULD be followed unless there is a justified reason to deviate.
+Guidelines describe preferred approaches that support maintainability, consistency, and engineering quality.
 
-Examples include:
-
-- C++ engineering guidelines
-- engineering baseline guidance
+Guidelines are advisory and may be deviated from when justified.
 
 ------
 
 ### documentation
 
-The documentation domain defines rules governing software documentation and API description.
+The documentation domain defines rules governing how software systems and source code are documented.
 
-These documents define requirements for documenting code, systems, and project artifacts.
-
-Examples include:
-
-- source code documentation standard
-- project documentation requirements
-- versioning policy
+These documents ensure that APIs, systems, and engineering artifacts are described consistently and clearly.
 
 ------
 
 ### tooling
 
-The tooling domain defines repository conventions and automation guidance supporting SDLC practices.
+The tooling domain defines repository conventions and automation practices supporting SDLC compliance.
 
-Examples include:
-
-- repository layout conventions
-- tooling and automation guidance
+Tooling documents describe how engineering processes are supported through repository structure and automation.
 
 ------
 
 ### templates
 
-The templates domain provides reusable artifacts intended to assist projects in complying with SDLC documentation and governance requirements.
+The templates domain provides reusable artifacts that assist projects in complying with SDLC documentation and governance requirements.
 
 Templates are informational and do not define normative rules.
 
@@ -134,13 +110,13 @@ Templates are informational and do not define normative rules.
 
 ## 5. Authority Relationships
 
-The SDLC domains have an authority hierarchy.
+Domains within the SDLC framework have defined authority relationships.
 
-Higher-level domains define policies that constrain lower-level domains.
+When conflicts arise between documents from different domains, the document belonging to the higher-authority domain prevails.
 
-The SDLC authority model is as follows:
+The SDLC authority hierarchy is:
 
-```id="e7ay1y"
+```
 governance
    ↓
 architecture
@@ -164,7 +140,7 @@ The following rules apply when interpreting SDLC documents.
 
 ### governance precedence
 
-Governance documents define how the SDLC framework is authored and maintained.
+Governance documents define how engineering practices and the SDLC framework itself are governed.
 
 Governance documents take precedence over all other SDLC domains.
 
@@ -174,21 +150,21 @@ Governance documents take precedence over all other SDLC domains.
 
 Architecture documents define structural constraints on software systems.
 
-Architecture rules take precedence over standards, guidelines, and tooling conventions.
+Architecture rules take precedence over standards and guidelines.
 
 ------
 
 ### standards precedence
 
-Standards define mandatory programming and engineering rules.
+Standards define mandatory engineering and programming requirements.
 
-Standards take precedence over guidelines and templates.
+Standards take precedence over guidelines.
 
 ------
 
 ### guidelines precedence
 
-Guidelines provide recommended practices and MAY be deviated from when justified.
+Guidelines provide recommended engineering practices.
 
 Guidelines do not override standards or architecture rules.
 
@@ -196,55 +172,28 @@ Guidelines do not override standards or architecture rules.
 
 ### documentation and tooling
 
-Documentation and tooling domains provide supporting standards and practices.
+Documentation and tooling domains support the application of SDLC rules.
 
-These domains MUST remain consistent with architecture and programming standards.
+These domains must remain consistent with governance, architecture, and standards.
 
 ------
 
 ## 7. Cross-Domain Consistency
 
-Documents within the SDLC framework MUST remain internally consistent.
+Documents within the SDLC framework must remain internally consistent.
 
-When conflicts occur between documents:
+When conflicts arise between documents:
 
-1. the higher-authority domain prevails
-2. the conflicting document SHOULD be revised to restore consistency
+1. the document belonging to the higher-authority domain prevails
+2. the conflicting document should be revised to restore consistency
 
-Cross-domain references SHOULD be maintained to clarify relationships between rules.
-
-------
-
-## 8. Evolution of the SDLC Structure
-
-Changes to the structure of the SDLC framework are governed by the SDLC maintenance model defined in:
-
-- servicing_and_maintenance_strategy
-- sdlc_document_standard
-
-Structural changes SHOULD be introduced through amendment documents and consolidated periodically.
+Cross-references between related documents should be maintained to clarify relationships between domains.
 
 ------
 
-## 9. References
+## 8. References
 
 sdlc_overview
+sdlc_glossary
+sdlc_governance
 sdlc_document_standard
-engineering_governance
-servicing_and_maintenance_strategy
-
-------
-
-At this point you now have the **three foundational documents** that anchor the entire framework:
-
-```
-sdlc_overview.md
-sdlc_structure.md
-sdlc_document_standard.md
-```
-
-Together they define:
-
-- what the SDLC is
-- how it is organized
-- how its documents are written and maintained

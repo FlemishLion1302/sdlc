@@ -4,8 +4,7 @@
 
 This document defines the governance model for the Software Development Lifecycle (SDLC) framework.
 
-It establishes how SDLC documents are authored, revised, approved, and maintained over time.
-
+It establishes how SDLC documents are introduced, revised, reviewed, and maintained over time.
 The governance model ensures that the SDLC framework evolves in a controlled and predictable manner while preserving the stability of its baseline specifications.
 
 ------
@@ -16,10 +15,10 @@ This document applies to all documents that form part of the SDLC framework.
 
 It defines:
 
-- how SDLC documents are created
-- how rules are revised and amended
-- how changes are reviewed and approved
-- how baseline documents evolve over time
+- how SDLC documents are introduced
+- how SDLC rules are revised
+- how revisions are reviewed and approved
+- how the framework evolves over time
 
 This document governs the SDLC framework itself and does not define the rules that apply to individual software projects.
 
@@ -27,27 +26,27 @@ This document governs the SDLC framework itself and does not define the rules th
 
 ## 3. Governance Principles
 
-The SDLC framework is governed according to the following principles:
+The SDLC framework is governed according to the following principles.
 
 ### stability
 
-Baseline documents SHOULD remain stable and SHOULD NOT be modified for routine clarifications or incremental improvements.
+Baseline documents should remain stable and should not be modified for routine clarifications or incremental improvements.
 
-Changes SHOULD normally be introduced through amendment documents.
+Changes are typically introduced through amendment documents rather than routine direct modification of baseline documents.
 
 ------
 
 ### traceability
 
-All changes to SDLC documents MUST be traceable through Git history.
+All changes to SDLC documents must be traceable through version control history.
 
-Commit messages and pull requests MUST clearly describe the rationale for changes.
+Commit messages and pull requests must clearly describe the purpose and rationale of revisions.
 
 ------
 
 ### transparency
 
-Changes to SDLC documents MUST be visible to the engineering organization and reviewed through standard repository contribution processes.
+Changes to SDLC documents must be visible to the engineering organization and reviewed through standard repository contribution processes.
 
 ------
 
@@ -59,53 +58,40 @@ The SDLC framework evolves through additive amendments and periodic consolidatio
 
 ## 4. Document Authority
 
-SDLC documents have varying levels of authority depending on their domain.
+Documents within the SDLC framework may be normative or informational.
 
-Normative documents define mandatory requirements and MUST be followed by projects governed by the SDLC.
+Normative documents define mandatory requirements that must be followed by projects governed by the SDLC.
 
-Informational documents provide guidance or templates and do not impose mandatory requirements.
+Informational documents provide explanation, guidance, or reusable artifacts supporting application of the framework.
 
-Authority relationships between SDLC domains are defined in:
-
-```
-sdlc_structure
-```
+Authority relationships between SDLC domains are defined in `sdlc_structure`.
 
 ------
 
 ## 5. Introduction of New Documents
 
-New SDLC documents MAY be introduced when new governance areas, standards, or engineering practices require formal definition.
+New SDLC documents may be introduced when new governance areas, standards, or engineering practices require formal definition.
 
-New documents MUST:
+New documents must:
 
 - follow the SDLC document standard
 - define their purpose and scope
-- identify their authority within the SDLC framework
+- identify their domain within the SDLC framework
 - maintain consistency with existing SDLC documents
 
-New documents SHOULD be introduced through pull requests with clear rationale and supporting discussion.
+New documents should be introduced through pull requests accompanied by clear rationale and supporting discussion.
 
 ------
 
 ## 6. Amendment Model
 
-Changes to baseline SDLC documents SHOULD normally be introduced through amendment documents.
+Changes to baseline SDLC documents are typically introduced through amendment documents.
 
-Amendment documents modify specific rules without editing the baseline document directly.
+Amendments revise specific rules without requiring routine modification of the baseline document.
 
-An amendment MUST:
+The amendment model allows the framework to evolve incrementally while preserving the stability and readability of baseline specifications.
 
-- identify the baseline document it modifies
-- identify the rule affected
-- provide the amended rule wording
-- describe the rationale for the change
-
-Amendment naming conventions and structure are defined in:
-
-```
-sdlc_document_standard
-```
+The structure and naming of amendment documents are defined in `sdlc_document_standard`.
 
 ------
 
@@ -117,38 +103,38 @@ The most recent amendment affecting a rule takes precedence over earlier amendme
 
 Earlier amendments remain part of the historical record but are superseded by later amendments.
 
-Chronological ordering is determined by Git history.
+Chronological ordering is determined by repository history.
 
 ------
 
 ## 8. Consolidation of Baseline Documents
 
-Over time, multiple amendments may accumulate for a baseline document.
+Over time, amendments may accumulate for a given baseline document.
 
-When this occurs, the baseline document MAY be revised to incorporate the current authoritative wording of affected rules.
+When this occurs, the baseline document may be revised to incorporate the current authoritative wording of affected rules.
 
 During consolidation:
 
-- amendments are integrated into the baseline
+- amendments are incorporated into the baseline document
 - superseded amendments become historical artifacts
 - rule identifiers remain stable
 
-Consolidation improves readability while preserving the historical evolution of the rule set.
+Consolidation restores readability while preserving the historical evolution of the rule set.
 
 ------
 
 ## 9. Revision Process
 
-Changes to SDLC documents MUST be introduced through pull requests.
+Changes to SDLC documents must be introduced through pull requests.
 
-Pull requests SHOULD:
+Pull requests should:
 
 - clearly describe the proposed change
 - explain the rationale for the revision
 - reference affected documents or rules
 - maintain consistency with related SDLC documents
 
-Normative rule changes SHOULD normally be introduced through amendment documents unless the change occurs as part of a consolidation revision.
+Normative rule changes should normally be introduced through amendment documents unless the change occurs as part of a consolidation revision.
 
 ------
 
@@ -156,7 +142,7 @@ Normative rule changes SHOULD normally be introduced through amendment documents
 
 The SDLC repository serves as the authoritative source for engineering governance.
 
-Projects governed by the SDLC MUST follow the normative rules defined in the repository.
+Projects governed by the SDLC must follow the normative rules defined in the repository.
 
 When conflicts arise between project documentation and SDLC documents, the SDLC framework takes precedence.
 
@@ -166,6 +152,5 @@ When conflicts arise between project documentation and SDLC documents, the SDLC 
 
 sdlc_overview
 sdlc_structure
+sdlc_glossary
 sdlc_document_standard
-engineering_governance
-servicing_and_maintenance_strategy

@@ -2,28 +2,25 @@
 
 ## 1. Purpose
 
-This document provides an overview of the Software Development Lifecycle (SDLC) framework and describes its purpose, scope, and organization.
+This document provides an overview of the Software Development Lifecycle (SDLC) framework.
 
-The SDLC framework defines the engineering governance, architectural principles, programming standards, documentation practices, and tooling conventions required to design, implement, and maintain reliable software systems.
+The SDLC framework defines the governed set of documents that establish engineering governance, architectural principles, programming standards, documentation practices, tooling conventions, and reusable templates used to develop and maintain software systems.
+
+This document introduces the structure and intent of the framework and serves as the primary entry point for understanding the SDLC.
 
 ------
 
 ## 2. Scope
 
-The SDLC framework governs the development and maintenance of software systems produced under the engineering organization.
+The SDLC framework governs engineering practices for software systems developed under the organization.
 
-The framework applies to:
+The framework defines:
 
-- engineering governance
-- software architecture
-- programming standards
-- engineering practices
-- documentation standards
-- repository and tooling conventions
+- the domains that organize SDLC documentation
+- the types of documents used to define rules and guidance
+- the relationship between the SDLC framework and individual software projects
 
-The SDLC framework provides the normative rules and guidance required to ensure consistency, maintainability, and long-term evolvability across software projects.
-
-Project-specific design and implementation decisions remain the responsibility of individual projects, provided they comply with the rules defined by the SDLC.
+Project-specific design and implementation decisions remain the responsibility of individual projects, provided those projects comply with the normative documents defined by the SDLC framework.
 
 ------
 
@@ -34,7 +31,7 @@ The SDLC framework exists to achieve the following objectives:
 - establish consistent engineering practices across projects
 - ensure long-term maintainability of software systems
 - provide clear architectural and engineering guidance
-- support safe evolution of software systems over time
+- support controlled evolution of engineering standards
 - enable predictable collaboration across engineering teams
 
 The framework emphasizes clarity, determinism, and maintainability in both engineering practice and documentation.
@@ -43,72 +40,61 @@ The framework emphasizes clarity, determinism, and maintainability in both engin
 
 ## 4. Structure of the SDLC Framework
 
-The SDLC framework is organized into several domains, each addressing a specific aspect of software engineering governance.
+The SDLC framework organizes its documents into domains.
+
+Each domain groups documents addressing a specific aspect of engineering governance.
+
+The principal SDLC domains are:
+
+```
+governance
+architecture
+standards
+guidelines
+documentation
+tooling
+templates
+```
+
+Each domain serves a distinct role within the framework.
 
 ### governance
 
-Defines the policies and processes governing engineering practices and the evolution of the SDLC framework itself.
+Defines the policies and processes governing engineering practices and the evolution of the SDLC framework.
 
-Examples include:
-
-- engineering governance
-- servicing and maintenance strategy
-- SDLC document standards
+Examples include engineering governance and servicing and maintenance strategy.
 
 ### architecture
 
-Defines architectural principles and system structure expectations for software projects.
+Defines structural principles governing the organization of software systems.
 
-Examples include:
-
-- architecture layering
-- component structure
-- taxonomy definitions
+Architecture documents describe system layering, component structure, and architectural policies.
 
 ### standards
 
-Defines mandatory programming and engineering rules.
+Defines mandatory engineering and programming rules.
 
-Standards are normative and MUST be followed by projects governed by the SDLC.
-
-Examples include:
-
-- C++ coding standard
-- repository layout conventions
+Standards are normative documents that must be followed by projects governed by the SDLC.
 
 ### guidelines
 
 Provides recommended engineering practices.
 
-Guidelines are advisory and SHOULD be followed unless there is a justified reason to deviate.
-
-Examples include:
-
-- C++ engineering guidelines
-- engineering baseline guidance
+Guidelines are advisory and may be deviated from when justified.
 
 ### documentation
 
-Defines standards for documenting software systems and source code.
+Defines rules governing the documentation of software systems and source code.
 
-Examples include:
-
-- source code documentation standard
-- project documentation requirements
-- versioning policy
+Documentation standards ensure that systems and APIs are described consistently and accurately.
 
 ### tooling
 
-Defines repository conventions and tooling expectations supporting SDLC practices.
-
-Examples include:
-
-- repository layout conventions
-- automation guidelines
+Defines repository conventions and automation guidance supporting SDLC practices.
 
 ### templates
 
-Provides reusable templates that assist projects in complying with SDLC documentation and governance requirements.
+Provides reusable artifacts that assist projects in complying with SDLC documentation and governance requirements.
 
 Templates are informational and do not define normative rules.
 
@@ -116,47 +102,27 @@ Templates are informational and do not define normative rules.
 
 ## 5. Authority of SDLC Documents
 
-Documents within the SDLC framework have different levels of authority.
+Documents within the SDLC framework may be either normative or informational.
 
-### normative documents
+Normative documents define mandatory requirements that must be followed by projects governed by the SDLC.
 
-Normative documents define mandatory requirements.
+Informational documents provide explanation, guidance, or reusable artifacts that assist in applying the framework.
 
-Projects governed by the SDLC MUST comply with these documents.
-
-Examples include:
-
-- coding standards
-- architectural rules
-- governance policies
-
-### informational documents
-
-Informational documents provide guidance, explanations, or templates.
-
-These documents do not impose mandatory requirements.
-
-Examples include:
-
-- engineering guidelines
-- documentation templates
+The authority relationships between SDLC domains are defined in `sdlc_structure`.
 
 ------
 
 ## 6. Evolution of the SDLC Framework
 
-The SDLC framework evolves over time through a controlled amendment process.
+The SDLC framework evolves over time through a controlled revision process.
 
-Baseline documents define the canonical specification.
+Baseline documents define the canonical specification for a given area of the framework.
 
-Changes to baseline documents SHOULD normally be introduced through amendment documents rather than directly modifying the baseline.
+Changes to baseline documents are typically introduced through amendment documents that revise specific rules without requiring routine modification of the baseline document.
 
-Amendments are applied according to the SDLC maintenance model defined in:
+Over time, amendments may be incorporated into updated baseline documents through periodic consolidation.
 
-- servicing_and_maintenance_strategy
-- sdlc_document_standard
-
-Over time, amendments MAY be consolidated into updated baseline documents.
+The detailed revision model governing SDLC documents is defined in `sdlc_governance` and `sdlc_document_standard`.
 
 ------
 
@@ -164,19 +130,21 @@ Over time, amendments MAY be consolidated into updated baseline documents.
 
 The SDLC framework provides the governing structure for software projects but does not define the implementation details of individual systems.
 
-Projects are expected to:
+Projects governed by the SDLC are expected to:
 
-- follow the standards defined by the SDLC
-- adopt architectural principles defined by the framework
+- comply with normative documents defined by the framework
+- adopt architectural principles defined in the architecture domain
+- follow programming standards defined in the standards domain
 - maintain documentation consistent with SDLC documentation standards
-- use repository structures compatible with SDLC tooling conventions
+- follow repository and tooling conventions defined by the framework
 
-Projects MAY extend the SDLC framework with additional project-specific documentation and guidance.
+Projects may introduce additional project-specific documentation and guidance, provided those documents remain consistent with the SDLC framework.
 
 ------
 
 ## 8. References
 
-engineering_governance
-servicing_and_maintenance_strategy
+sdlc_glossary
+sdlc_structure
+sdlc_governance
 sdlc_document_standard

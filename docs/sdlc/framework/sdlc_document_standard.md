@@ -4,7 +4,7 @@
 
 This document defines the format, structure, authorship, and maintenance model for documents within the Software Development Lifecycle (SDLC) framework.
 
-Consistent document structure ensures that SDLC specifications are predictable to read, easy to maintain, and evolvable through controlled amendments.
+Consistent document structure ensures that SDLC specifications are predictable to read, easy to maintain, and capable of evolving through controlled amendments.
 
 ------
 
@@ -28,9 +28,9 @@ Project-specific documentation is outside the scope of this standard.
 
 ## 3. Document Format
 
-SDLC documents MUST be authored in Markdown (`.md`).
+SDLC documents must be authored in Markdown (`.md`).
 
-The first line of every SDLC document MUST be a level-1 Markdown heading identifying the document title.
+The first line of every SDLC document must be a level-1 Markdown heading identifying the document title.
 
 Example:
 
@@ -38,22 +38,22 @@ Example:
 # sdlc_document_standard
 ```
 
-Document versioning is governed by Git history and repository tags.
-Version numbers MUST NOT be embedded in SDLC documents.
+Document versioning is governed by repository history.
+Version numbers must not be embedded in SDLC documents.
 
 ------
 
 ## 4. File Naming
 
-SDLC document filenames MUST use `lower_snake_case`.
+SDLC document filenames must use `lower_snake_case`.
 
-File names MUST consist only of:
+File names must consist only of:
 
 - lowercase letters
 - digits
 - underscores
 
-Hyphens, spaces, and camelCase MUST NOT be used.
+Hyphens, spaces, and camelCase must not be used.
 
 Examples:
 
@@ -65,13 +65,13 @@ cpp_coding_standard.md
 repo_layout_conventions.md
 ```
 
-This aligns SDLC documentation with the repository naming conventions used for project source files and other engineering artifacts.
+This aligns SDLC documentation with the repository naming conventions used for project source files and engineering artifacts.
 
 ------
 
 ## 5. Recommended Document Structure
 
-SDLC documents SHOULD follow a consistent section structure.
+SDLC documents should follow a consistent section structure.
 
 The recommended structure is:
 
@@ -87,13 +87,13 @@ The recommended structure is:
 ```
 
 Not all sections are required for every document.
-When present, sections SHOULD appear in this order.
+When present, sections should appear in this order.
 
 ------
 
 ## 6. Normative Language
 
-Normative requirements MUST use RFC-2119 terminology.
+Normative requirements must use RFC-2119 terminology.
 
 The following keywords have defined meaning:
 
@@ -104,17 +104,17 @@ The following keywords have defined meaning:
 | SHOULD   | Strong recommendation |
 | MAY      | Optional              |
 
-Normative statements SHOULD be written clearly and unambiguously.
+Normative statements should be written clearly and unambiguously.
 
 ------
 
 ## 7. Rule Identification
 
-Normative rules SHOULD include a stable rule identifier.
+Normative rules should include a stable rule identifier.
 
-Rule identifiers provide a persistent reference point for amendments.
+Rule identifiers provide a persistent reference point for amendments and cross-references.
 
-Rule identifiers SHOULD use `lower_snake_case`.
+Rule identifiers should use `lower_snake_case`.
 
 Example:
 
@@ -122,34 +122,34 @@ Example:
 rule: cpp_ns_align
 ```
 
-Rule identifiers SHOULD remain stable even if document sections are reorganized.
+Rule identifiers should remain stable even if document structure or section numbering changes.
 
 ------
 
 ## 8. Baseline Documents
 
-Baseline documents define the canonical specification for SDLC rules.
+Baseline documents define the canonical specification for rules within the SDLC framework.
 
-Baseline documents SHOULD remain stable and SHOULD NOT be modified for routine clarifications or incremental improvements.
+Baseline documents should remain stable and should not be modified for routine clarifications or incremental improvements.
 
-Changes SHOULD normally be introduced through amendment documents.
+Changes are typically introduced through amendment documents.
 
-Maintaining stable baseline documents ensures that rule evolution can be tracked independently of the original specification.
+Maintaining stable baseline documents allows rule evolution to be tracked independently from the original specification.
 
 ------
 
 ## 9. Amendment Documents
 
-Amendment documents modify baseline documents without editing them directly.
+Amendment documents revise baseline documents without editing them directly.
 
-An amendment document MUST:
+An amendment document must:
 
 - identify the baseline document it modifies
-- identify the rule affected
+- identify the affected rule
 - provide the amended rule wording
-- provide rationale when appropriate
+- describe the rationale for the revision when appropriate
 
-Amendment filenames SHOULD follow this pattern:
+Amendment filenames should follow this pattern:
 
 ```
 <base_document>_<rule_identifier>_<yyyy_mm_dd>.md
@@ -161,7 +161,7 @@ Example:
 cpp_coding_standard_cpp_ns_align_2026_03_06.md
 ```
 
-Amendments allow the SDLC framework to evolve without repeatedly modifying baseline documents.
+Amendments allow the SDLC framework to evolve incrementally while preserving the stability of baseline documents.
 
 ------
 
@@ -173,41 +173,43 @@ The most recent amendment affecting a rule takes precedence over earlier amendme
 
 Earlier amendments remain part of the historical record but are superseded by later amendments.
 
-Chronological ordering is determined by Git history and amendment date.
+Chronological ordering is determined by repository history.
 
 ------
 
-## 11. Periodic Consolidation
+## 11. Consolidation
 
-Over time, amendments may accumulate for a given document.
+Over time, amendments may accumulate for a given baseline document.
 
-When this occurs, the baseline document MAY be revised to incorporate the current authoritative wording of affected rules.
+When this occurs, the baseline document may be revised to incorporate the current authoritative wording of affected rules.
 
 During consolidation:
 
-- amendments are integrated into the baseline
+- amendments are integrated into the baseline document
 - superseded amendments become historical artifacts
 - rule identifiers remain stable
 
-Periodic consolidation restores readability while preserving the historical evolution of the rule set.
+Consolidation restores readability while preserving the historical evolution of the rule set.
 
 ------
 
 ## 12. Authorship and Revision
 
-All SDLC documents are maintained through Git.
+SDLC documents are maintained through version control.
 
-Changes to SDLC documents MUST:
+Changes to SDLC documents must:
 
 - be introduced through pull requests
 - include clear commit messages describing the change
-- update related rules or references when required
+- maintain consistency with related SDLC documents
 
-Normative rule changes SHOULD be introduced through amendment documents unless the change occurs as part of a consolidation revision.
+Normative rule changes should normally be introduced through amendment documents unless the change occurs as part of a consolidation revision.
 
 ------
 
 ## 13. References
 
-engineering_governance
-servicing_and_maintenance_strategy
+sdlc_overview
+sdlc_structure
+sdlc_glossary
+sdlc_governance
