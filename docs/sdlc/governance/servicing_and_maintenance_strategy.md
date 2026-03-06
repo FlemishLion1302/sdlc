@@ -190,7 +190,3 @@ Deltas:
 Governance documents evolve deliberately.
 
 Convenience edits that bypass the delta system are prohibited.
-
-------
-
-# End of Document

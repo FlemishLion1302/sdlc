@@ -167,7 +167,3 @@ This document does not:
 - Introduce new technical requirements
 
 It governs governance only.
-
-------
-
-# End of Document
