@@ -130,11 +130,13 @@ Rule identifiers should remain stable even if document structure or section numb
 
 Baseline documents define the canonical specification for rules within the SDLC framework.
 
-Baseline documents should remain stable and should not be modified for routine clarifications or incremental improvements.
+Baseline documents **SHOULD remain stable** and **SHOULD NOT be modified for routine clarifications or incremental improvements**.
 
-Changes are typically introduced through amendment documents.
+Normative changes **SHOULD normally be introduced through amendment documents**.
 
 Maintaining stable baseline documents allows rule evolution to be tracked independently from the original specification.
+
+Baseline documents **MAY be updated when amendments are consolidated**.
 
 ------
 
@@ -165,7 +167,129 @@ Amendments allow the SDLC framework to evolve incrementally while preserving the
 
 ------
 
-## 10. Amendment Precedence
+## 10. Amendment Insertion and Section Number Stability
+
+### 10.1 Section Number Stability
+
+Engineering standards rely on stable section references across:
+
+- other standards
+- CI rules
+- review comments
+- documentation
+- issue tracking
+
+Renumbering existing sections during routine amendments introduces unnecessary churn and can invalidate external references.
+
+For this reason, section numbering stability is a governance requirement.
+
+Existing section numbers **SHALL remain stable** unless a full document restructuring is explicitly approved.
+
+Routine amendments **SHALL NOT renumber existing sections**.
+
+------
+
+### 10.2 Amendment Insertion Policy
+
+When new normative material is introduced, it **SHALL be inserted using subordinate numbering where practical**.
+
+Examples:
+
+```
+4.7 Header Policy
+4.7.1 Inline Definition Exception
+4.7.2 Header Self-Sufficiency Requirements
+```
+
+or
+
+```
+5.5 Public Header Restrictions
+5.5.1 Template Include Discipline
+```
+
+Subordinate numbering allows amendments to extend a section without renumbering adjacent sections.
+
+------
+
+### 10.3 Reserved Numbering Slots
+
+Standards **MAY reserve section numbers** for anticipated future expansion.
+
+Example:
+
+```
+4.7 Header Policy
+4.8 Directory and File Naming
+4.9 Reserved
+```
+
+Reserved slots allow future amendments to insert new sections while preserving monotonic numbering.
+
+Reserved sections **SHALL be clearly labeled** as `Reserved`.
+
+------
+
+### 10.4 Monotonic Section Ordering
+
+Section numbering **SHALL remain monotonic**.
+
+Example of valid ordering:
+
+```
+4.7
+4.8
+4.9
+```
+
+Invalid ordering:
+
+```
+4.7
+4.9
+4.8
+```
+
+If an amendment logically relates to an earlier section but would violate monotonic numbering, the section **SHALL be placed in the next available numeric position**.
+
+------
+
+### 10.5 Amendment Instruction Requirements
+
+Revision documents that modify standards **SHALL explicitly define the final section number and placement within the merged baseline**.
+
+Instructions **MUST NOT rely solely on relative placement** such as:
+
+```
+Insert after §4.7
+```
+
+Instead they **SHALL specify the resulting section number**.
+
+Example:
+
+```
+Add new subsection §4.9 after §4.8.
+
+This section is normatively related to §4.7 but SHALL appear after §4.8
+to preserve numbering order.
+```
+
+------
+
+### 10.6 Document Restructuring
+
+Renumbering existing sections is permitted only when:
+
+- a **structural refactor** of the document is approved
+- the change is declared as a **REPLACE revision**
+- the revision explicitly states that section numbering will change
+
+Routine amendments **SHALL NOT trigger renumbering**.
+
+------
+
+## 11. Amendment Precedence
 
 When multiple amendments affect the same rule, they are interpreted in chronological order.
 
@@ -177,7 +301,7 @@ Chronological ordering is determined by repository history.
 
 ------
 
-## 11. Consolidation
+## 12. Consolidation
 
 Over time, amendments may accumulate for a given baseline document.
 
@@ -193,7 +317,7 @@ Consolidation restores readability while preserving the historical evolution of 
 
 ------
 
-## 12. Authorship and Revision
+## 13. Authorship and Revision
 
 SDLC documents are maintained through version control.
 
@@ -207,9 +331,9 @@ Normative rule changes should normally be introduced through amendment documents
 
 ------
 
-## 13. References
+## 14. References
 
-sdlc_overview
-sdlc_structure
-sdlc_glossary
-sdlc_governance
+- sdlc_overview
+- sdlc_structure
+- sdlc_glossary
+- sdlc_governance
