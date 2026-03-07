@@ -1,4 +1,4 @@
-# C++ Coding Standard
+# cpp_coding_standard
 
 **Status:** Authoritative
 **Supersedes:**
@@ -14,23 +14,26 @@
 ## 1.1 Status
 
 This document is the single authoritative C++ engineering standard.
-It consolidates previously published policies without altering their normative meaning.
+
+It consolidates previously published C++ engineering policies into a single normative specification.
 
 No previously locked **SHALL** requirement is weakened by consolidation.
 
-### Governance Framework Reference
-
-This document operates within the repository’s Engineering Governance Framework.
+This document operates within the SDLC engineering governance framework.
 
 See:
 
 ```
-docs/engineering/engineering_governance.md
+engineering_governance
 ```
 
-The Governance Framework defines authority hierarchy, enforcement posture, and document immutability requirements across all engineering policy artifacts.
+The engineering governance framework defines:
 
-In case of ambiguity regarding cross-document authority or change control, the Governance Framework applies.
+- authority hierarchy
+- enforcement posture
+- document evolution model
+
+When questions arise regarding cross-document authority or change control, the governance framework applies.
 
 ------
 
@@ -38,27 +41,31 @@ In case of ambiguity regarding cross-document authority or change control, the G
 
 This standard governs:
 
-- Project structure
-- File organization
-- Naming conventions
-- Formatting
-- Language usage discipline
-- Tooling and enforcement
+- project structure
+- file organization
+- naming conventions
+- formatting
+- language usage discipline
+- tooling and enforcement
 
-It does not govern:
+This standard does **not** govern:
 
-- Domain modeling
-- Business logic design
-- Architectural decisions beyond structural discipline
+- domain modeling
+- business logic design
+- system architecture beyond structural discipline
+
+Those concerns are addressed in engineering guidelines and architectural documentation.
 
 ------
 
 ## 1.3 Normative Language
 
-The keywords **SHALL**, **MUST**, **SHOULD**, and **MAY** retain their previously defined meanings.
+Normative language follows the definitions established in the SDLC document standard.
+
+The keywords **SHALL**, **SHOULD**, and **MAY** retain their normative meaning.
 
 - **SHALL** indicates a mandatory requirement.
-- **SHOULD** indicates strong recommendation with limited justified exceptions.
+- **SHOULD** indicates a strong recommendation with limited justified exceptions.
 - **MAY** indicates optional behavior.
 
 ------
@@ -67,16 +74,16 @@ The keywords **SHALL**, **MUST**, **SHOULD**, and **MAY** retain their previousl
 
 ## 2.1 CI Authority
 
-CI is the final enforcement authority for this standard.
+Continuous Integration (CI) is the final enforcement authority for this standard.
 
 CI **SHALL** reject builds for:
 
-- Formatting violations
-- Structural rule violations
-- Compilation warnings
-- Compilation failures
+- formatting violations
+- structural rule violations
+- compilation warnings
+- compilation failures
 
-Standards without enforcement degrade. This standard is CI-enforced.
+Standards without enforcement degrade; therefore this standard is CI-enforced.
 
 ------
 
@@ -86,10 +93,11 @@ Authoritative tooling hierarchy (highest structural authority first):
 
 1. `.editorconfig` — indentation, encoding, line endings, whitespace
 2. `.clang-format` — formatting and include handling
-3. Centralized MSBuild properties — compiler settings and build behavior
+3. centralized build configuration — compiler settings and build behavior
 4. `.gitattributes` — line-ending normalization and text handling
 
 IDE configuration **MUST** conform to repository configuration.
+
 IDE preferences **SHALL NOT** override repository policy.
 
 ------
@@ -100,21 +108,21 @@ All compiler warnings **SHALL** be treated as errors.
 
 Projects **SHALL NOT**:
 
-- Lower warning levels
-- Globally disable warnings
-- Relax treat-warnings-as-errors
+- lower warning levels
+- globally disable warnings
+- relax treat-warnings-as-errors
 
 Local suppression requires explicit justification and minimal scope.
 
 Compiler configuration **SHALL**:
 
-- Use a high warning level equivalent to `/W4`
-- Enable standards-conforming mode (`/permissive-`)
-- Enable the standard preprocessor
-- Enable security development lifecycle checks
-- Compile as UTF-8
+- use a high warning level equivalent to `/W4`
+- enable standards-conforming mode (`/permissive-`)
+- enable the standard preprocessor
+- enable security development lifecycle checks
+- compile as UTF-8
 
-Compiler policy **SHALL** be centralized via shared MSBuild property files.
+Compiler policy **SHALL** be centralized via shared build configuration.
 
 ------
 
@@ -122,11 +130,11 @@ Compiler policy **SHALL** be centralized via shared MSBuild property files.
 
 A project conforms if and only if:
 
-- It compiles with zero warnings
-- It passes formatting checks
-- It adheres to structural layout rules
-- It respects include discipline rules
-- It does not violate public surface containment
+- it compiles with zero warnings
+- it passes formatting checks
+- it adheres to structural layout rules
+- it respects include discipline rules
+- it does not violate public surface containment
 
 Conformance is determined by CI.
 
@@ -152,9 +160,10 @@ Use of **C++20** (or newer) features:
 - **SHALL NOT** be introduced implicitly into C++17 projects.
 - **SHOULD** be justified during migration or architectural review.
 
-Projects that opt into C++20 **SHALL** document this elevation in their project configuration.
+Projects that opt into C++20 **SHALL** document this elevation in project configuration.
 
 The compiler **SHALL** operate in standards-conforming mode.
+
 Source files **SHALL** be compiled as UTF-8.
 
 ------
@@ -163,15 +172,14 @@ Source files **SHALL** be compiled as UTF-8.
 
 During transition from C++17 to C++20:
 
-- New code **SHOULD NOT** introduce C++20-only features into C++17 projects.
-- Standard library facilities unavailable in C++17 **SHALL NOT** be used unless the project explicitly targets C++20.
-- Version elevation **SHALL** be deliberate and repository-visible.
+- new code **SHOULD NOT** introduce C++20-only features into C++17 projects
+- standard library facilities unavailable in C++17 **SHALL NOT** be used unless the project explicitly targets C++20
+- version elevation **SHALL** be deliberate and repository-visible
 
 ------
 
 ## 3.4 Version Independence Constraint
 
-This standard is minimally tied to language version.
 Structural and formatting rules **SHALL NOT** depend on optional language features.
 
 ------
@@ -256,7 +264,7 @@ Rejected alternatives:
 
 - `.hpp`
 - `.cc`
-- Mixed extension conventions
+- mixed extension conventions
 
 ------
 
@@ -282,16 +290,15 @@ Source and header filenames **SHALL** use `lower_snake_case`.
 
 ------
 
-# 4.9 Out-of-Line Definition Policy
+## 4.9 Out-of-Line Definition Policy
 
-Non-template function and method definitions **SHALL** be provided out-of-line in a corresponding `.cpp` file, not in a header.
+Non-template function and method definitions **SHALL** be provided out-of-line in a corresponding `.cpp` file.
 
 This applies to:
 
-- Free functions
-- Non-template member functions
-- Non-template static member functions
-- Non-template lambdas stored as function objects when exposed through headers
+- free functions
+- non-template member functions
+- non-template static member functions
 
 Template entities remain exempt.
 
@@ -301,15 +308,9 @@ Template entities remain exempt.
 
 A non-template function body **MAY** appear in a header only when all criteria are satisfied:
 
-1. The function is explicitly marked `inline` (or is a `constexpr` / `consteval` function).
-2. The body is trivially small and side-effect free:
-   - No dynamic allocation
-   - No logging
-   - No I/O
-   - No synchronization
-   - No system calls
-   - No exceptions thrown
-3. The body does not require additional heavy includes beyond what is already required by the public declaration.
+1. the function is explicitly marked `inline` (or is `constexpr` / `consteval`)
+2. the body is trivially small and side-effect free
+3. the body does not require additional heavy includes
 
 When in doubt, the implementation **SHALL** be moved to `.cpp`.
 
@@ -317,9 +318,9 @@ When in doubt, the implementation **SHALL** be moved to `.cpp`.
 
 ## 4.9.2 Public Header Pairing
 
-For each public header that declares non-template functions or non-template class methods, a corresponding implementation `.cpp` **SHALL** exist under `src/<project_name>/` (or a subdirectory matching the namespace).
+For each public header declaring non-template functions or class methods, a corresponding implementation `.cpp` **SHALL** exist.
 
-Pure type headers **MAY** be header-only.
+Pure type headers **MAY** remain header-only.
 
 ------
 
@@ -337,9 +338,9 @@ Public headers **MUST** compile independently.
 
 They **SHALL NOT** rely on:
 
-- Transitive includes
-- Include order
-- Other compilation units
+- transitive includes
+- include order
+- other compilation units
 
 ------
 
@@ -347,16 +348,17 @@ They **SHALL NOT** rely on:
 
 Includes **SHALL** be grouped in this order:
 
-1. Self header
-2. Standard library
-3. Third-party libraries
-4. Project headers
+1. self header
+2. standard library
+3. third-party libraries
+4. project headers
 
 ------
 
 ## 5.4 Explicit Includes
 
 Code **SHALL NOT** rely on transitive includes.
+
 All dependencies **MUST** be explicitly included.
 
 ------
@@ -366,15 +368,10 @@ All dependencies **MUST** be explicitly included.
 Public headers **SHALL NOT** include:
 
 - `detail/` headers
-- Platform-specific headers
-- Heavy implementation headers unless strictly required
+- platform-specific headers
+- heavy implementation headers unless strictly required
 
 Public surface **SHALL** remain minimal and stable.
-
-Template definitions in public headers **SHOULD** minimize include footprint.
-Template-heavy headers **SHOULD** avoid pulling in third-party and platform headers unless required by the public signature.
-
-Where practical, prefer forward declarations and type-erasure boundaries to keep public headers stable.
 
 ------
 
@@ -382,7 +379,7 @@ Where practical, prefer forward declarations and type-erasure boundaries to keep
 
 Namespaces **SHALL** use `lower_snake_case`.
 
-Classes, structs, enums, and type aliases **SHALL** use `PascalCase`.
+Types **SHALL** use `PascalCase`.
 
 Functions and variables **SHALL** use `lower_snake_case`.
 
@@ -418,14 +415,14 @@ Destructors **SHALL NOT** throw.
 
 # 8. Formatting Rules
 
-Formatting **SHALL** be machine-enforced via `.clang-format` and `.editorconfig`.
+Formatting **SHALL** be machine-enforced.
 
 Brace style: **Allman**
 
 Indentation:
 
 - 4 spaces
-- No tabs
+- no tabs
 
 Line endings: **LF**
 
@@ -445,7 +442,7 @@ Build configuration is centralized via:
 
 ```
 Directory.Build.props
-Directory.Build.Targets
+Directory.Build.targets
 ```
 
 `.gitattributes` normalizes line endings.
@@ -458,10 +455,10 @@ Directory.Build.Targets
 
 A project conforms only if:
 
-- Zero warnings
-- Successful CI
-- Structural compliance
-- Formatting compliance
+- zero warnings
+- successful CI
+- structural compliance
+- formatting compliance
 
 CI failure blocks integration.
 
@@ -471,29 +468,24 @@ Exceptions **MUST** be justified, minimal, and documented.
 
 # 11. Amendment and Evolution
 
-Future changes **SHALL**:
+This document is a **baseline engineering standard**.
 
-- Preserve deterministic formatting
-- Preserve surface containment
-- Preserve CI enforceability
-- Avoid IDE lock-in
-- Favor mainstream compatibility
+Changes to this document **SHOULD** normally be introduced through amendment documents as defined by:
 
-Locked decisions include:
+```
+engineering_governance
+sdlc_document_standard
+```
 
-- Allman brace style
-- 4-space indentation
-- LF line endings
-- UTF-8 encoding
-- `.h` / `.cpp` only
-- Warnings as errors
-- Namespace-directory alignment
+Amendments allow incremental evolution while preserving baseline stability.
+
+Over time, amendments may be incorporated into revised baseline editions through consolidation.
 
 ------
 
 # 12. Decision Record (Informative)
 
-This section preserves rationale, trade-offs, historical context, and locked decisions.
+This section records rationale and historical decisions.
 
 It **SHALL NOT** introduce new requirements.
 

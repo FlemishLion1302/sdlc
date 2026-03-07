@@ -22,6 +22,8 @@ It defines:
 
 This document governs the SDLC framework itself and does not define the rules that apply to individual software projects.
 
+The structural organization and authority hierarchy of SDLC domains are defined in `sdlc_framework_overview`.
+
 ------
 
 ## 3. Governance Principles
@@ -30,9 +32,9 @@ The SDLC framework is governed according to the following principles.
 
 ### stability
 
-Baseline documents should remain stable and should not be modified for routine clarifications or incremental improvements.
+Baseline documents SHOULD remain stable and SHOULD NOT be modified for routine clarifications or incremental improvements.
 
-Changes are typically introduced through amendment documents rather than routine direct modification of baseline documents.
+Normative changes SHOULD normally be introduced through amendment documents.
 
 ------
 
@@ -64,7 +66,7 @@ Normative documents define mandatory requirements that must be followed by proje
 
 Informational documents provide explanation, guidance, or reusable artifacts supporting application of the framework.
 
-Authority relationships between SDLC domains are defined in `sdlc_structure`.
+Authority relationships between SDLC domains are defined in `sdlc_framework_overview`.
 
 ------
 
@@ -150,7 +152,5 @@ When conflicts arise between project documentation and SDLC documents, the SDLC 
 
 ## 11. References
 
-sdlc_overview
-sdlc_structure
-sdlc_glossary
+sdlc_framework_overview
 sdlc_document_standard

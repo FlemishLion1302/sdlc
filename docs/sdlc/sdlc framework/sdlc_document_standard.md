@@ -58,7 +58,7 @@ Hyphens, spaces, and camelCase must not be used.
 Examples:
 
 ```
-sdlc_overview.md
+sdlc_framework_overview.md
 engineering_governance.md
 servicing_and_maintenance_strategy.md
 cpp_coding_standard.md
@@ -333,7 +333,5 @@ Normative rule changes should normally be introduced through amendment documents
 
 ## 14. References
 
-- sdlc_overview
-- sdlc_structure
-- sdlc_glossary
+- sdlc_framework_overview
 - sdlc_governance
