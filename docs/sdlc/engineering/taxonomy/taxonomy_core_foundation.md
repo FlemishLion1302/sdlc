@@ -46,13 +46,13 @@ Architecture documents define structural constraints on software systems.
 Authority relationships between SDLC domains are defined in:
 
 ```
-sdlc_structure
+sdlc_framework_overview
 ```
 
 Terminology used in this document is defined in:
 
 ```
-sdlc_glossary
+taxonomy_glossary
 ```
 
 ------

@@ -1,4 +1,4 @@
-﻿# Engineering Governance Repository
+# Engineering Governance Repository
 
 This repository is the authoritative source of engineering governance artifacts.
 
@@ -25,8 +25,8 @@ Defines mandatory coding standards and review-enforced guidance.
 
 Located under:
 ```
-docs/engineering/standards/
-docs/engineering/guidelines/
+docs/sdlc/engineering/standards/
+docs/sdlc/engineering/guidelines/
 ```
 These define structural correctness and language-level expectations.
 
@@ -43,8 +43,8 @@ Defines system structuring rules and dependency direction.
 
 Located under:
 ```
-docs/engineering/taxonomy/
-docs/engineering/layering/
+docs/sdlc/engineering/taxonomy/
+docs/sdlc/engineering/layering/
 ```
 These define architectural integrity.
 
@@ -66,7 +66,7 @@ Includes:
 
 Located under:
 ```
-documentation/
+docs/sdlc/documentation/
 ```
 These define how projects describe, publish, and evolve their contracts.
 
@@ -84,7 +84,7 @@ Includes:
 
 Located under:
 ```
-tooling/
+docs/sdlc/tooling/
 ```
 These define how projects structure and execute automation.
 
@@ -95,11 +95,11 @@ These define how projects structure and execute automation.
 
 Governance hierarchy and immutability rules are defined in:
 ```
-docs/engineering/governance/engineering_governance.md
+docs/sdlc/engineering/governance/engineering_governance.md
 ```
 Change mechanics (delta lifecycle, version precedence, rebase policy) are defined in:
 ```
-docs/engineering/governance/servicing_and_maintenance_strategy.md
+docs/sdlc/framework/servicing_and_maintenance_strategy.md
 ```
 Governance artifacts are immutable once tagged.
 
