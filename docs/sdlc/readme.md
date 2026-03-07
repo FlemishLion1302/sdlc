@@ -1,4 +1,4 @@
-# 11111Engineering Governance Repository
+# Engineering Governance Repository
 
 This repository is the authoritative source of engineering governance artifacts used by the SDLC framework.
 
@@ -49,8 +49,8 @@ Examples include:
 Located under:
 
 ```
-docs/sdlc/standards/
-docs/sdlc/guidelines/
+docs/sdlc/engineering/standards/
+docs/sdlc/engineering/guidelines/
 ```
 
 These specifications define language-level engineering practices.
@@ -151,12 +151,13 @@ The repository is organized according to the SDLC governance domains.
 ```
 docs/sdlc/
 ├─ framework/
-├─ architecture
+├─ architecture/
 │  ├─ layering/
 │  └─ taxonomy/
-├─ governance/
-├─ standards/
-├─ guidelines/
+├─ engineering/
+│  ├─ governance/
+│  ├─ standards/
+│  └─ guidelines/
 ├─ documentation/
 │  ├─ governance/
 │  ├─ guidelines/
@@ -186,7 +187,7 @@ Governance artifacts evolve through versioned releases.
 - Tags represent governance release points.
 - Changes are introduced through amendment documents.
 - Periodic consolidation revisions may update baseline documents.
-- Projects should adopt governance versions intentionally rather than automatically.
+- Projects SHOULD adopt governance versions intentionally rather than automatically.
 
 ------
 
@@ -194,9 +195,9 @@ Governance artifacts evolve through versioned releases.
 
 Governance artifacts are immutable once released.
 
-Changes to released governance specifications must occur through:
+Changes to released governance specifications MUST occur through:
 
 - versioned amendments, or
 - formal consolidation revisions
 
-Direct modification of previously released artifacts is prohibited.
+Direct modification of previously released artifacts is MUST NOT occur.

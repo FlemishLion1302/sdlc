@@ -2,336 +2,125 @@
 
 ## 1. Purpose
 
-This document defines the format, structure, authorship, and maintenance model for documents within the Software Development Lifecycle (SDLC) framework.
+Defines the format, structure, authorship, and maintenance model for SDLC documents.
 
-Consistent document structure ensures that SDLC specifications are predictable to read, easy to maintain, and capable of evolving through controlled amendments.
-
-------
+---
 
 ## 2. Scope
 
-This standard applies to all documents that form part of the SDLC framework.
+Applies to all normative and informational documents that form part of the SDLC framework.
 
-This includes documents governing:
-
-- engineering governance
-- architecture
-- programming standards
-- engineering guidelines
-- documentation standards
-- tooling conventions
-- SDLC templates
-
-Project-specific documentation is outside the scope of this standard.
-
-------
+---
 
 ## 3. Document Format
 
-SDLC documents must be authored in Markdown (`.md`).
+SDLC documents must be authored in Markdown.
 
-The first line of every SDLC document must be a level-1 Markdown heading identifying the document title.
+The first line MUST be a level-1 heading containing the document title.
 
-Example:
-
-```markdown
-# sdlc_document_standard
-```
-
-Document versioning is governed by repository history.
-Version numbers must not be embedded in SDLC documents.
-
-------
+---
 
 ## 4. File Naming
 
-SDLC document filenames must use `lower_snake_case`.
+Filenames must use `lower_snake_case`.
 
-File names must consist only of:
+---
 
-- lowercase letters
-- digits
-- underscores
+## 5. Document Identification
 
-Hyphens, spaces, and camelCase must not be used.
+SDLC documents MUST include a stable document identifier.
 
-Examples:
+The document identifier provides a persistent reference independent of filename or location.
 
-```
-sdlc_framework_overview.md
-engineering_governance.md
-servicing_and_maintenance_strategy.md
-cpp_coding_standard.md
-repo_layout_conventions.md
-```
-
-This aligns SDLC documentation with the repository naming conventions used for project source files and engineering artifacts.
-
-------
-
-## 5. Recommended Document Structure
-
-SDLC documents should follow a consistent section structure.
-
-The recommended structure is:
-
-```
-1. Purpose
-2. Scope
-3. Authority
-4. Definitions (optional)
-5. Rules / Requirements
-6. Guidance (optional)
-7. Rationale (optional)
-8. References
-```
-
-Not all sections are required for every document.
-When present, sections should appear in this order.
-
-------
-
-## 6. Normative Language
-
-Normative requirements must use RFC-2119 terminology.
-
-The following keywords have defined meaning:
-
-| Keyword  | Meaning               |
-| -------- | --------------------- |
-| MUST     | Mandatory requirement |
-| MUST NOT | Prohibited            |
-| SHOULD   | Strong recommendation |
-| MAY      | Optional              |
-
-Normative statements should be written clearly and unambiguously.
-
-------
-
-## 7. Rule Identification
-
-Normative rules should include a stable rule identifier.
-
-Rule identifiers provide a persistent reference point for amendments and cross-references.
-
-Rule identifiers should use `lower_snake_case`.
+The identifier SHOULD appear immediately after the document title.
 
 Example:
+```
+# project_documentation
 
+Document Identifier: SDLC-DOC-002
+```
+Document identifiers SHOULD remain stable across revisions, amendments, and consolidations.
+
+---
+
+## 6. Recommended Document Structure
+
+Recommended structure:
+
+1. Purpose  
+2. Scope  
+3. Authority  
+4. Definitions (optional)  
+5. Rules / Requirements  
+6. Guidance (optional)  
+7. Rationale (optional)  
+8. References  
+
+Documents may omit sections that are not applicable to their purpose.
+
+---
+
+## 7. Normative Language
+
+RFC-2119 terminology MUST be used for normative requirements.
+
+---
+
+## 8. Rule Identification
+
+Normative rules SHOULD include a stable rule identifier.
+
+Example:
 ```
 rule: cpp_ns_align
 ```
+---
 
-Rule identifiers should remain stable even if document structure or section numbering changes.
+## 9. Baseline Documents
 
-------
+Baseline documents define canonical rules and remain stable.
 
-## 8. Baseline Documents
+Normative changes SHOULD normally be introduced through amendment documents.
 
-Baseline documents define the canonical specification for rules within the SDLC framework.
+---
 
-Baseline documents **SHOULD remain stable** and **SHOULD NOT be modified for routine clarifications or incremental improvements**.
+## 10. Amendment Documents
 
-Normative changes **SHOULD normally be introduced through amendment documents**.
+Amendment documents revise baseline documents.
 
-Maintaining stable baseline documents allows rule evolution to be tracked independently from the original specification.
+Amendment documents SHOULD identify the target document using the document identifier and the affected rule using the rule identifier.
 
-Baseline documents **MAY be updated when amendments are consolidated**.
-
-------
-
-## 9. Amendment Documents
-
-Amendment documents revise baseline documents without editing them directly.
-
-An amendment document must:
-
-- identify the baseline document it modifies
-- identify the affected rule
-- provide the amended rule wording
-- describe the rationale for the revision when appropriate
-
-Amendment filenames should follow this pattern:
-
+Amendment filenames:
 ```
 <base_document>_<rule_identifier>_<yyyy_mm_dd>.md
 ```
-
 Example:
-
 ```
 cpp_coding_standard_cpp_ns_align_2026_03_06.md
 ```
-
-Amendments allow the SDLC framework to evolve incrementally while preserving the stability of baseline documents.
-
-------
-
-## 10. Amendment Insertion and Section Number Stability
-
-### 10.1 Section Number Stability
-
-Engineering standards rely on stable section references across:
-
-- other standards
-- CI rules
-- review comments
-- documentation
-- issue tracking
-
-Renumbering existing sections during routine amendments introduces unnecessary churn and can invalidate external references.
-
-For this reason, section numbering stability is a governance requirement.
-
-Existing section numbers **SHALL remain stable** unless a full document restructuring is explicitly approved.
-
-Routine amendments **SHALL NOT renumber existing sections**.
-
-------
-
-### 10.2 Amendment Insertion Policy
-
-When new normative material is introduced, it **SHALL be inserted using subordinate numbering where practical**.
-
-Examples:
-
-```
-4.7 Header Policy
-4.7.1 Inline Definition Exception
-4.7.2 Header Self-Sufficiency Requirements
-```
-
-or
-
-```
-5.5 Public Header Restrictions
-5.5.1 Template Include Discipline
-```
-
-Subordinate numbering allows amendments to extend a section without renumbering adjacent sections.
-
-------
-
-### 10.3 Reserved Numbering Slots
-
-Standards **MAY reserve section numbers** for anticipated future expansion.
-
-Example:
-
-```
-4.7 Header Policy
-4.8 Directory and File Naming
-4.9 Reserved
-```
-
-Reserved slots allow future amendments to insert new sections while preserving monotonic numbering.
-
-Reserved sections **SHALL be clearly labeled** as `Reserved`.
-
-------
-
-### 10.4 Monotonic Section Ordering
-
-Section numbering **SHALL remain monotonic**.
-
-Example of valid ordering:
-
-```
-4.7
-4.8
-4.9
-```
-
-Invalid ordering:
-
-```
-4.7
-4.9
-4.8
-```
-
-If an amendment logically relates to an earlier section but would violate monotonic numbering, the section **SHALL be placed in the next available numeric position**.
-
-------
-
-### 10.5 Amendment Instruction Requirements
-
-Revision documents that modify standards **SHALL explicitly define the final section number and placement within the merged baseline**.
-
-Instructions **MUST NOT rely solely on relative placement** such as:
-
-```
-Insert after §4.7
-```
-
-Instead they **SHALL specify the resulting section number**.
-
-Example:
-
-```
-Add new subsection §4.9 after §4.8.
-
-This section is normatively related to §4.7 but SHALL appear after §4.8
-to preserve numbering order.
-```
-
-------
-
-### 10.6 Document Restructuring
-
-Renumbering existing sections is permitted only when:
-
-- a **structural refactor** of the document is approved
-- the change is declared as a **REPLACE revision**
-- the revision explicitly states that section numbering will change
-
-Routine amendments **SHALL NOT trigger renumbering**.
-
-------
+---
 
 ## 11. Amendment Precedence
 
-When multiple amendments affect the same rule, they are interpreted in chronological order.
+When multiple amendments affect the same rule, the most recent amendment takes precedence.
 
-The most recent amendment affecting a rule takes precedence over earlier amendments.
-
-Earlier amendments remain part of the historical record but are superseded by later amendments.
-
-Chronological ordering is determined by repository history.
-
-------
+---
 
 ## 12. Consolidation
 
-Over time, amendments may accumulate for a given baseline document.
+Amendments may be incorporated into revised baseline documents during consolidation.
 
-When this occurs, the baseline document may be revised to incorporate the current authoritative wording of affected rules.
-
-During consolidation:
-
-- amendments are integrated into the baseline document
-- superseded amendments become historical artifacts
-- rule identifiers remain stable
-
-Consolidation restores readability while preserving the historical evolution of the rule set.
-
-------
+---
 
 ## 13. Authorship and Revision
 
-SDLC documents are maintained through version control.
+Changes to SDLC documents must be introduced through pull requests and maintain consistency with related documents.
 
-Changes to SDLC documents must:
-
-- be introduced through pull requests
-- include clear commit messages describing the change
-- maintain consistency with related SDLC documents
-
-Normative rule changes should normally be introduced through amendment documents unless the change occurs as part of a consolidation revision.
-
-------
+---
 
 ## 14. References
 
 - sdlc_framework_overview
-- sdlc_governance
+- engineering_governance
+
