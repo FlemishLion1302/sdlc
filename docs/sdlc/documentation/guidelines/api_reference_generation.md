@@ -1,195 +1,345 @@
-# API Reference Generation Standard
+# project_documentation
 
 ## 1. Purpose
 
-This document defines the minimum requirements for generating and publishing API reference documentation in
-SDLC-governed projects.
+This document defines the minimum documentation requirements for any project governed by the SDLC framework.
 
-API reference documentation is a derived artifact:
-- Generated from source code and source comments
-- Reproducible in CI
-- Tied to a specific commit/tag/version
+Documentation is considered part of the software product and must be versioned, reviewed, and maintained alongside source code.
 
-Narrative documentation (docs/overview, docs/usage, docs/design, docs/dev) remains human-authored and is not replaced
-by generated reference.
+This standard defines:
 
+- required repository-level documents
+- required `docs/` directory structure
+- documentation ownership responsibilities
+- CI expectations for documentation generation and publication
 
----
+The goal of this policy is to ensure that project documentation remains reliable, discoverable, and aligned with system behavior.
+
+------
 
 ## 2. Scope
 
-This standard applies to projects that expose a public API, including:
+This standard applies to all repositories governed by the SDLC framework.
 
-- C++ libraries (header-only, static, shared)
-- C interfaces
-- Tools with a stable CLI surface (optional, if treated as API)
+It defines minimum expectations for:
 
-Projects without a public surface may still generate internal reference, but are not required to publish it.
+- repository-level documentation
+- project documentation structure
+- generated reference documentation
+- ABI documentation where applicable
 
+Projects may exceed these requirements but must not fall below them.
 
----
+------
 
-## 3. Tooling Baseline
+## 3. Authority
 
-Projects SHOULD use tooling compatible with the language and build system.
+This document forms part of the SDLC documentation governance domain.
 
-For C++ projects, Doxygen is the recommended baseline for reference generation.
+Its authority derives from:
 
-The SDLC does not mandate a specific generator, but the chosen generator MUST:
+- `sdlc_framework_overview`
+- `sdlc_governance`
+- `documentation_governance`
 
-- Support the project’s language
-- Generate output deterministically in CI
-- Emit non-zero exit status on failure
-- Support linking symbols to source locations where practical
+Engineering standards may impose additional documentation requirements but may not weaken the requirements defined here.
 
+------
 
----
+## 4. Normative Language
 
-## 4. Output Location and Repository Structure
+Normative language follows the definitions established in the SDLC document standard.
 
-Implementation repositories MUST place generated API reference under:
+The keywords **MUST**, **MUST NOT**, **SHOULD**, and **MAY** have the meanings defined in RFC-2119.
+
+| Keyword  | Meaning               |
+| -------- | --------------------- |
+| MUST     | Mandatory requirement |
+| MUST NOT | Prohibited            |
+| SHOULD   | Strong recommendation |
+| MAY      | Optional behavior     |
+
+------
+
+# 5. Mandatory Repository-Level Files
+
+Every governed repository **MUST** contain the following root-level files.
+
+## 5.1 README.md
+
+The README **MUST** provide:
+
+- project name
+- one-paragraph description (what it is, not how it works)
+- build instructions
+- basic usage example
+- license reference
+- link to full documentation (`docs/`)
+
+The README **MUST NOT** attempt to replace proper documentation.
+
+------
+
+## 5.2 LICENSE
+
+Repositories **MUST** include a clearly defined project license.
+
+------
+
+## 5.3 CHANGELOG.md
+
+Repositories **MUST** include a versioned changelog documenting:
+
+- Added
+- Changed
+- Deprecated
+- Removed
+- Fixed
+
+Alignment with the `versioning_policy` is recommended.
+
+------
+
+# 6. Required `docs/` Structure
+
+Every implementation repository **MUST** contain a `docs/` directory.
+
+Minimum required structure:
+
+```
+docs/
+├─ index.md
+├─ overview/
+├─ usage/
+├─ design/
+├─ dev/
+├─ reference/ (generated; do not hand-edit)
+└─ abi/ (generated if applicable)
 ```
 
+------
+
+## 6.1 index.md
+
+The documentation landing page **MUST** describe:
+
+- system purpose
+- intended audience
+- navigation overview
+
+------
+
+# 7. Documentation Categories
+
+## 7.1 Overview Documentation
+
+Location:
+
+```
+docs/overview/
+```
+
+Purpose:
+
+Explain what the system is and how it is structured.
+
+Typical contents:
+
+- architecture overview
+- module boundaries
+- dependency rules
+- high-level diagrams
+
+Overview documentation is conceptual and relatively stable.
+
+------
+
+## 7.2 Usage Documentation
+
+Location:
+
+```
+docs/usage/
+```
+
+Purpose:
+
+Explain how to use the system.
+
+Typical contents:
+
+- getting started guide
+- configuration
+- example workflows
+- integration patterns
+
+This documentation is consumer-facing.
+
+------
+
+## 7.3 Design Documentation
+
+Location:
+
+```
+docs/design/
+```
+
+Purpose:
+
+Explain key technical decisions and constraints.
+
+Typical contents:
+
+- error model
+- threading model
+- memory ownership rules
+- extension mechanisms
+
+Design documentation explains *why*, not only *what*.
+
+------
+
+## 7.4 Developer Documentation
+
+Location:
+
+```
+docs/dev/
+```
+
+Purpose:
+
+Support contributors and maintainers.
+
+Typical contents:
+
+- build matrix
+- toolchain setup
+- testing strategy
+- CI pipeline overview
+- contribution guidelines
+
+------
+
+## 7.5 Reference Documentation (Generated)
+
+Location:
+
+```
 docs/reference/
-
-```
-Recommended structure:
 ```
 
-docs/reference/
-├─ html/ (publishable output)
-└─ xml/ (optional; for downstream tooling)
+This directory contains generated API reference documentation.
 
-```
 Rules:
 
-- `docs/reference/` is generated output and MUST NOT be manually edited.
-- Projects MAY keep generated reference out of the repository history (preferred) and publish via CI artifacts/pages.
-- If generated reference is committed (discouraged), it must be clearly marked as generated and updated only via tooling.
+- reference documentation **MUST** be generated from source
+- generated documentation **MUST NOT** be manually edited
+- generation **SHOULD** be reproducible through CI
+- documentation **SHOULD** correspond to a specific version or tag
 
+------
 
----
+## 7.6 ABI Documentation (If Applicable)
 
-## 5. Source Inclusion Rules
+Location:
 
-The API reference generator MUST be configured so that:
+```
+docs/abi/
+```
 
-- Only the intended public surface is included by default
-- Private/internal implementation details are excluded by default
+Required only for:
 
-Recommended conventions:
+- shared libraries
+- components with ABI stability guarantees
 
-- Public headers live under a clear include root (e.g., `include/<project>/`)
-- Internal headers live under internal roots (e.g., `src/<project>/detail/`, `internal/`, or equivalent)
-- Reference output focuses on the public include root unless explicitly configured otherwise
+This directory **MUST** contain:
 
-If internal APIs are documented, they MUST be clearly labeled as internal and unstable.
+- ABI baseline snapshots
+- ABI comparison reports
 
+ABI documentation **MUST** be generated by tooling and **MUST NOT** be manually written.
 
----
+------
 
-## 6. Documentation Expectations for Public API
+# 8. CI Expectations
 
-Generated API reference MUST be meaningful. For public APIs:
+Projects **SHOULD**:
 
-- Public types and functions MUST be documented (see `source_code_documentation.md`)
-- Error behavior MUST be discoverable in the reference output
-- Thread-safety and lifetime/ownership expectations MUST be discoverable in the reference output
+- generate API reference documentation automatically in CI
+- publish generated documentation on release
+- fail builds when documentation generation fails
+- optionally enforce documentation coverage for public APIs
 
-If the generator supports warnings for undocumented symbols, projects SHOULD enable them.
+Projects with ABI guarantees **SHOULD**:
 
+- generate ABI baselines on release
+- compare ABI changes in CI for stable branches
 
----
+------
 
-## 7. CI Requirements
+# 9. Ownership and Maintenance
 
-### 7.1 Generation
+Documentation is owned by the same maintainers responsible for the code.
 
-Projects MUST provide a reproducible CI step that:
+The following rules apply:
 
-- Builds (or configures) the documentation generator inputs
-- Generates API reference output under `docs/reference/`
-- Fails the build if generation fails
+- code changes that alter public behavior **MUST** update documentation
+- public API changes **MUST** update reference documentation comments
+- breaking changes **MUST** update `CHANGELOG.md`
+- deprecated features **MUST** be documented
 
-### 7.2 Artifact Handling
+------
 
-CI SHOULD:
+# 10. Guidance
 
-- Upload generated HTML as a build artifact for pull requests
-- Publish generated HTML for releases/tags
+This standard intentionally avoids:
 
-Publication targets may include:
-- GitHub Pages
-- Static hosting
-- Release artifacts
+- mandating a specific documentation toolchain
+- mandating diagram tools
+- over-specifying formatting
 
-### 7.3 Determinism
+Projects **MAY** adopt additional documentation conventions that suit their needs.
 
-CI output SHOULD be stable across runs given identical inputs.
+------
 
-Projects SHOULD:
-- Pin tool versions (container, package versions, or locked dependencies)
-- Avoid embedding timestamps or machine-dependent paths where feasible
+# 11. Compliance Summary
 
+A repository is compliant with this standard if:
 
----
+- mandatory root documents exist
+- the required `docs/` structure exists
+- reference documentation is generated
+- documentation is version-controlled
+- documentation evolves with code
 
-## 8. Release and Versioning Expectations
+Failure to meet these requirements constitutes SDLC non-compliance.
 
-Published API reference MUST correspond to a specific version identifier.
+------
 
-On release/tag builds, the published reference SHOULD be associated with:
-- semantic version tag, or
-- release branch identifier, or
-- commit hash if no versioning scheme exists
+# 12. Amendment and Evolution
 
-If multiple versions are published, the site should provide a stable path for:
-- “latest” (optional; clearly defined)
-- per-version snapshots
+Changes to this document follow the SDLC amendment model.
 
+Amendments **SHOULD** normally be introduced through amendment documents rather than modifying the baseline directly.
 
----
+Amendment mechanics are defined in:
 
-## 9. Configuration Governance
+- `sdlc_governance`
+- `sdlc_document_standard`
 
-Projects MUST keep documentation generator configuration under version control.
+Over time, amendments may be consolidated into revised baseline editions.
 
-For C++/Doxygen, this typically includes:
-- a `Doxyfile` (or equivalent)
-- optional custom header/footer/stylesheet assets
+------
 
-Configuration changes should be reviewed like code changes.
+# 13. References
 
-Projects SHOULD document:
-- how to run generation locally
-- where output lands
-- how CI publishes it
+- `sdlc_framework_overview`
+- `sdlc_governance`
+- `sdlc_document_standard`
+- `servicing_and_maintenance_strategy`
+- `documentation_governance`
+- `versioning_policy`
+- `deprecation_policy`
 
-
----
-
-## 10. Quality Gates (Pragmatic Defaults)
-
-Projects SHOULD adopt these pragmatic gates:
-
-- Generation failures fail CI.
-- Warnings are visible in CI logs.
-- “Undocumented public symbol” warnings are treated as review findings.
-- Optionally: warnings-as-errors for public API on protected branches (recommended once the codebase is compliant).
-
-The SDLC encourages incremental adoption:
-- Start by generating reference reliably.
-- Then increase strictness over time.
-
-
----
-
-## 11. Minimal Compliance Checklist
-
-A repository is compliant if:
-
-- It can generate API reference in CI deterministically.
-- Output is produced under `docs/reference/`.
-- Generation failures fail CI.
-- Public API documentation is present enough to make the output useful.
-- Release builds publish or archive the generated reference.

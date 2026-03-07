@@ -1,167 +1,230 @@
-# Deprecation Policy Standard
+# deprecation_policy
 
 ## 1. Purpose
 
 This document defines how SDLC-governed projects deprecate and remove public APIs.
 
-Deprecation provides a controlled migration path for consumers while maintaining
-stability guarantees appropriate to the project’s declared API/ABI policy.
+Deprecation provides a controlled migration path for consumers while maintaining stability guarantees appropriate to the project’s declared API and ABI policies.
 
-Deprecation is mandatory for any removal of public surface unless the component
-is explicitly declared unstable.
+Deprecation ensures that public surface changes occur in a predictable and documented manner.
 
-
----
+------
 
 ## 2. Scope
 
-This policy applies to:
+This policy applies to all SDLC-governed projects that expose public APIs.
 
-- Public classes
-- Public functions
-- Public enums and enumerators
-- Public typedefs / aliases
-- Exported C interfaces
-- Public macros
+The policy governs the deprecation lifecycle for:
 
-It does NOT apply to:
-- Private/internal code
-- Experimental APIs explicitly marked unstable
+- public classes
+- public functions
+- public enums and enumerators
+- public typedefs and aliases
+- exported C interfaces
+- public macros
 
+This policy does **not** apply to:
 
----
+- private or internal code
+- APIs explicitly declared experimental or unstable
 
-## 3. Stability Prerequisite
+------
 
-Before applying this policy, the project MUST declare:
+## 3. Authority
 
-- Whether the API is considered stable
-- Whether the ABI is considered stable (if applicable)
+This document forms part of the SDLC governance framework.
 
-If API is declared unstable, deprecation may be skipped, but removal MUST still
-be documented in CHANGELOG.md.
+Its authority derives from:
 
+- `sdlc_framework_overview`
+- `sdlc_governance`
 
----
+This policy works in conjunction with:
 
-## 4. Deprecation Lifecycle
+- `versioning_policy`
+- `abi_policy` (where applicable)
+
+Engineering standards may introduce additional constraints but may not weaken the requirements defined here.
+
+------
+
+## 4. Normative Language
+
+Normative language follows the definitions established in the SDLC document standard.
+
+The keywords **MUST**, **MUST NOT**, **SHOULD**, and **MAY** have the meanings defined in RFC-2119.
+
+| Keyword  | Meaning               |
+| -------- | --------------------- |
+| MUST     | Mandatory requirement |
+| MUST NOT | Prohibited            |
+| SHOULD   | Strong recommendation |
+| MAY      | Optional behavior     |
+
+------
+
+## 5. Stability Prerequisite
+
+Before applying this policy, projects **MUST** declare:
+
+- whether the public API is considered stable
+- whether the ABI is considered stable (if applicable)
+
+If the API is declared unstable:
+
+- formal deprecation **MAY** be skipped
+- removal **MUST** still be documented in `CHANGELOG.md`
+
+------
+
+## 6. Deprecation Lifecycle
 
 The standard lifecycle for a stable API is:
 
-### Phase 1 — Active
+### 6.1 Phase 1 — Active
 
 - Fully supported.
-- No warnings.
+- No deprecation warnings.
 
-### Phase 2 — Deprecated
+------
 
-- Marked as deprecated in source.
-- Documented as deprecated in reference docs.
-- Migration path documented.
-- Still functional.
-- May emit compile-time warnings.
+### 6.2 Phase 2 — Deprecated
 
-### Phase 3 — Removed
+The API remains functional but is scheduled for removal.
 
-- Removed from public API.
-- Documented in CHANGELOG.md under “Removed”.
-- Versioning must reflect the removal according to the project’s versioning policy.
+Requirements:
 
+- source annotation indicating deprecation
+- documentation marking the API deprecated
+- documented migration path
+- optional compile-time warnings
 
----
+------
 
-## 5. Minimum Deprecation Requirements
+### 6.3 Phase 3 — Removed
 
-When deprecating a public API, the following are REQUIRED:
+The API is removed from the public surface.
 
-1. Source annotation (e.g., `[[deprecated]]` in C++ where applicable).
+Requirements:
+
+- removal documented in `CHANGELOG.md`
+- version increment consistent with `versioning_policy`
+
+------
+
+## 7. Minimum Deprecation Requirements
+
+When deprecating a public API, the following are required:
+
+1. Source annotation (e.g., `[[deprecated]]` in C++ where applicable)
 2. Documentation update indicating:
-   - The API is deprecated.
-   - Since which version.
-   - Recommended replacement.
-3. CHANGELOG.md entry under “Deprecated”.
-4. Clear migration path.
+   - the API is deprecated
+   - the version in which deprecation occurred
+   - the recommended replacement
+3. `CHANGELOG.md` entry under “Deprecated”
+4. documented migration path
 
-Deprecation without migration guidance is prohibited.
+Deprecation without migration guidance **MUST NOT** occur.
 
+------
 
----
+## 8. Deprecation Duration
 
-## 6. Deprecation Duration
+Projects **MUST** define a minimum supported deprecation window.
 
-Projects MUST define a minimum supported deprecation window.
+Recommended default policy:
 
-Pragmatic defaults:
+- PATCH releases: no removals
+- MINOR releases: deprecations allowed
+- MAJOR releases: removals allowed
 
-- Patch releases: no removals.
-- Minor releases: deprecations allowed, no removals.
-- Major releases: removals allowed.
+Alternative policies **MAY** be adopted but **MUST** be documented.
 
-Alternative policies are allowed but MUST be documented.
+------
 
+## 9. ABI Considerations
 
----
+For components with **Stable ABI**:
 
-## 7. ABI Considerations
+- removing or altering deprecated symbols within a compatible release line is prohibited
+- deprecated symbols **MUST** remain ABI-compatible until the compatibility boundary ends
+- removal **MUST** occur at a version boundary consistent with `abi_policy`
 
-For components with Stable ABI:
+If ABI is declared unstable:
 
-- Removing or changing a deprecated symbol in a compatible release line is prohibited.
-- Deprecated symbols MUST remain ABI-compatible until the declared compatibility boundary ends.
-- Removal requires a version boundary consistent with ABI policy.
+- removal **MAY** occur without ABI guarantees
+- documentation and versioning rules still apply
 
-If ABI is unstable, removal may occur without ABI guarantees, but must still
-follow documentation and versioning rules.
+------
 
+## 10. Documentation Requirements
 
----
+Reference documentation **MUST**:
 
-## 8. Documentation Requirements
+- clearly mark deprecated entities
+- display deprecation notices prominently
+- preserve documentation of deprecated APIs until removal
 
-Reference documentation MUST:
+Deprecated APIs **MUST NOT** disappear from documentation without a documented version boundary.
 
-- Clearly mark deprecated entities.
-- Display deprecation notes prominently.
-- Preserve documentation of deprecated APIs until removal.
+------
 
-Deprecated APIs MUST NOT silently disappear from reference documentation
-without version boundary justification.
+## 11. Prohibited Practices
 
+The following practices are prohibited:
 
----
+- silent removal of public APIs
+- deprecation without migration guidance
+- incompatible behavioral changes to deprecated APIs
+- using deprecation as a substitute for proper versioning discipline
 
-## 9. Prohibited Practices
+------
 
-The following are prohibited:
+## 12. CI and Review Expectations
 
-- Silent removal of public APIs.
-- Deprecation without migration path.
-- Changing behavior of deprecated APIs in incompatible ways.
-- Marking APIs deprecated as a substitute for proper versioning discipline.
+Projects **SHOULD**:
 
+- enable compiler warnings for deprecated usage internally
+- track usage of deprecated APIs within the repository
+- prevent new internal dependencies on deprecated APIs
 
----
+Code review **MUST** treat removal without prior deprecation as a policy violation unless the API is explicitly unstable.
 
-## 10. CI and Review Expectations
+------
 
-Projects SHOULD:
+## 13. Minimal Compliance Checklist
 
-- Enable compiler warnings for deprecated usage internally.
-- Track deprecated API usage within the repository.
-- Prevent introduction of new internal dependencies on deprecated APIs.
+A repository is compliant with this policy if:
 
-Code review must treat public removal without prior deprecation as a policy violation
-unless the API is explicitly unstable.
+- public APIs are not removed without prior deprecation (for stable APIs)
+- deprecated APIs are annotated in source
+- migration paths are documented
+- `CHANGELOG.md` reflects deprecations and removals
+- versioning aligns with removal events
 
+------
 
----
+## 14. Amendment and Evolution
 
-## 11. Minimal Compliance Checklist
+Changes to this document follow the SDLC amendment model.
 
-A repository is compliant if:
+Amendments **SHOULD** normally be introduced through amendment documents rather than direct modification of the baseline.
 
-- Public APIs are not removed without prior deprecation (for stable APIs).
-- Deprecations are annotated in source.
-- Migration paths are documented.
-- CHANGELOG reflects deprecations and removals.
-- Versioning aligns with removal events.
+Amendment mechanics are defined in:
+
+- `sdlc_governance`
+- `sdlc_document_standard`
+
+Over time, amendments may be consolidated into revised baseline editions.
+
+------
+
+## 15. References
+
+- `sdlc_framework_overview`
+- `sdlc_governance`
+- `sdlc_document_standard`
+- `servicing_and_maintenance_strategy`
+- `versioning_policy`
+- `abi_policy`
+

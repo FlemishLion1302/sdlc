@@ -1,66 +1,111 @@
-# Project Documentation Standard
+# project_documentation
 
 ## 1. Purpose
 
-This document defines the minimum documentation requirements for any project
-governed by the SDLC framework.
+This document defines the minimum documentation requirements for any project governed by the SDLC framework.
 
-Documentation is considered part of the product. It must be versioned,
-reviewed, and maintained alongside source code.
+Documentation is considered part of the software product and must be versioned, reviewed, and maintained alongside source code.
 
 This standard defines:
-- Required repository-level documents
-- Required `docs/` structure
-- Responsibilities for maintenance
-- CI expectations
 
-This standard is intentionally pragmatic and scalable.
+- required repository-level documents
+- required `docs/` directory structure
+- documentation ownership responsibilities
+- CI expectations for documentation generation and publication
 
+The goal of this policy is to ensure that project documentation remains reliable, discoverable, and aligned with system behavior.
 
----
+------
 
-## 2. Mandatory Repository-Level Files
+## 2. Scope
 
-Every governed repository MUST contain:
+This standard applies to all repositories governed by the SDLC framework.
 
-### 2.1 README.md
+It defines minimum expectations for:
 
-The README must provide:
+- repository-level documentation
+- project documentation structure
+- generated reference documentation
+- ABI documentation where applicable
 
-- Project name
-- One-paragraph description (what it is, not how it works)
-- Build instructions
-- Basic usage example
-- License reference
-- Link to full documentation (docs/)
+Projects may exceed these requirements but must not fall below them.
 
-The README must not attempt to replace proper documentation.
+------
 
+## 3. Authority
 
-### 2.2 LICENSE
+This document forms part of the SDLC documentation governance domain.
 
-A clearly defined project license.
+Its authority derives from:
 
+- `sdlc_framework_overview`
+- `sdlc_governance`
+- `documentation_governance`
 
-### 2.3 CHANGELOG.md
+Engineering standards may impose additional documentation requirements but may not weaken the requirements defined here.
 
-A versioned changelog documenting:
+------
+
+## 4. Normative Language
+
+Normative language follows the definitions established in the SDLC document standard.
+
+The keywords **MUST**, **MUST NOT**, **SHOULD**, and **MAY** have the meanings defined in RFC-2119.
+
+| Keyword  | Meaning               |
+| -------- | --------------------- |
+| MUST     | Mandatory requirement |
+| MUST NOT | Prohibited            |
+| SHOULD   | Strong recommendation |
+| MAY      | Optional behavior     |
+
+------
+
+# 5. Mandatory Repository-Level Files
+
+Every governed repository **MUST** contain the following root-level files.
+
+## 5.1 README.md
+
+The README **MUST** provide:
+
+- project name
+- one-paragraph description (what it is, not how it works)
+- build instructions
+- basic usage example
+- license reference
+- link to full documentation (`docs/`)
+
+The README **MUST NOT** attempt to replace proper documentation.
+
+------
+
+## 5.2 LICENSE
+
+Repositories **MUST** include a clearly defined project license.
+
+------
+
+## 5.3 CHANGELOG.md
+
+Repositories **MUST** include a versioned changelog documenting:
+
 - Added
 - Changed
 - Deprecated
 - Removed
 - Fixed
 
-Semantic version alignment is strongly recommended.
+Alignment with the `versioning_policy` is recommended.
 
+------
 
----
+# 6. Required `docs/` Structure
 
-## 3. Required `docs/` Structure
-
-Every implementation repository MUST contain a `docs/` directory.
+Every implementation repository **MUST** contain a `docs/` directory.
 
 Minimum required structure:
+
 ```
 docs/
 ├─ index.md
@@ -71,186 +116,230 @@ docs/
 ├─ reference/ (generated; do not hand-edit)
 └─ abi/ (generated if applicable)
 ```
-### 3.1 index.md
 
-Landing page for documentation.
-Must describe:
-- System purpose
-- Intended audience
-- Navigation overview
+------
 
+## 6.1 index.md
 
----
+The documentation landing page **MUST** describe:
 
-## 4. Documentation Categories
+- system purpose
+- intended audience
+- navigation overview
 
-### 4.1 Overview Documentation
+------
+
+# 7. Documentation Categories
+
+## 7.1 Overview Documentation
 
 Location:
+
 ```
 docs/overview/
 ```
+
 Purpose:
-Explain *what the system is* and *how it is structured*.
+
+Explain what the system is and how it is structured.
 
 Typical contents:
-- Architecture overview
-- Module boundaries
-- Dependency rules
-- High-level diagrams
 
-This documentation is conceptual and stable.
+- architecture overview
+- module boundaries
+- dependency rules
+- high-level diagrams
 
+Overview documentation is conceptual and relatively stable.
 
----
+------
 
-### 4.2 Usage Documentation
+## 7.2 Usage Documentation
 
 Location:
+
 ```
 docs/usage/
 ```
+
 Purpose:
+
 Explain how to use the system.
 
 Typical contents:
-- Getting started guide
-- Configuration
-- Example workflows
-- Integration patterns
+
+- getting started guide
+- configuration
+- example workflows
+- integration patterns
 
 This documentation is consumer-facing.
 
+------
 
----
-
-### 4.3 Design Documentation
+## 7.3 Design Documentation
 
 Location:
+
 ```
 docs/design/
 ```
+
 Purpose:
+
 Explain key technical decisions and constraints.
 
 Typical contents:
-- Error model
-- Threading model
-- Memory ownership rules
-- Extension mechanisms
 
-Design documentation explains *why*, not just *what*.
+- error model
+- threading model
+- memory ownership rules
+- extension mechanisms
 
+Design documentation explains *why*, not only *what*.
 
----
+------
 
-### 4.4 Developer Documentation
+## 7.4 Developer Documentation
 
 Location:
+
 ```
 docs/dev/
 ```
+
 Purpose:
-Support contributors.
+
+Support contributors and maintainers.
 
 Typical contents:
-- Build matrix
-- Toolchain setup
-- Testing strategy
+
+- build matrix
+- toolchain setup
+- testing strategy
 - CI pipeline overview
-- Contribution guidelines
+- contribution guidelines
 
+------
 
----
-
-### 4.5 Reference Documentation (Generated)
+## 7.5 Reference Documentation (Generated)
 
 Location:
+
 ```
 docs/reference/
 ```
+
 This directory contains generated API reference documentation.
 
 Rules:
-- Must be generated from source (e.g., Doxygen for C++)
-- Must not be manually edited
-- Should be reproducible via CI
-- Should correspond to a specific version/tag
 
+- reference documentation **MUST** be generated from source
+- generated documentation **MUST NOT** be manually edited
+- generation **SHOULD** be reproducible through CI
+- documentation **SHOULD** correspond to a specific version or tag
 
----
+------
 
-### 4.6 ABI Documentation (If Applicable)
+## 7.6 ABI Documentation (If Applicable)
 
 Location:
+
 ```
 docs/abi/
 ```
-Required only for:
-- Shared libraries
-- Components with ABI stability guarantees
 
-Must contain:
-- ABI baseline snapshots (per release line)
+Required only for:
+
+- shared libraries
+- components with ABI stability guarantees
+
+This directory **MUST** contain:
+
+- ABI baseline snapshots
 - ABI comparison reports
 
-ABI documentation must be generated by tooling and never manually written.
+ABI documentation **MUST** be generated by tooling and **MUST NOT** be manually written.
 
+------
 
----
+# 8. CI Expectations
 
-## 5. CI Expectations
+Projects **SHOULD**:
 
-Projects SHOULD:
+- generate API reference documentation automatically in CI
+- publish generated documentation on release
+- fail builds when documentation generation fails
+- optionally enforce documentation coverage for public APIs
 
-- Automatically generate API reference documentation in CI.
-- Archive or publish generated documentation on release.
-- Fail builds if documentation generation fails.
-- Optionally enforce documentation coverage for public APIs.
+Projects with ABI guarantees **SHOULD**:
 
-Projects with ABI guarantees SHOULD:
+- generate ABI baselines on release
+- compare ABI changes in CI for stable branches
 
-- Generate ABI baselines on release.
-- Compare ABI changes in CI for stable branches.
+------
 
+# 9. Ownership and Maintenance
 
----
+Documentation is owned by the same maintainers responsible for the code.
 
-## 6. Ownership and Maintenance
+The following rules apply:
 
-Documentation is owned by the same maintainers as the code.
+- code changes that alter public behavior **MUST** update documentation
+- public API changes **MUST** update reference documentation comments
+- breaking changes **MUST** update `CHANGELOG.md`
+- deprecated features **MUST** be documented
 
-Rules:
-- Code changes that alter public behavior MUST update documentation.
-- Public API changes MUST update reference documentation comments.
-- Breaking changes MUST update CHANGELOG.md.
-- Deprecated features MUST be documented.
+------
 
-
----
-
-## 7. Pragmatic Scope
+# 10. Guidance
 
 This standard intentionally avoids:
-- Mandating a specific documentation toolchain
-- Mandating diagram tools
-- Over-specifying formatting
 
-Projects may exceed this standard.
+- mandating a specific documentation toolchain
+- mandating diagram tools
+- over-specifying formatting
 
-They may not fall below it.
+Projects **MAY** adopt additional documentation conventions that suit their needs.
 
+------
 
----
+# 11. Compliance Summary
 
-## 8. Compliance Summary
+A repository is compliant with this standard if:
 
-A project is considered compliant if:
-
-- Mandatory root documents exist.
-- `docs/` structure exists.
-- Reference documentation is generated.
-- Documentation is version-controlled.
-- Documentation evolves with code.
+- mandatory root documents exist
+- the required `docs/` structure exists
+- reference documentation is generated
+- documentation is version-controlled
+- documentation evolves with code
 
 Failure to meet these requirements constitutes SDLC non-compliance.
+
+------
+
+# 12. Amendment and Evolution
+
+Changes to this document follow the SDLC amendment model.
+
+Amendments **SHOULD** normally be introduced through amendment documents rather than modifying the baseline directly.
+
+Amendment mechanics are defined in:
+
+- `sdlc_governance`
+- `sdlc_document_standard`
+
+Over time, amendments may be consolidated into revised baseline editions.
+
+------
+
+# 13. References
+
+- `sdlc_framework_overview`
+- `sdlc_governance`
+- `sdlc_document_standard`
+- `servicing_and_maintenance_strategy`
+- `documentation_governance`
+- `versioning_policy`
+- `deprecation_policy`
+
