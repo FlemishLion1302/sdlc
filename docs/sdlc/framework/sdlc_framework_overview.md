@@ -48,12 +48,12 @@ Each domain groups documents addressing a specific aspect of engineering governa
 The principal SDLC domains are:
 ```
 governance
-architecture
-standards
-guidelines
-documentation
-tooling
-templates
+ architecture
+ standards
+ guidelines
+ documentation
+ tooling
+ template
 ```
 Additional domains may be introduced as the SDLC framework evolves.
 
