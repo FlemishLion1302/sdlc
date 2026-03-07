@@ -1,5 +1,7 @@
 # sdlc_framework_overview
 
+Document Identifier: SDLC-FRM-001
+
 ## 1. Purpose
 
 This document provides an overview of the Software Development Lifecycle (SDLC) framework.
@@ -62,6 +64,12 @@ Additional domains may be introduced as the SDLC framework evolves.
 Within each domain, related documents may collectively form a **specification** describing a particular area of engineering practice.
 
 For example, multiple documents in the standards and guidelines domains may together define a language engineering specification.
+
+Specifications defined within the SDLC framework SHOULD define a specification root document.
+
+The specification root document serves as the structural entry point
+for the specification and identifies the governed documents that
+collectively define that specification.
 
 ------
 
@@ -288,7 +296,25 @@ A specification may include documents from multiple SDLC domains, such as standa
 
 Specifications often contain a **specification root document** that describes the scope and boundaries of the specification.
 
-------
+---
+
+## Specification Root Document
+
+A document that defines the scope and structure of a specification.
+
+A specification root document identifies the documents that collectively
+constitute the specification and may describe their relationships and roles.
+
+A specification root document typically includes:
+
+- the purpose and scope of the specification
+- the list of baseline documents within the specification
+- supporting documents or policies associated with the specification
+
+Specification root documents do not normally define detailed engineering rules.
+Instead, they organize the documents that collectively define the specification.
+
+---
 
 ## Normative Document
 
@@ -343,6 +369,21 @@ A statement defined by an SDLC document that expresses a requirement, prohibitio
 A stable identifier assigned to a rule to provide a persistent reference point for amendments and cross-references.
 
 Rule identifiers SHOULD remain stable even if document structure or section numbering changes.
+
+---
+
+## Document Identifier
+
+A stable identifier assigned to an SDLC document.
+
+Document identifiers provide a persistent reference that remains valid even if
+the document's filename, location, or title changes.
+
+Document identifiers SHOULD remain stable across revisions, amendments,
+and consolidations.
+
+A document identifier may be used when referencing a document in governance
+discussions, amendments, or specification definitions.
 
 ------
 

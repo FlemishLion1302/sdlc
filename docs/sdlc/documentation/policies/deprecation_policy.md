@@ -1,5 +1,7 @@
 # deprecation_policy
 
+Document Identifier: SDLC-DOC-005
+
 ## 1. Purpose
 
 This document defines how SDLC-governed projects deprecate and remove public APIs.

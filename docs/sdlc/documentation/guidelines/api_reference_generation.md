@@ -1,5 +1,7 @@
 # api_reference_generation
 
+Document Identifier: SDLC-DOC-004
+
 ## 1. Purpose
 
 This document defines requirements for generating API reference documentation from source code within SDLC-governed repositories.

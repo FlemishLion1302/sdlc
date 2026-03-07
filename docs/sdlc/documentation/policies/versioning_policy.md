@@ -1,5 +1,7 @@
 # versioning_policy
 
+Document Identifier: SDLC-DOC-006
+
 ## 1. Purpose
 
 This document defines how SDLC-governed projects version their releases and how version numbers communicate compatibility expectations.
