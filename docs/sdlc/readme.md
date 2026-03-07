@@ -1,4 +1,4 @@
-# Engineering Governance Repository
+# 11111Engineering Governance Repository
 
 This repository is the authoritative source of engineering governance artifacts used by the SDLC framework.
 
@@ -49,8 +49,8 @@ Examples include:
 Located under:
 
 ```
-docs/sdlc/engineering/standards/
-docs/sdlc/engineering/guidelines/
+docs/sdlc/standards/
+docs/sdlc/guidelines/
 ```
 
 These specifications define language-level engineering practices.
@@ -70,8 +70,8 @@ Examples include:
 Located under:
 
 ```
-docs/sdlc/engineering/taxonomy/
-docs/sdlc/engineering/layering/
+docs/sdlc/architecture/taxonomy/
+docs/sdlc/architecture/layering/
 ```
 
 These specifications define structural constraints for software systems.
@@ -151,12 +151,12 @@ The repository is organized according to the SDLC governance domains.
 ```
 docs/sdlc/
 ├─ framework/
-├─ engineering/
-│  ├─ governance/
-│  ├─ standards/
-│  ├─ guidelines/
+├─ architecture
 │  ├─ layering/
 │  └─ taxonomy/
+├─ governance/
+├─ standards/
+├─ guidelines/
 ├─ documentation/
 │  ├─ governance/
 │  ├─ guidelines/
