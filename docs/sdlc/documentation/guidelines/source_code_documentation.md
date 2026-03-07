@@ -1,34 +1,49 @@
-# project_documentation
+# source_code_documentation
 
 ## 1. Purpose
 
-This document defines the minimum documentation requirements for any project governed by the SDLC framework.
+This document defines the minimum requirements for documenting source code within SDLC-governed repositories.
 
-Documentation is considered part of the software product and must be versioned, reviewed, and maintained alongside source code.
+Source documentation serves three primary purposes:
 
-This standard defines:
+- define the public contract of the system
+- communicate usage expectations and constraints
+- enable automated API reference generation
 
-- required repository-level documents
-- required `docs/` directory structure
-- documentation ownership responsibilities
-- CI expectations for documentation generation and publication
-
-The goal of this policy is to ensure that project documentation remains reliable, discoverable, and aligned with system behavior.
+Documentation embedded in source code is considered part of the implementation and must evolve with the code it describes.
 
 ------
 
 ## 2. Scope
 
-This standard applies to all repositories governed by the SDLC framework.
+This standard governs documentation embedded within source code.
 
-It defines minimum expectations for:
+It applies to:
 
-- repository-level documentation
-- project documentation structure
-- generated reference documentation
-- ABI documentation where applicable
+- public headers
+- public classes
+- public functions
+- public enums
+- public templates
+- public macros (if exposed)
+- exported C interfaces
 
-Projects may exceed these requirements but must not fall below them.
+This standard does **not** require extensive documentation of:
+
+- private implementation details
+- internal helper functions
+- anonymous namespaces
+- test-only code
+
+Over-documentation of private code is discouraged.
+
+Repository-level documentation requirements are defined in:
+
+- `project_documentation`
+
+API reference generation is governed by:
+
+- `api_reference_generation`
 
 ------
 
@@ -42,304 +57,211 @@ Its authority derives from:
 - `sdlc_governance`
 - `documentation_governance`
 
-Engineering standards may impose additional documentation requirements but may not weaken the requirements defined here.
+Engineering standards may impose stricter documentation requirements but may not weaken the requirements defined here.
 
 ------
 
-## 4. Normative Language
+## 4. Public API Documentation Requirements
 
-Normative language follows the definitions established in the SDLC document standard.
+Every publicly exposed type or function **MUST** include documentation.
 
-The keywords **MUST**, **MUST NOT**, **SHOULD**, and **MAY** have the meanings defined in RFC-2119.
+Public APIs include:
 
-| Keyword  | Meaning               |
-| -------- | --------------------- |
-| MUST     | Mandatory requirement |
-| MUST NOT | Prohibited            |
-| SHOULD   | Strong recommendation |
-| MAY      | Optional behavior     |
+- exported classes
+- public methods
+- public functions
+- externally consumable interfaces
+- public templates
+- exported enumerations
 
-------
-
-# 5. Mandatory Repository-Level Files
-
-Every governed repository **MUST** contain the following root-level files.
-
-## 5.1 README.md
-
-The README **MUST** provide:
-
-- project name
-- one-paragraph description (what it is, not how it works)
-- build instructions
-- basic usage example
-- license reference
-- link to full documentation (`docs/`)
-
-The README **MUST NOT** attempt to replace proper documentation.
+Documentation must describe **behavior and contract**, not implementation details.
 
 ------
 
-## 5.2 LICENSE
+## 5. Documentation Elements
 
-Repositories **MUST** include a clearly defined project license.
+Public APIs **MUST** include the following information where applicable.
 
-------
+### 5.1 Summary
 
-## 5.3 CHANGELOG.md
+A concise description explaining what the entity does.
 
-Repositories **MUST** include a versioned changelog documenting:
-
-- Added
-- Changed
-- Deprecated
-- Removed
-- Fixed
-
-Alignment with the `versioning_policy` is recommended.
+The summary must describe behavior rather than implementation.
 
 ------
 
-# 6. Required `docs/` Structure
+### 5.2 Contract Requirements
 
-Every implementation repository **MUST** contain a `docs/` directory.
+Documentation **MUST** define important behavioral constraints including:
 
-Minimum required structure:
+- preconditions
+- postconditions
+- ownership or lifetime expectations
+- thread-safety guarantees
+- error behavior
 
-```
-docs/
-├─ index.md
-├─ overview/
-├─ usage/
-├─ design/
-├─ dev/
-├─ reference/ (generated; do not hand-edit)
-└─ abi/ (generated if applicable)
-```
+Implicit but critical rules must be made explicit.
 
 ------
 
-## 6.1 index.md
+## 6. Function Documentation Requirements
 
-The documentation landing page **MUST** describe:
+Public functions **MUST** document:
 
-- system purpose
-- intended audience
-- navigation overview
+- purpose
+- parameters (when semantics are non-trivial)
+- return value semantics
+- error conditions
+- side effects
+- thread-safety guarantees if applicable
 
-------
-
-# 7. Documentation Categories
-
-## 7.1 Overview Documentation
-
-Location:
-
-```
-docs/overview/
-```
-
-Purpose:
-
-Explain what the system is and how it is structured.
-
-Typical contents:
-
-- architecture overview
-- module boundaries
-- dependency rules
-- high-level diagrams
-
-Overview documentation is conceptual and relatively stable.
+Documentation should describe semantics rather than restating obvious type information.
 
 ------
 
-## 7.2 Usage Documentation
+## 7. Class Documentation Requirements
 
-Location:
+Public classes **MUST** document:
 
-```
-docs/usage/
-```
+- high-level purpose
+- invariants
+- ownership model
+- thread-safety guarantees
+- expected usage patterns
 
-Purpose:
-
-Explain how to use the system.
-
-Typical contents:
-
-- getting started guide
-- configuration
-- example workflows
-- integration patterns
-
-This documentation is consumer-facing.
+If misuse is possible, documentation should describe correct usage.
 
 ------
 
-## 7.3 Design Documentation
+## 8. Enum Documentation
 
-Location:
+Public enums **MUST** document:
 
-```
-docs/design/
-```
+- what the enumeration represents
+- meaning of each enumerator
+- whether additional enumerators may appear in future versions
 
-Purpose:
-
-Explain key technical decisions and constraints.
-
-Typical contents:
-
-- error model
-- threading model
-- memory ownership rules
-- extension mechanisms
-
-Design documentation explains *why*, not only *what*.
+Enums forming part of ABI contracts must clearly indicate stability expectations.
 
 ------
 
-## 7.4 Developer Documentation
+## 9. Templates and Generic Code
 
-Location:
+Templates must document:
 
-```
-docs/dev/
-```
+- required type constraints
+- expected semantics of template parameters
+- complexity guarantees when relevant
 
-Purpose:
-
-Support contributors and maintainers.
-
-Typical contents:
-
-- build matrix
-- toolchain setup
-- testing strategy
-- CI pipeline overview
-- contribution guidelines
+Static assertions should not be the sole mechanism used to communicate constraints.
 
 ------
 
-## 7.5 Reference Documentation (Generated)
+## 10. Error Model Documentation
 
-Location:
+Projects **MUST** clearly document their error model.
 
-```
-docs/reference/
-```
+Typical models include:
 
-This directory contains generated API reference documentation.
+- exceptions
+- error codes or status objects
+- `expected`-style return types
+- a mixed model when explicitly defined
 
-Rules:
-
-- reference documentation **MUST** be generated from source
-- generated documentation **MUST NOT** be manually edited
-- generation **SHOULD** be reproducible through CI
-- documentation **SHOULD** correspond to a specific version or tag
+Public APIs must behave consistently with the documented error model.
 
 ------
 
-## 7.6 ABI Documentation (If Applicable)
+## 11. Thread-Safety Documentation
 
-Location:
+If a component:
 
-```
-docs/abi/
-```
+- is thread-safe
+- is conditionally thread-safe
+- is not thread-safe
 
-Required only for:
+this must be explicitly documented.
 
-- shared libraries
-- components with ABI stability guarantees
-
-This directory **MUST** contain:
-
-- ABI baseline snapshots
-- ABI comparison reports
-
-ABI documentation **MUST** be generated by tooling and **MUST NOT** be manually written.
+Absence of documentation implies the component is **not thread-safe**.
 
 ------
 
-# 8. CI Expectations
+## 12. Documentation Format
 
-Projects **SHOULD**:
+Projects **SHOULD** use a structured documentation format compatible with automated tooling.
 
-- generate API reference documentation automatically in CI
-- publish generated documentation on release
-- fail builds when documentation generation fails
-- optionally enforce documentation coverage for public APIs
+Typical examples include Doxygen-style documentation comments.
 
-Projects with ABI guarantees **SHOULD**:
+Common structure includes:
 
-- generate ABI baselines on release
-- compare ABI changes in CI for stable branches
+- summary line
+- parameter descriptions
+- return value description
+- contract notes
 
-------
-
-# 9. Ownership and Maintenance
-
-Documentation is owned by the same maintainers responsible for the code.
-
-The following rules apply:
-
-- code changes that alter public behavior **MUST** update documentation
-- public API changes **MUST** update reference documentation comments
-- breaking changes **MUST** update `CHANGELOG.md`
-- deprecated features **MUST** be documented
+The SDLC does not mandate a specific documentation generator.
 
 ------
 
-# 10. Guidance
+## 13. Prohibited Practices
 
-This standard intentionally avoids:
+The following practices are prohibited:
 
-- mandating a specific documentation toolchain
-- mandating diagram tools
-- over-specifying formatting
-
-Projects **MAY** adopt additional documentation conventions that suit their needs.
-
-------
-
-# 11. Compliance Summary
-
-A repository is compliant with this standard if:
-
-- mandatory root documents exist
-- the required `docs/` structure exists
-- reference documentation is generated
-- documentation is version-controlled
-- documentation evolves with code
-
-Failure to meet these requirements constitutes SDLC non-compliance.
+- copying implementation code into documentation
+- documenting private implementation details unnecessarily
+- writing documentation that contradicts behavior
+- allowing stale documentation after behavior changes
+- using documentation as a substitute for clear API design
 
 ------
 
-# 12. Amendment and Evolution
+## 14. CI and Review Expectations
+
+Projects **SHOULD** treat undocumented public APIs as review findings.
+
+Projects may optionally:
+
+- fail CI for undocumented public symbols
+- enforce documentation coverage for public APIs
+- require documentation updates when public behavior changes
+
+Documentation correctness must be evaluated during code review.
+
+------
+
+## 15. Minimal Compliance Checklist
+
+A repository is compliant with this specification if:
+
+- public APIs are documented
+- the error model is documented
+- thread-safety guarantees are documented
+- behavioral contracts are explicit
+- documentation remains synchronized with implementation behavior
+
+Failure to document public APIs constitutes SDLC non-compliance.
+
+------
+
+## 16. Amendment and Evolution
 
 Changes to this document follow the SDLC amendment model.
-
-Amendments **SHOULD** normally be introduced through amendment documents rather than modifying the baseline directly.
 
 Amendment mechanics are defined in:
 
 - `sdlc_governance`
 - `sdlc_document_standard`
 
-Over time, amendments may be consolidated into revised baseline editions.
+Amendments may later be consolidated into revised baseline documents.
 
 ------
 
-# 13. References
+## 17. References
 
 - `sdlc_framework_overview`
 - `sdlc_governance`
 - `sdlc_document_standard`
-- `servicing_and_maintenance_strategy`
 - `documentation_governance`
-- `versioning_policy`
-- `deprecation_policy`
+- `project_documentation`
+- `api_reference_generation`
 

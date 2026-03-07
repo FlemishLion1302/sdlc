@@ -1,112 +1,153 @@
 # Engineering Governance Repository
 
-This repository is the authoritative source of engineering governance artifacts.
+This repository is the authoritative source of engineering governance artifacts used by the SDLC framework.
 
-All engineering standards, guidelines, architectural policies, documentation governance,
-and tooling governance are defined here.
+It defines the standards, guidelines, architectural policies, documentation governance, and tooling conventions that govern software development within the organization.
 
-Projects MUST reference a tagged version of this repository when adopting governance.
+Projects governed by the SDLC **MUST reference a tagged version of this repository** when adopting engineering governance.
 
-Governance artifacts are immutable and versioned.
+Governance artifacts are versioned and immutable once released.
 
+------
 
----
+# SDLC Framework
+
+The Software Development Lifecycle (SDLC) framework defines the governance structure used by this repository.
+
+The framework describes:
+
+- SDLC governance domains
+- authority relationships between domains
+- terminology used across SDLC specifications
+- amendment and consolidation mechanics
+
+The SDLC framework overview is defined in:
+
+```
+docs/sdlc/framework/sdlc_framework_overview.md
+```
+
+This document serves as the entry point for understanding the SDLC governance model.
+
+------
 
 # Governance Domains
 
-Engineering governance is structured into the following domains:
+Engineering governance artifacts are organized into several domains.
 
-## 1. Language Standards
+Each domain groups related specifications that govern a particular aspect of engineering practice.
 
-Defines mandatory coding standards and review-enforced guidance.
+## Language Standards
 
-- C++ Coding Standard (CI-enforced)
-- C++ Engineering Guidelines (review-enforced)
+Defines mandatory programming standards and recommended engineering practices.
+
+Examples include:
+
+- C++ Coding Standard
+- C++ Engineering Guidelines
 
 Located under:
+
 ```
 docs/sdlc/engineering/standards/
 docs/sdlc/engineering/guidelines/
 ```
-These define structural correctness and language-level expectations.
 
+These specifications define language-level engineering practices.
 
----
+------
 
-## 2. Architecture and Taxonomy
+## Architecture and Taxonomy
 
-Defines system structuring rules and dependency direction.
+Defines system structure, component boundaries, and dependency rules.
 
-- Taxonomy definitions
-- Layering rules
-- Dependency policies
+Examples include:
+
+- architectural layering rules
+- platform taxonomy definitions
+- dependency direction policies
 
 Located under:
+
 ```
 docs/sdlc/engineering/taxonomy/
 docs/sdlc/engineering/layering/
 ```
-These define architectural integrity.
 
+These specifications define structural constraints for software systems.
 
----
+------
 
-## 3. Documentation Governance
+## Documentation Governance
 
-Defines documentation and compatibility policy requirements.
+Defines requirements governing how software systems and APIs are documented.
 
-Includes:
+Examples include:
 
-- Project documentation requirements
-- Source code documentation standards
-- API reference generation policy
-- ABI stability policy
-- Deprecation policy
-- Versioning policy
+- project documentation requirements
+- source code documentation standards
+- API reference generation requirements
+- deprecation policy
+- versioning policy
 
 Located under:
+
 ```
 docs/sdlc/documentation/
 ```
-These define how projects describe, publish, and evolve their contracts.
 
+These specifications define how software systems describe and evolve their public contracts.
 
----
+------
 
-## 4. Tooling Governance
+## Tooling Governance
 
-Defines automation structure and reproducibility expectations.
+Defines automation conventions and repository structure expectations.
 
-Includes:
+Examples include:
 
-- Tooling and automation rules
-- Repository layout conventions
+- tooling integration expectations
+- repository layout conventions
+- automation reproducibility rules
 
 Located under:
+
 ```
 docs/sdlc/tooling/
 ```
-These define how projects structure and execute automation.
 
+These specifications define how engineering processes are automated and executed.
 
----
+------
 
 # Governance Hierarchy
 
-Governance hierarchy and immutability rules are defined in:
+The authority hierarchy governing SDLC domains is defined in:
+
+```
+docs/sdlc/framework/sdlc_framework_overview.md
+```
+
+Engineering governance documents operate within that hierarchy.
+
+The lifecycle and amendment mechanics governing engineering specifications are defined in:
+
 ```
 docs/sdlc/engineering/governance/engineering_governance.md
 ```
-Change mechanics (delta lifecycle, version precedence, rebase policy) are defined in:
+
+The servicing and consolidation strategy for SDLC documents is defined in:
+
 ```
 docs/sdlc/framework/servicing_and_maintenance_strategy.md
 ```
-Governance artifacts are immutable once tagged.
 
-
----
+------
 
 # Repository Structure
+
+The repository is organized according to the SDLC governance domains.
+
 ```
 docs/sdlc/
 ├─ framework/
@@ -123,36 +164,39 @@ docs/sdlc/
 ├─ tooling/
 └─ templates/
 ```
----
+
+------
 
 # Adoption by Projects
 
-Projects MUST:
+Projects adopting SDLC governance **MUST**:
 
-1. Reference a tagged version (e.g., `v1.0.1`), not `master`.
-2. Declare the adopted governance version explicitly.
-3. Treat governance artifacts as immutable.
+1. Reference a tagged version of this repository (for example `v1.0.1`).
+2. Declare the adopted governance version in their repository documentation.
+3. Treat governance artifacts as immutable once adopted.
 
----
+Projects **MUST NOT** reference floating branches such as `master`.
+
+------
 
 # Versioning Model
 
+Governance artifacts evolve through versioned releases.
+
 - Tags represent governance release points.
-- Governance evolves via versioned deltas.
-- Rebase events consolidate baselines.
-- Tags SHOULD be created after significant governance changes.
-- Projects must not reference floating branches.
+- Changes are introduced through amendment documents.
+- Periodic consolidation revisions may update baseline documents.
+- Projects should adopt governance versions intentionally rather than automatically.
 
-
----
+------
 
 # Immutability
 
-Governance documents are immutable once released.
+Governance artifacts are immutable once released.
 
-Changes MUST occur through:
+Changes to released governance specifications must occur through:
 
-- A versioned delta, or
-- A formal rebase event.
+- versioned amendments, or
+- formal consolidation revisions
 
-Informal edits to released artifacts are prohibited.
+Direct modification of previously released artifacts is prohibited.

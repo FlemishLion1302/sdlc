@@ -4,15 +4,15 @@
 
 This document defines the governance model for engineering specifications maintained within the SDLC framework.
 
-It establishes the authority relationships, enforcement posture, and evolution model for engineering standards, guidelines, and architectural policy documents.
+It establishes the lifecycle, enforcement posture, and evolution model for engineering standards, guidelines, and architectural policy documents.
 
-Engineering governance ensures that engineering policy artifacts evolve in a controlled and predictable manner while preserving the stability and clarity of the engineering specification.
+Engineering governance ensures that engineering policy artifacts evolve in a controlled and predictable manner while preserving the stability and clarity of engineering specifications.
 
 ------
 
 ## 2. Scope
 
-This document governs the lifecycle and authority of engineering policy documents within the SDLC engineering domains.
+This document governs the lifecycle and evolution of engineering policy documents within the SDLC engineering domains.
 
 These include:
 
@@ -33,6 +33,8 @@ The structural organization and authority hierarchy of SDLC domains are defined 
 
 - `sdlc_framework_overview`
 
+This document governs how engineering policy artifacts are created, amended, and maintained within those domains.
+
 ------
 
 ## 3. Governance Principles
@@ -45,7 +47,7 @@ Engineering rules should be deterministic and enforceable.
 
 Where practical, standards should favor rules that can be verified through automated tooling and CI enforcement.
 
-Guidelines may provide additional engineering guidance but should not weaken or contradict deterministic standards.
+Guidelines may provide additional engineering guidance but must not weaken or contradict deterministic standards.
 
 ------
 
@@ -67,9 +69,11 @@ Typical categories include:
 
 - standards
 - guidelines
-- architectural policy documents
+- architectural documents
 
 Each document category serves a distinct role within the engineering specification.
+
+The relative authority of these document categories is defined by the SDLC domain hierarchy described in `sdlc_framework_overview`.
 
 ------
 
@@ -81,21 +85,23 @@ Changes to engineering standards and guidelines should be introduced through ver
 
 ------
 
-## 4. Authority Hierarchy
+## 4. Authority Model
 
-Engineering policy documents follow a defined authority hierarchy.
+Engineering policy documents operate within the SDLC domain authority hierarchy defined by `sdlc_framework_overview`.
 
-When two documents conflict, the document higher in the hierarchy takes precedence.
+That hierarchy defines precedence between governance, architecture, standards, guidelines, and other SDLC domains.
 
-Within the engineering specification, the typical hierarchy is:
+Engineering policy documents must remain consistent with higher-authority domains defined by the SDLC framework.
 
-1. Coding Standard
-2. Engineering Guidelines
-3. Architectural taxonomy and supporting engineering documents
+Within engineering specifications:
 
-This hierarchy defines relative authority among engineering governance artifacts within the standards and guidelines domains.
+- architectural documents define structural principles and taxonomy
+- standards define mandatory engineering practices
+- guidelines provide recommended engineering practices
 
-It does not override the SDLC domain authority hierarchy defined in `sdlc_framework_overview`.
+Standards and guidelines must remain consistent with architectural constraints defined by architecture documents.
+
+Guidelines must remain consistent with both architecture and standards.
 
 ------
 
@@ -130,6 +136,8 @@ Deviation from guidelines may be acceptable when justified by design considerati
 Architectural documents define structural principles and engineering taxonomy used across projects.
 
 These documents provide shared conceptual frameworks and definitions that support engineering standards and guidelines.
+
+Architectural constraints may be enforced through architectural review, repository structure rules, or dependency enforcement tooling.
 
 ------
 
@@ -188,7 +196,7 @@ This governance document defines the lifecycle and authority of engineering poli
 
 It does not itself define coding rules or engineering practices.
 
-Those rules are defined in the engineering specification documents such as:
+Those rules are defined in engineering specification documents such as:
 
 - `cpp_coding_standard`
 - `cpp_engineering_guidelines`

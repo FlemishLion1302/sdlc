@@ -47,7 +47,7 @@ Each domain groups documents addressing a specific aspect of engineering governa
 
 The principal SDLC domains are:
 
-```id="0h78ht"
+```
 governance
 architecture
 standards
@@ -71,7 +71,7 @@ For example, multiple documents in the standards and guidelines domains may toge
 
 The governance domain defines the policies and processes governing engineering practices and the evolution of the SDLC framework itself.
 
-Governance documents establish the authority model for all other SDLC domains.
+Governance documents establish the authority model for all other SDLC domains and define how engineering policy is created, amended, and maintained.
 
 Examples include:
 
@@ -115,6 +115,8 @@ The guidelines domain provides recommended engineering practices.
 
 Guidelines describe preferred approaches that support maintainability, consistency, and engineering quality.
 
+Guidelines support the application of architecture and standards but do not define mandatory requirements.
+
 Guidelines are advisory and may be deviated from when justified.
 
 Guidelines documents are typically **informational**.
@@ -123,9 +125,11 @@ Guidelines documents are typically **informational**.
 
 ## documentation
 
-The documentation domain defines rules governing how software systems and source code are documented.
+The documentation domain defines rules and guidance governing how software systems, APIs, and engineering artifacts are documented.
 
 These documents ensure that APIs, systems, and engineering artifacts are described consistently and clearly.
+
+Documentation documents may contain normative requirements governing **documentation practices**, but they do not define engineering or architectural rules.
 
 Documentation documents may be **normative or informational** depending on their purpose.
 
@@ -157,7 +161,7 @@ When conflicts arise between documents from different domains, the document belo
 
 The SDLC authority hierarchy is:
 
-```id="bld4ow"
+```
 governance
    ↓
 architecture
@@ -173,11 +177,19 @@ tooling
 templates
 ```
 
+Domains higher in the hierarchy define constraints that must be respected by documents in lower domains.
+
+Normative engineering requirements are primarily defined by the **governance**, **architecture**, and **standards** domains.
+
+The **guidelines** domain provides advisory practices intended to support the application of standards and architecture but does not define mandatory requirements.
+
+The documentation, tooling, and templates domains support the application of SDLC rules but must remain consistent with higher-authority domains.
+
 ------
 
 # 7. Authority Rules
 
-The following rules apply when interpreting SDLC documents.
+The following rules clarify how the SDLC domain hierarchy is applied when interpreting SDLC documents.
 
 ## governance precedence
 
@@ -207,15 +219,15 @@ Standards take precedence over guidelines.
 
 Guidelines provide recommended engineering practices.
 
-Guidelines do not override standards or architecture rules.
+Guidelines MUST remain consistent with architecture and standards and MUST NOT contradict normative requirements defined by higher-authority domains.
 
 ------
 
 ## documentation and tooling
 
-Documentation and tooling domains support the application of SDLC rules.
+Documentation, tooling, and templates support the application of SDLC rules.
 
-These domains must remain consistent with governance, architecture, and standards.
+These domains must remain consistent with governance, architecture, standards, and guidelines.
 
 ------
 
@@ -322,9 +334,7 @@ The act of incorporating the current authoritative state of one or more amended 
 
 ## Rule
 
-A normative statement defined by an SDLC document.
-
-A rule expresses a requirement, prohibition, recommendation, or permission using the normative language defined by the SDLC.
+A statement defined by an SDLC document that expresses a requirement, prohibition, recommendation, or permission using the normative language defined by the SDLC.
 
 ------
 
@@ -377,4 +387,3 @@ The top-level directory of a project.
 - engineering_governance
 - sdlc_document_standard
 - servicing_and_maintenance_strategy
-
