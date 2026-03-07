@@ -1,34 +1,41 @@
-# project_documentation
+# api_reference_generation
 
 ## 1. Purpose
 
-This document defines the minimum documentation requirements for any project governed by the SDLC framework.
+This document defines requirements for generating API reference documentation from source code within SDLC-governed repositories.
 
-Documentation is considered part of the software product and must be versioned, reviewed, and maintained alongside source code.
+API reference documentation provides a structured, navigable description of public APIs derived from source-level documentation.
 
-This standard defines:
+The purpose of this specification is to ensure that reference documentation:
 
-- required repository-level documents
-- required `docs/` directory structure
-- documentation ownership responsibilities
-- CI expectations for documentation generation and publication
-
-The goal of this policy is to ensure that project documentation remains reliable, discoverable, and aligned with system behavior.
+- is generated automatically from source code
+- remains synchronized with the implementation
+- is reproducible through automated tooling
+- is consistently published alongside project documentation
 
 ------
 
 ## 2. Scope
 
-This standard applies to all repositories governed by the SDLC framework.
+This specification governs the generation of API reference documentation from source code.
 
-It defines minimum expectations for:
+It defines expectations for:
 
-- repository-level documentation
-- project documentation structure
-- generated reference documentation
-- ABI documentation where applicable
+- documentation extraction from source comments
+- generation tooling
+- reproducibility of generated documentation
+- CI integration
+- publication of generated reference artifacts
 
-Projects may exceed these requirements but must not fall below them.
+This document does **not** define how APIs must be documented in source code.
+
+Source-level documentation requirements are defined in:
+
+- `source_code_documentation`
+
+Repository documentation structure is defined in:
+
+- `project_documentation`
 
 ------
 
@@ -42,304 +49,177 @@ Its authority derives from:
 - `sdlc_governance`
 - `documentation_governance`
 
-Engineering standards may impose additional documentation requirements but may not weaken the requirements defined here.
+Projects may introduce stricter generation policies but may not weaken the requirements defined here.
 
 ------
 
-## 4. Normative Language
+## 4. Documentation Source
 
-Normative language follows the definitions established in the SDLC document standard.
+API reference documentation **MUST** be generated from source code documentation.
 
-The keywords **MUST**, **MUST NOT**, **SHOULD**, and **MAY** have the meanings defined in RFC-2119.
+The authoritative source for API documentation is therefore:
 
-| Keyword  | Meaning               |
-| -------- | --------------------- |
-| MUST     | Mandatory requirement |
-| MUST NOT | Prohibited            |
-| SHOULD   | Strong recommendation |
-| MAY      | Optional behavior     |
+- documentation comments embedded in source code
+- public interface definitions
 
-------
+Projects **MUST NOT** manually maintain duplicate API documentation in repository documentation.
 
-# 5. Mandatory Repository-Level Files
-
-Every governed repository **MUST** contain the following root-level files.
-
-## 5.1 README.md
-
-The README **MUST** provide:
-
-- project name
-- one-paragraph description (what it is, not how it works)
-- build instructions
-- basic usage example
-- license reference
-- link to full documentation (`docs/`)
-
-The README **MUST NOT** attempt to replace proper documentation.
+Manual duplication leads to documentation drift and is prohibited.
 
 ------
 
-## 5.2 LICENSE
+## 5. Generation Tooling
 
-Repositories **MUST** include a clearly defined project license.
+Projects **SHOULD** use documentation generators capable of extracting structured documentation from source code.
 
-------
+Typical examples include:
 
-## 5.3 CHANGELOG.md
+- Doxygen
+- Sphinx with language extensions
+- language-specific documentation generators
 
-Repositories **MUST** include a versioned changelog documenting:
+The SDLC framework does not mandate a specific documentation tool.
 
-- Added
-- Changed
-- Deprecated
-- Removed
-- Fixed
+However, the selected tool **MUST** support:
 
-Alignment with the `versioning_policy` is recommended.
-
-------
-
-# 6. Required `docs/` Structure
-
-Every implementation repository **MUST** contain a `docs/` directory.
-
-Minimum required structure:
-
-```
-docs/
-├─ index.md
-├─ overview/
-├─ usage/
-├─ design/
-├─ dev/
-├─ reference/ (generated; do not hand-edit)
-└─ abi/ (generated if applicable)
-```
+- structured documentation comments
+- automated generation
+- reproducible output
 
 ------
 
-## 6.1 index.md
+## 6. Generation Requirements
 
-The documentation landing page **MUST** describe:
+Documentation generation **SHOULD** be deterministic.
 
-- system purpose
-- intended audience
-- navigation overview
+Running the documentation generation process multiple times with identical inputs should produce equivalent outputs.
 
-------
+Generation pipelines **SHOULD**:
 
-# 7. Documentation Categories
-
-## 7.1 Overview Documentation
-
-Location:
-
-```
-docs/overview/
-```
-
-Purpose:
-
-Explain what the system is and how it is structured.
-
-Typical contents:
-
-- architecture overview
-- module boundaries
-- dependency rules
-- high-level diagrams
-
-Overview documentation is conceptual and relatively stable.
+- operate without manual intervention
+- run as part of automated CI workflows
+- produce stable documentation artifacts
 
 ------
 
-## 7.2 Usage Documentation
+## 7. Output Structure
 
-Location:
+Generated reference documentation **MUST** be placed in the repository documentation structure defined by `project_documentation`.
 
-```
-docs/usage/
-```
-
-Purpose:
-
-Explain how to use the system.
-
-Typical contents:
-
-- getting started guide
-- configuration
-- example workflows
-- integration patterns
-
-This documentation is consumer-facing.
-
-------
-
-## 7.3 Design Documentation
-
-Location:
-
-```
-docs/design/
-```
-
-Purpose:
-
-Explain key technical decisions and constraints.
-
-Typical contents:
-
-- error model
-- threading model
-- memory ownership rules
-- extension mechanisms
-
-Design documentation explains *why*, not only *what*.
-
-------
-
-## 7.4 Developer Documentation
-
-Location:
-
-```
-docs/dev/
-```
-
-Purpose:
-
-Support contributors and maintainers.
-
-Typical contents:
-
-- build matrix
-- toolchain setup
-- testing strategy
-- CI pipeline overview
-- contribution guidelines
-
-------
-
-## 7.5 Reference Documentation (Generated)
-
-Location:
+The standard location is:
 
 ```
 docs/reference/
 ```
 
-This directory contains generated API reference documentation.
-
 Rules:
 
-- reference documentation **MUST** be generated from source
-- generated documentation **MUST NOT** be manually edited
-- generation **SHOULD** be reproducible through CI
-- documentation **SHOULD** correspond to a specific version or tag
+- the directory is **generated content**
+- files **MUST NOT** be manually edited
+- generated content may be regenerated or replaced by tooling
 
 ------
 
-## 7.6 ABI Documentation (If Applicable)
+## 8. Versioning
 
-Location:
+API reference documentation **SHOULD** correspond to specific project versions.
 
-```
-docs/abi/
-```
+Projects are encouraged to generate documentation:
 
-Required only for:
+- for tagged releases
+- for the current development branch
 
-- shared libraries
-- components with ABI stability guarantees
-
-This directory **MUST** contain:
-
-- ABI baseline snapshots
-- ABI comparison reports
-
-ABI documentation **MUST** be generated by tooling and **MUST NOT** be manually written.
+Published documentation should clearly identify the version or commit associated with the generated reference.
 
 ------
 
-# 8. CI Expectations
+## 9. CI Integration
 
-Projects **SHOULD**:
+Projects **SHOULD** integrate documentation generation into their CI pipelines.
 
-- generate API reference documentation automatically in CI
-- publish generated documentation on release
-- fail builds when documentation generation fails
-- optionally enforce documentation coverage for public APIs
+Typical CI workflows include:
 
-Projects with ABI guarantees **SHOULD**:
+- generating reference documentation during builds
+- verifying documentation generation does not fail
+- optionally publishing documentation artifacts
 
-- generate ABI baselines on release
-- compare ABI changes in CI for stable branches
+Projects may also:
 
-------
-
-# 9. Ownership and Maintenance
-
-Documentation is owned by the same maintainers responsible for the code.
-
-The following rules apply:
-
-- code changes that alter public behavior **MUST** update documentation
-- public API changes **MUST** update reference documentation comments
-- breaking changes **MUST** update `CHANGELOG.md`
-- deprecated features **MUST** be documented
+- fail builds when generation fails
+- enforce documentation coverage thresholds
 
 ------
 
-# 10. Guidance
+## 10. Publication
 
-This standard intentionally avoids:
+Generated API reference documentation **SHOULD** be published alongside project documentation.
 
-- mandating a specific documentation toolchain
-- mandating diagram tools
-- over-specifying formatting
+Common publication mechanisms include:
 
-Projects **MAY** adopt additional documentation conventions that suit their needs.
+- static documentation sites
+- repository-hosted documentation portals
+- documentation artifacts attached to releases
 
-------
-
-# 11. Compliance Summary
-
-A repository is compliant with this standard if:
-
-- mandatory root documents exist
-- the required `docs/` structure exists
-- reference documentation is generated
-- documentation is version-controlled
-- documentation evolves with code
-
-Failure to meet these requirements constitutes SDLC non-compliance.
+Publication tooling is implementation-specific and outside the scope of this specification.
 
 ------
 
-# 12. Amendment and Evolution
+## 11. Documentation Consistency
+
+Generated reference documentation must remain consistent with source code behavior.
+
+The following practices are required:
+
+- documentation must be regenerated when APIs change
+- stale reference documentation must not be published
+- documentation generation failures should be treated as build failures where practical
+
+------
+
+## 12. Guidance
+
+Projects should favor generation workflows that:
+
+- require minimal manual maintenance
+- produce stable documentation output
+- integrate easily with CI pipelines
+
+Documentation generation pipelines should remain simple and reproducible.
+
+------
+
+## 13. Compliance Summary
+
+A repository is compliant with this specification if:
+
+- API reference documentation is generated from source
+- generated documentation resides under `docs/reference`
+- generation is reproducible
+- documentation generation is integrated into project workflows
+
+Failure to maintain reproducible reference documentation constitutes SDLC non-compliance.
+
+------
+
+## 14. Amendment and Evolution
 
 Changes to this document follow the SDLC amendment model.
-
-Amendments **SHOULD** normally be introduced through amendment documents rather than modifying the baseline directly.
 
 Amendment mechanics are defined in:
 
 - `sdlc_governance`
 - `sdlc_document_standard`
 
-Over time, amendments may be consolidated into revised baseline editions.
+Amendments may later be consolidated into revised baseline documents.
 
 ------
 
-# 13. References
+## 15. References
 
 - `sdlc_framework_overview`
 - `sdlc_governance`
 - `sdlc_document_standard`
-- `servicing_and_maintenance_strategy`
 - `documentation_governance`
-- `versioning_policy`
-- `deprecation_policy`
+- `project_documentation`
+- `source_code_documentation`
 

@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-This document defines the minimum documentation requirements for any project governed by the SDLC framework.
+This document defines the minimum **repository-level documentation requirements** for any project governed by the SDLC framework.
 
 Documentation is considered part of the software product and must be versioned, reviewed, and maintained alongside source code.
 
@@ -28,7 +28,17 @@ It defines minimum expectations for:
 - generated reference documentation
 - ABI documentation where applicable
 
-Projects may exceed these requirements but must not fall below them.
+This document governs **project and repository documentation**, not source-code documentation.
+
+Documentation embedded within source code is governed by:
+
+- `source_code_documentation`
+
+Automated API documentation generation is governed by:
+
+- `api_reference_generation`
+
+Projects may exceed the requirements defined here but must not fall below them.
 
 ------
 
@@ -113,8 +123,8 @@ docs/
 ├─ usage/
 ├─ design/
 ├─ dev/
-├─ reference/ (generated; do not hand-edit)
-└─ abi/ (generated if applicable)
+├─ reference/   (generated; do not hand-edit)
+└─ abi/         (generated if applicable)
 ```
 
 ------
@@ -239,6 +249,8 @@ Rules:
 - generation **SHOULD** be reproducible through CI
 - documentation **SHOULD** correspond to a specific version or tag
 
+Generation requirements are defined in `api_reference_generation`.
+
 ------
 
 ## 7.6 ABI Documentation (If Applicable)
@@ -286,9 +298,10 @@ Documentation is owned by the same maintainers responsible for the code.
 The following rules apply:
 
 - code changes that alter public behavior **MUST** update documentation
-- public API changes **MUST** update reference documentation comments
 - breaking changes **MUST** update `CHANGELOG.md`
 - deprecated features **MUST** be documented
+
+API documentation within source code must follow the requirements defined in `source_code_documentation`.
 
 ------
 
