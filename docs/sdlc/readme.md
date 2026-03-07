@@ -200,4 +200,4 @@ Changes to released governance specifications MUST occur through:
 - versioned amendments, or
 - formal consolidation revisions
 
-Direct modification of previously released artifacts is MUST NOT occur.
+Direct modification of previously released artifacts MUST NOT occur.
