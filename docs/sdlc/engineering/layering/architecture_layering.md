@@ -614,8 +614,8 @@ CI may enforce architecture via:
 # 10. References
 
 ```
-sdlc_structure
-sdlc_glossary
+sdlc_framework_overview
+taxonomy_glossary
 core_admission_and_elevation_policy
 ```
 

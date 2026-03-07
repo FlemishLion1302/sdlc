@@ -430,7 +430,7 @@ This separation preserves:
 
 ```
 architecture_layering
-sdlc_structure
-sdlc_glossary
+sdlc_framework_overview
+taxonomy_glossary
 ```
 

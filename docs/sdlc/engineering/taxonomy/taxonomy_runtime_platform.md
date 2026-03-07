@@ -316,7 +316,7 @@ CI validation may be introduced to detect deterministic violations such as:
 architecture_layering
 core_admission_and_elevation_policy
 taxonomy_core_foundation
-sdlc_structure
-sdlc_glossary
+sdlc_framework_overview
+taxonomy_glossary
 ```
 

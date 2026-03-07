@@ -108,21 +108,20 @@ Governance artifacts are immutable once tagged.
 
 # Repository Structure
 ```
-docs/engineering/
-governance/
-standards/
-guidelines/
-taxonomy/
-layering/
-
-documentation/
-(documentation governance standards)
-
-tooling/
-(tooling and repository structure governance)
-
-templates/
-(project scaffolding templates)
+docs/sdlc/
+├─ framework/
+├─ engineering/
+│  ├─ governance/
+│  ├─ standards/
+│  ├─ guidelines/
+│  ├─ layering/
+│  └─ taxonomy/
+├─ documentation/
+│  ├─ governance/
+│  ├─ guidelines/
+│  └─ policies/
+├─ tooling/
+└─ templates/
 ```
 ---
 
@@ -134,14 +133,6 @@ Projects MUST:
 2. Declare the adopted governance version explicitly.
 3. Treat governance artifacts as immutable.
 
-Recommended raw reference pattern:
-```
-https://raw.githubusercontent.com//engineering//
-```
-Example:
-```
-https://raw.githubusercontent.com/FlemishLion1302/engineering/v1.0.1/documentation/project_documentation.md
-```
 ---
 
 # Versioning Model
